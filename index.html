@@ -65,6 +65,18 @@
       border: 1px solid #e2e8f0;
     }
 
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .section-note {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 10px;
+    }
+
     .question-title {
       font-size: 16px;
       font-weight: 600;
@@ -75,34 +87,6 @@
       font-size: 13px;
       color: #666;
       margin-bottom: 12px;
-    }
-
-    .radio-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 14px;
-    }
-
-    .radio-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      padding: 6px 8px;
-      border-radius: 10px;
-      transition: background 0.15s ease;
-    }
-
-    .radio-item:hover {
-      background: #f1f5f9;
-    }
-
-    .radio-item input[type="radio"] {
-      margin-top: 2px;
-    }
-
-    label {
-      cursor: pointer;
     }
 
     .field-row {
@@ -121,8 +105,11 @@
 
     input[type="number"],
     input[type="text"],
+    input[type="tel"],
+    input[type="email"],
     input[type="date"],
-    textarea {
+    textarea,
+    select {
       width: 100%;
       border-radius: 10px;
       border: 1px solid #cbd5e1;
@@ -136,8 +123,11 @@
 
     input[type="number"]:focus,
     input[type="text"]:focus,
+    input[type="tel"]:focus,
+    input[type="email"]:focus,
     input[type="date"]:focus,
-    textarea:focus {
+    textarea:focus,
+    select:focus {
       border-color: #1d4ed8;
       box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
       background: #fff;
@@ -149,30 +139,47 @@
       line-height: 1.6;
     }
 
+    .radio-group,
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 14px;
+    }
+
+    .radio-item,
+    .checkbox-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      transition: background 0.15s ease;
+    }
+
+    .radio-item:hover,
+    .checkbox-item:hover {
+      background: #f1f5f9;
+    }
+
+    .radio-item input[type="radio"],
+    .checkbox-item input[type="checkbox"] {
+      margin-top: 2px;
+    }
+
+    label {
+      cursor: pointer;
+    }
+
+    .checkbox-inline-note {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
     .small-text {
       font-size: 12px;
       color: #64748b;
-    }
-
-    .product-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    .product-item {
-      border-radius: 14px;
-      border: 1px solid #e2e8f0;
-      padding: 10px 12px;
-      background: #f8fafc;
-    }
-
-    .product-item-title {
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #0f172a;
     }
 
     .button-row {
@@ -229,16 +236,25 @@
       font-size: 14px;
     }
 
-    .section-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 4px;
+    .product-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
     }
 
-    .section-note {
-      font-size: 12px;
-      color: #64748b;
-      margin-bottom: 10px;
+    .product-item {
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      padding: 10px 12px;
+      background: #f8fafc;
+    }
+
+    .product-item-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #0f172a;
     }
 
     .hidden {
@@ -280,15 +296,301 @@
 <body>
   <div class="page">
     <header>
-      <div class="badge">事前ヒアリングフォーム（FDA関連）</div>
-      <h1>輸出予定商品の事前質問</h1>
+      <div class="badge">無料相談用｜FDA事前ヒアリング</div>
+      <h1>FDA認証・米国輸出の事前ヒアリングフォーム</h1>
       <p class="subtitle">
         無料相談・具体的なご提案に進む前に、現在わかっている範囲でご状況をお聞かせください。<br />
-        「ざっくりした検討段階」の内容でも問題ございません。
+        「ざっくり検討段階」の内容でも問題ございません。
       </p>
     </header>
 
-    <!-- 質問1 -->
+    <!-- 企業情報 -->
+    <section class="card card--accent">
+      <div class="section-title">企業情報</div>
+      <p class="section-note">※ 「*」の付いている項目は必須です。</p>
+
+      <div class="field-row">
+        <label for="company-name">会社名<span>*</span></label>
+        <input id="company-name" type="text" placeholder="例）ワールドシフト株式会社" />
+      </div>
+
+      <div class="field-row">
+        <label for="company-url">ホームページURL</label>
+        <input id="company-url" type="text" placeholder="例）https://example.co.jp" />
+      </div>
+
+      <div class="field-row">
+        <label for="person-name">担当者名<span>*</span></label>
+        <input id="person-name" type="text" placeholder="例）山田 太郎" />
+      </div>
+
+      <div class="field-row">
+        <label for="tel">電話番号</label>
+        <input id="tel" type="tel" placeholder="例）03-1234-5678" />
+      </div>
+
+      <div class="field-row">
+        <label for="email">メールアドレス<span>*</span></label>
+        <input id="email" type="email" placeholder="例）info@example.co.jp" />
+      </div>
+
+      <div class="field-row">
+        <label for="country">会社所在地（国）<span>*</span></label>
+        <select id="country">
+          <option value="日本" selected>日本</option>
+          <option value="その他">その他</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="pref">会社所在地（地域）<span>*</span></label>
+        <input id="pref" type="text" placeholder="例）東京都渋谷区〇〇" />
+      </div>
+    </section>
+
+    <!-- ご相談のきっかけ・目的 -->
+    <section class="card">
+      <div class="section-title">ご相談のきっかけ・目的</div>
+      <p class="section-note">
+        「FDA認証」や「米国輸出」について、どのようなきっかけでご興味を持たれましたか？<br />
+        ※ 複数選択可
+      </p>
+
+      <div class="checkbox-group">
+        <label class="checkbox-item">
+          <input type="checkbox" name="motivation" value="海外進出を検討しているため" />
+          <span>海外進出を検討しているため</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="motivation" value="AmazonやECを通じて米国市場で販売したいため" />
+          <span>AmazonやECを通じて米国市場で販売したいため</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="motivation" value="販売先からFDA登録や認証を求められたため" />
+          <span>販売先からFDA登録や認証を求められたため</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="motivation" value="自社商品が米国で販売できるか知りたい" />
+          <span>自社商品が米国で販売できるか知りたい</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="motivation" value="売上や市場拡大のため" />
+          <span>売上や、市場拡大のため</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="motivation" value="米国進出に必要な条件や規制を理解したい" />
+          <span>米国進出のために必要な条件や規制を理解したい</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="motivation" value="その他" />
+          <span>その他</span>
+        </label>
+      </div>
+
+      <div class="field-row">
+        <label for="motivation-other">「その他」の場合（任意）</label>
+        <textarea id="motivation-other" placeholder="ご記載ください。"></textarea>
+      </div>
+    </section>
+
+    <!-- 現時点のご不安・要望 -->
+    <section class="card">
+      <div class="section-title">現時点のご不安・要望</div>
+      <p class="section-note">
+        FDA認証・米国輸出に関して、特にご懸念のある点やご要望をお聞かせください。<br />
+        ※ 複数選択可
+      </p>
+
+      <div class="checkbox-group">
+        <label class="checkbox-item">
+          <input type="checkbox" name="concern" value="輸出予定の商品がFDA認証の対象か分からない" />
+          <span>輸出予定の商品がFDA認証の対象かどうか分からない</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="concern" value="認証取得のために何をすれば良いか分からない" />
+          <span>認証取得のために何をすれば良いか分からない</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="concern" value="認証取得の業務を代行してほしい" />
+          <span>認証取得の業務を代行してほしい</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="concern" value="施設登録の更新や乗り換えを検討している" />
+          <span>既に認証は取得しているが、施設登録の更新や乗り換えを検討している</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="concern" value="ラベル表記や成分表示の作成を依頼したい" />
+          <span>ラベル表記や成分表示の作成を依頼したい</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="concern" value="輸出時の規制がわからない" />
+          <span>輸出時の規制等がわからない</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="concern" value="輸出に伴う作業をすべて依頼したい" />
+          <span>輸出に伴う作業などをすべて依頼したい</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="concern" value="費用や期間の目安を把握したい" />
+          <span>費用や期間の目安を把握したい</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="concern" value="その他" />
+          <span>その他</span>
+        </label>
+      </div>
+
+      <div class="field-row">
+        <label for="concern-other">「その他」の場合（任意）</label>
+        <textarea id="concern-other" placeholder="ご記載ください。"></textarea>
+      </div>
+    </section>
+
+    <!-- FDA認証取得経験 -->
+    <section class="card">
+      <div class="section-title">FDA認証取得経験</div>
+
+      <div class="field-row">
+        <label>これまでに、FDA認証に関してどのようなご対応をされたことがありますか？</label>
+        <div class="radio-group" id="experience-group">
+          <label class="radio-item">
+            <input type="radio" name="experience" value="実際に認証取得のための業務を行ったことがある" />
+            <span>実際に認証取得のための業務を行ったことがある</span>
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="experience" value="情報収集はしたことがある" />
+            <span>情報収集はしたことがある</span>
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="experience" value="まだ特に対応はしていない" />
+            <span>まだ特に対応はしていない</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 「実際に業務を行ったことがある」場合 -->
+      <div id="experience-detail-1" class="field-row hidden">
+        <label>その際はどのように対応されましたか？</label>
+        <div class="radio-group">
+          <label class="radio-item">
+            <input type="radio" name="experience-how" value="自社で対応した" />
+            <span>自社で対応した</span>
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="experience-how" value="他社に依頼した" />
+            <span>他社に依頼した</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 「業務を行った / 情報収集した」場合 -->
+      <div id="experience-detail-2" class="field-row hidden">
+        <label>その後の状況や課題について教えてください。</label>
+        <div class="radio-group">
+          <label class="radio-item">
+            <input type="radio" name="experience-after" value="無事に認証取得できた" />
+            <span>無事に認証取得できた</span>
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="experience-after" value="課題があり取得できなかった" />
+            <span>課題があり、取得できなかった</span>
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="experience-after" value="情報は集めたが複雑でよく分からなかった" />
+            <span>情報は集めたが、内容が複雑でよく分からなかった</span>
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="experience-after" value="その他" />
+            <span>その他</span>
+          </label>
+        </div>
+
+        <div class="field-row">
+          <label for="experience-reason">「課題があり取得できなかった」または「その他」の場合</label>
+          <textarea id="experience-reason" placeholder="理由を具体的にご記載ください。"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- 今後のご希望 -->
+    <section class="card">
+      <div class="section-title">今後のご希望</div>
+
+      <div class="field-row">
+        <label for="target-date">
+          認証取得や輸出開始を希望する時期<span>*</span>
+        </label>
+        <input id="target-date" type="text" placeholder="例）2026年3月頃までに輸出開始" />
+      </div>
+
+      <div class="field-row">
+        <label>必要な支援範囲<span>*</span></label>
+        <p class="checkbox-inline-note">※ 複数選択可</p>
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" name="support" value="認証取得に関する全て" />
+            <span>認証取得に関する全て</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="support" value="成分調査" />
+            <span>成分調査</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="support" value="施設登録" />
+            <span>施設登録</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="support" value="ラベル作成・サポート" />
+            <span>ラベル作成・サポート</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="support" value="事前申告" />
+            <span>事前申告</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="support" value="認証＋輸送まで一貫サポート" />
+            <span>認証＋輸送まで一貫サポート</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="support" value="施設更新" />
+            <span>施設更新</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="support" value="米Amazonアカウント作成〜出荷まで" />
+            <span>米Amazon新規アカウント作成～出荷まで</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="support" value="米Amazon商品ページ作成のみ" />
+            <span>米Amazon商品ページ作成のみ</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="support" value="米AmazonFBA向けの物流代行" />
+            <span>米AmazonFBA向けの物流代行</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="support" value="その他" />
+            <span>その他</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <label for="support-other">「その他」の場合（任意）</label>
+        <textarea id="support-other" placeholder="ご記載ください。"></textarea>
+      </div>
+
+      <div class="field-row">
+        <label for="free-text">
+          無料相談で特に知りたいこと / 解決したいこと / ご要望
+        </label>
+        <textarea
+          id="free-text"
+          placeholder="なんでもご記載ください。例：どの販売方法が自社に合っているか相談したい、輸出全体の流れを知りたい、費用感のイメージを持ちたい…など"
+        ></textarea>
+      </div>
+    </section>
+
+    <!-- 質問1（商材の決定状況） -->
     <section class="card card--accent">
       <div class="question-title">質問1：輸出する商材は決まっていますか？</div>
       <p class="question-help">現在のご検討状況に一番近いものをお選びください。</p>
@@ -318,10 +620,9 @@
 
       <div class="field-row">
         <label for="decided-count">
-          輸出予定の商材数は？
-          <span>（おおよそで問題ございません）</span>
+          FDA認証取得（アメリカ輸出）を検討している商材数<span>*</span>
         </label>
-        <input id="decided-count" type="number" min="1" step="1" placeholder="例）3" />
+        <input id="decided-count" type="number" min="1" step="1" placeholder="例）2" />
       </div>
 
       <div class="button-row">
@@ -331,7 +632,7 @@
       </div>
 
       <p class="small-text">
-        ※ 商材数をご入力後、「商材入力欄を作成」を押すと、個別の入力欄が自動で生成されます。
+        ※ 商材数をご入力後、「商材入力欄を作成」を押すと、1商材目・2商材目…の入力欄が自動で生成されます。
       </p>
 
       <div id="decided-product-list" class="product-list"></div>
@@ -341,13 +642,13 @@
     <section id="section-2" class="card hidden">
       <div class="section-title">② 考えている商材について教えてください</div>
       <p class="section-note">
-        「このあたりを輸出できたら…」と考えている段階でも構いません。分かる範囲でご入力ください。
+        「このあたりを輸出できたら…」と考えている段階でも構いません。<br />
+        分かる範囲でご入力ください。
       </p>
 
       <div class="field-row">
         <label for="considered-count">
-          考えている商材数は？
-          <span>（ざっくりの数で大丈夫です）</span>
+          考えている商材数<span>*</span>
         </label>
         <input id="considered-count" type="number" min="1" step="1" placeholder="例）2" />
       </div>
@@ -392,7 +693,7 @@
 
     <!-- 送信ボタン & 出力表示 -->
     <section class="card">
-      <div class="section-title">送信</div>
+      <div class="section-title">確認・出力</div>
       <p class="section-note">
         まだこのページではメール送信などは行われません。<br />
         下の「入力内容を確認する」ボタンを押すと、入力内容のサマリーが画面下部に表示されます。
@@ -402,8 +703,6 @@
         <button type="button" class="btn btn-primary" id="btn-preview">
           <span class="btn-icon">👁</span> 入力内容を確認する
         </button>
-        <!-- あとで実際に使うときに mailto などを付けたい場合用 -->
-        <!-- <button type="button" class="btn btn-secondary">メールで送信</button> -->
       </div>
 
       <div id="result" class="result-box hidden"></div>
@@ -416,7 +715,31 @@
   </div>
 
   <script>
-    // 要素取得
+    // 要素取得（経験）
+    const experienceGroup = document.getElementById("experience-group");
+    const experienceDetail1 = document.getElementById("experience-detail-1");
+    const experienceDetail2 = document.getElementById("experience-detail-2");
+
+    experienceGroup.addEventListener("change", (event) => {
+      const value = event.target.value;
+      // 「実際に業務を行ったことがある」 → detail1 + detail2
+      if (value === "実際に認証取得のための業務を行ったことがある") {
+        experienceDetail1.classList.remove("hidden");
+        experienceDetail2.classList.remove("hidden");
+      }
+      // 「情報収集はしたことがある」 → detail2 のみ
+      else if (value === "情報収集はしたことがある") {
+        experienceDetail1.classList.add("hidden");
+        experienceDetail2.classList.remove("hidden");
+      }
+      // 「まだ特に対応はしていない」 → どちらも非表示
+      else {
+        experienceDetail1.classList.add("hidden");
+        experienceDetail2.classList.add("hidden");
+      }
+    });
+
+    // 要素取得（商材Q1）
     const q1Group = document.getElementById("q1-group");
     const section1 = document.getElementById("section-1");
     const section2 = document.getElementById("section-2");
@@ -433,7 +756,7 @@
     const btnPreview = document.getElementById("btn-preview");
     const resultBox = document.getElementById("result");
 
-    // 質問1の選択によって表示セクションを切り替え
+    // Q1 選択でセクション切り替え
     q1Group.addEventListener("change", (event) => {
       const value = event.target.value;
       section1.classList.add("hidden");
@@ -448,7 +771,6 @@
         section3.classList.remove("hidden");
       }
 
-      // プレビューは一旦消しておく
       resultBox.classList.add("hidden");
       resultBox.textContent = "";
     });
@@ -467,32 +789,122 @@
         title.textContent = `商材 ${i}`;
         wrapper.appendChild(title);
 
-        // 賞味期限
-        const row1 = document.createElement("div");
-        row1.className = "field-row";
-        const label1 = document.createElement("label");
-        label1.textContent = "賞味期限";
-        const input1 = document.createElement("input");
-        input1.type = "date";
-        input1.name = `${type}-product-${i}-exp`;
-        input1.placeholder = "例）2026-12-31";
-        row1.appendChild(label1);
-        row1.appendChild(input1);
+        // 商品名
+        const rowName = document.createElement("div");
+        rowName.className = "field-row";
+        const labelName = document.createElement("label");
+        labelName.textContent = "商品名";
+        const inputName = document.createElement("input");
+        inputName.type = "text";
+        inputName.name = `${type}-product-${i}-name`;
+        inputName.placeholder = "例）〇〇抹茶ラテ";
+        rowName.appendChild(labelName);
+        rowName.appendChild(inputName);
 
-        // 製造者
-        const row2 = document.createElement("div");
-        row2.className = "field-row";
-        const label2 = document.createElement("label");
-        label2.textContent = "製造者";
-        const input2 = document.createElement("input");
-        input2.type = "text";
-        input2.name = `${type}-product-${i}-maker`;
-        input2.placeholder = "例）株式会社〇〇食品工業";
-        row2.appendChild(label2);
-        row2.appendChild(input2);
+        // 商品URL
+        const rowUrl = document.createElement("div");
+        rowUrl.className = "field-row";
+        const labelUrl = document.createElement("label");
+        labelUrl.textContent = "商品URL";
+        const inputUrl = document.createElement("input");
+        inputUrl.type = "text";
+        inputUrl.name = `${type}-product-${i}-url`;
+        inputUrl.placeholder = "例）https://example.co.jp/product/xxx";
+        rowUrl.appendChild(labelUrl);
+        rowUrl.appendChild(inputUrl);
 
-        wrapper.appendChild(row1);
-        wrapper.appendChild(row2);
+        // カテゴリ
+        const rowCat = document.createElement("div");
+        rowCat.className = "field-row";
+        const labelCat = document.createElement("label");
+        labelCat.textContent = "カテゴリ（例：食品、化粧品、雑貨、サプリメントなど）";
+        const inputCat = document.createElement("input");
+        inputCat.type = "text";
+        inputCat.name = `${type}-product-${i}-category`;
+        inputCat.placeholder = "例）食品（菓子）";
+        rowCat.appendChild(labelCat);
+        rowCat.appendChild(inputCat);
+
+        // 用途と対象物
+        const rowUse = document.createElement("div");
+        rowUse.className = "field-row";
+        const labelUse = document.createElement("label");
+        labelUse.textContent = "用途と対象物";
+        const inputUse = document.createElement("input");
+        inputUse.type = "text";
+        inputUse.name = `${type}-product-${i}-use`;
+        inputUse.placeholder = "例）大人向け健康サポート飲料";
+        rowUse.appendChild(labelUse);
+        rowUse.appendChild(inputUse);
+
+        // 原材料
+        const rowIng = document.createElement("div");
+        rowIng.className = "field-row";
+        const labelIng = document.createElement("label");
+        labelIng.textContent = "原材料（すべての成分）";
+        const textareaIng = document.createElement("textarea");
+        textareaIng.name = `${type}-product-${i}-ingredients`;
+        textareaIng.placeholder = "例）抹茶（国産）、砂糖、デキストリン、…";
+        rowIng.appendChild(labelIng);
+        rowIng.appendChild(textareaIng);
+
+        // 包装仕様
+        const rowPack = document.createElement("div");
+        rowPack.className = "field-row";
+        const labelPack = document.createElement("label");
+        labelPack.textContent = "1商品あたりの包装仕様（サイズ・重量など）";
+        const inputPack = document.createElement("input");
+        inputPack.type = "text";
+        inputPack.name = `${type}-product-${i}-package`;
+        inputPack.placeholder = "例）200g / 1袋、縦20cm×横10cm×厚み4cm";
+        rowPack.appendChild(labelPack);
+        rowPack.appendChild(inputPack);
+
+        // 賞味期限・消費期限
+        const rowExp = document.createElement("div");
+        rowExp.className = "field-row";
+        const labelExp = document.createElement("label");
+        labelExp.textContent = "賞味期限・消費期限";
+        const inputExp = document.createElement("input");
+        inputExp.type = "text";
+        inputExp.name = `${type}-product-${i}-exp`;
+        inputExp.placeholder = "例）製造より1年";
+        rowExp.appendChild(labelExp);
+        rowExp.appendChild(inputExp);
+
+        // 製造施設名
+        const rowMaker = document.createElement("div");
+        rowMaker.className = "field-row";
+        const labelMaker = document.createElement("label");
+        labelMaker.textContent = "製造施設名（製造・加工・包装・保管など）";
+        const inputMaker = document.createElement("input");
+        inputMaker.type = "text";
+        inputMaker.name = `${type}-product-${i}-maker`;
+        inputMaker.placeholder = "例）株式会社〇〇食品工業（本社工場）";
+        rowMaker.appendChild(labelMaker);
+        rowMaker.appendChild(inputMaker);
+
+        // 温度管理
+        const rowTemp = document.createElement("div");
+        rowTemp.className = "field-row";
+        const labelTemp = document.createElement("label");
+        labelTemp.textContent = "温度管理の必要性の有無";
+        const inputTemp = document.createElement("input");
+        inputTemp.type = "text";
+        inputTemp.name = `${type}-product-${i}-temp`;
+        inputTemp.placeholder = "例）常温保管で可 / 10℃以下の冷蔵保管が必要 など";
+        rowTemp.appendChild(labelTemp);
+        rowTemp.appendChild(inputTemp);
+
+        wrapper.appendChild(rowName);
+        wrapper.appendChild(rowUrl);
+        wrapper.appendChild(rowCat);
+        wrapper.appendChild(rowUse);
+        wrapper.appendChild(rowIng);
+        wrapper.appendChild(rowPack);
+        wrapper.appendChild(rowExp);
+        wrapper.appendChild(rowMaker);
+        wrapper.appendChild(rowTemp);
 
         container.appendChild(wrapper);
       }
@@ -518,55 +930,166 @@
       generateProductFields(consideredList, count, "considered");
     });
 
+    // チェックボックスの値を配列で取得
+    function getCheckedValues(name) {
+      return Array.from(document.querySelectorAll(`input[name='${name}']:checked`)).map(
+        (el) => el.value
+      );
+    }
+
     // 入力内容のサマリーを表示
     btnPreview.addEventListener("click", () => {
-      const selected = document.querySelector("input[name='q1']:checked");
-      if (!selected) {
-        alert("まずは「輸出する商材は決まっていますか？」のご回答をお選びください。");
-        return;
+      let summary = "";
+
+      // 企業情報
+      const company = document.getElementById("company-name").value;
+      const companyUrl = document.getElementById("company-url").value;
+      const person = document.getElementById("person-name").value;
+      const tel = document.getElementById("tel").value;
+      const email = document.getElementById("email").value;
+      const country = document.getElementById("country").value;
+      const pref = document.getElementById("pref").value;
+
+      summary += "【企業情報】\n";
+      summary += `会社名：${company || "未入力"}\n`;
+      summary += `ホームページURL：${companyUrl || "未入力"}\n`;
+      summary += `担当者名：${person || "未入力"}\n`;
+      summary += `電話番号：${tel || "未入力"}\n`;
+      summary += `メールアドレス：${email || "未入力"}\n`;
+      summary += `所在地（国）：${country || "未入力"}\n`;
+      summary += `所在地（地域）：${pref || "未入力"}\n\n`;
+
+      // きっかけ
+      const motivations = getCheckedValues("motivation");
+      const motivationOther = document.getElementById("motivation-other").value;
+      summary += "【ご相談のきっかけ・目的】\n";
+      summary += `選択肢：${motivations.length ? motivations.join(" / ") : "未選択"}\n`;
+      if (motivationOther) {
+        summary += `その他（自由記載）：${motivationOther}\n`;
+      }
+      summary += "\n";
+
+      // 不安・要望
+      const concerns = getCheckedValues("concern");
+      const concernOther = document.getElementById("concern-other").value;
+      summary += "【現時点のご不安・要望】\n";
+      summary += `選択肢：${concerns.length ? concerns.join(" / ") : "未選択"}\n`;
+      if (concernOther) {
+        summary += `その他（自由記載）：${concernOther}\n`;
+      }
+      summary += "\n";
+
+      // 経験
+      const expSelected = document.querySelector("input[name='experience']:checked");
+      summary += "【FDA認証取得経験】\n";
+      summary += `対応状況：${expSelected ? expSelected.value : "未選択"}\n`;
+
+      const expHowSelected = document.querySelector("input[name='experience-how']:checked");
+      if (expHowSelected) {
+        summary += `対応方法：${expHowSelected.value}\n`;
       }
 
-      const value = selected.value;
-      let summary = "【質問1】輸出する商材は決まっていますか？\n";
+      const expAfterSelected = document.querySelector("input[name='experience-after']:checked");
+      if (expAfterSelected) {
+        summary += `その後の状況・課題：${expAfterSelected.value}\n`;
+      }
 
-      if (value === "1") {
-        summary += "→ ① 決まっている\n\n";
-        const count = parseInt(decidedCountInput.value, 10) || 0;
-        summary += `【輸出予定の商材数】${count}件\n\n`;
+      const expReason = document.getElementById("experience-reason").value;
+      if (expReason) {
+        summary += `理由など：${expReason}\n`;
+      }
+      summary += "\n";
 
-        const items = decidedList.querySelectorAll(".product-item");
-        items.forEach((item, index) => {
-          const exp = item.querySelector("input[name^='decided-product-'][type='date']").value;
-          const maker = item.querySelector("input[name^='decided-product-'][type='text']").value;
+      // 今後の希望
+      const targetDate = document.getElementById("target-date").value;
+      const supports = getCheckedValues("support");
+      const supportOther = document.getElementById("support-other").value;
+      const freeText = document.getElementById("free-text").value;
 
-          summary += `▼ 商材 ${index + 1}\n`;
-          summary += `・賞味期限：${exp || "未入力"}\n`;
-          summary += `・製造者　：${maker || "未入力"}\n\n`;
-        });
-      } else if (value === "2") {
-        summary += "→ ② まだ詳細には決まっていないが、考えているものはある\n\n";
-        const count = parseInt(consideredCountInput.value, 10) || 0;
-        summary += `【考えている商材数】${count}件\n\n`;
+      summary += "【今後のご希望】\n";
+      summary += `希望時期：${targetDate || "未入力"}\n`;
+      summary += `必要な支援範囲：${supports.length ? supports.join(" / ") : "未選択"}\n`;
+      if (supportOther) {
+        summary += `支援範囲（その他）：${supportOther}\n`;
+      }
+      summary += "\n";
 
-        const items = consideredList.querySelectorAll(".product-item");
-        items.forEach((item, index) => {
-          const exp = item.querySelector("input[name^='considered-product-'][type='date']").value;
-          const maker = item.querySelector("input[name^='considered-product-'][type='text']").value;
+      summary += "【無料相談で知りたいこと / 解決したいこと / ご要望】\n";
+      summary += `${freeText || "（未入力）"}\n\n`;
 
-          summary += `▼ 商材 ${index + 1}\n`;
-          summary += `・賞味期限：${exp || "未入力"}\n`;
-          summary += `・製造者　：${maker || "未入力"}\n\n`;
-        });
-      } else if (value === "3") {
-        summary += "→ ③ まだ決まっていない\n\n";
-        const similarText = document.getElementById("similar-text").value;
-        summary += "【調査してもらいたい商品（既製品でもOK）】\n";
-        summary += (similarText || "（未入力）") + "\n";
+      // 商材Q1
+      const selectedQ1 = document.querySelector("input[name='q1']:checked");
+      summary += "【質問1】輸出する商材は決まっていますか？\n";
+      if (!selectedQ1) {
+        summary += "→ 未選択\n\n";
+      } else {
+        const q1value = selectedQ1.value;
+        if (q1value === "1") {
+          summary += "→ ① 決まっている\n\n";
+          const count = parseInt(decidedCountInput.value, 10) || 0;
+          summary += `【検討商材数】${count}件\n\n`;
+
+          const items = decidedList.querySelectorAll(".product-item");
+          items.forEach((item, index) => {
+            const name = item.querySelector("input[name^='decided-product-'][name$='-name']").value;
+            const url = item.querySelector("input[name^='decided-product-'][name$='-url']").value;
+            const cat = item.querySelector("input[name^='decided-product-'][name$='-category']").value;
+            const use = item.querySelector("input[name^='decided-product-'][name$='-use']").value;
+            const ing = item.querySelector("textarea[name^='decided-product-'][name$='-ingredients']").value;
+            const pack = item.querySelector("input[name^='decided-product-'][name$='-package']").value;
+            const exp = item.querySelector("input[name^='decided-product-'][name$='-exp']").value;
+            const maker = item.querySelector("input[name^='decided-product-'][name$='-maker']").value;
+            const temp = item.querySelector("input[name^='decided-product-'][name$='-temp']").value;
+
+            summary += `▼ 商材 ${index + 1}\n`;
+            summary += `・商品名：${name || "未入力"}\n`;
+            summary += `・商品URL：${url || "未入力"}\n`;
+            summary += `・カテゴリ：${cat || "未入力"}\n`;
+            summary += `・用途と対象物：${use || "未入力"}\n`;
+            summary += `・原材料：${ing || "未入力"}\n`;
+            summary += `・包装仕様：${pack || "未入力"}\n`;
+            summary += `・賞味期限・消費期限：${exp || "未入力"}\n`;
+            summary += `・製造施設名：${maker || "未入力"}\n`;
+            summary += `・温度管理：${temp || "未入力"}\n\n`;
+          });
+        } else if (q1value === "2") {
+          summary += "→ ② まだ詳細には決まっていないが、考えているものはある\n\n";
+          const count = parseInt(consideredCountInput.value, 10) || 0;
+          summary += `【考えている商材数】${count}件\n\n`;
+
+          const items = consideredList.querySelectorAll(".product-item");
+          items.forEach((item, index) => {
+            const name = item.querySelector("input[name^='considered-product-'][name$='-name']").value;
+            const url = item.querySelector("input[name^='considered-product-'][name$='-url']").value;
+            const cat = item.querySelector("input[name^='considered-product-'][name$='-category']").value;
+            const use = item.querySelector("input[name^='considered-product-'][name$='-use']").value;
+            const ing = item.querySelector("textarea[name^='considered-product-'][name$='-ingredients']").value;
+            const pack = item.querySelector("input[name^='considered-product-'][name$='-package']").value;
+            const exp = item.querySelector("input[name^='considered-product-'][name$='-exp']").value;
+            const maker = item.querySelector("input[name^='considered-product-'][name$='-maker']").value;
+            const temp = item.querySelector("input[name^='considered-product-'][name$='-temp']").value;
+
+            summary += `▼ 商材 ${index + 1}\n`;
+            summary += `・商品名：${name || "未入力"}\n`;
+            summary += `・商品URL：${url || "未入力"}\n`;
+            summary += `・カテゴリ：${cat || "未入力"}\n`;
+            summary += `・用途と対象物：${use || "未入力"}\n`;
+            summary += `・原材料：${ing || "未入力"}\n`;
+            summary += `・包装仕様：${pack || "未入力"}\n`;
+            summary += `・賞味期限・消費期限：${exp || "未入力"}\n`;
+            summary += `・製造施設名：${maker || "未入力"}\n`;
+            summary += `・温度管理：${temp || "未入力"}\n\n`;
+          });
+        } else if (q1value === "3") {
+          summary += "→ ③ まだ決まっていない\n\n";
+          const similarText = document.getElementById("similar-text").value;
+          summary += "【参考にしたい既製品など】\n";
+          summary += `${similarText || "（未入力）"}\n`;
+        }
       }
 
       resultBox.textContent = summary;
       resultBox.classList.remove("hidden");
-      // console.log("送信内容:", summary); // 必要ならコンソールにも
     });
   </script>
 </body>
