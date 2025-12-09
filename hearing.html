@@ -9,17 +9,66 @@
   <style>
     * { box-sizing: border-box; }
 
+    :root {
+      --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #eff6ff 40%, #fdf2ff 100%);
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --accent-strong: #1d4ed8;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --card-radius: 18px;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.08);
+      --border-soft: #e2e8f0;
+    }
+
     body {
       margin: 0;
       font-family: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f7fb;
-      color: #222;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+    }
+
+    .page-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px;
     }
 
     .page {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 24px 16px 48px;
+      width: 100%;
+      max-width: 840px;
+    }
+
+    .form-shell {
+      background: #ffffff;
+      border-radius: 28px;
+      box-shadow: var(--shadow-soft);
+      padding: 24px 18px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .form-shell {
+        padding: 28px 26px 36px;
+      }
+    }
+
+    .form-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: 6px;
+      background: linear-gradient(180deg, #2563eb, #9333ea);
+      border-radius: 999px;
+      opacity: 0.9;
+      left: 0;
+    }
+
+    .form-inner {
+      margin-left: 10px;
     }
 
     header { margin-bottom: 24px; }
@@ -29,8 +78,8 @@
       padding: 4px 10px;
       border-radius: 999px;
       font-size: 12px;
-      background: #dcfce7;
-      color: #16a34a;
+      background: #eff6ff;
+      color: #1d4ed8;
       font-weight: 600;
       margin-bottom: 8px;
     }
@@ -41,6 +90,10 @@
       font-weight: 700;
     }
 
+    @media (min-width: 768px) {
+      h1 { font-size: 28px; }
+    }
+
     .subtitle {
       font-size: 14px;
       color: #555;
@@ -49,13 +102,17 @@
 
     .card {
       background: #fff;
-      border-radius: 18px;
+      border-radius: var(--card-radius);
       padding: 20px 18px;
       box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
       margin-bottom: 16px;
+      border: 1px solid var(--border-soft);
     }
 
-    .card--accent { border: 1px solid #e2e8f0; }
+    .card--accent {
+      border: 1px solid #c4ddff;
+      background: #f5f7ff;
+    }
 
     .section-title {
       font-size: 15px;
@@ -65,7 +122,7 @@
 
     .section-note {
       font-size: 12px;
-      color: #64748b;
+      color: var(--text-muted);
       margin-bottom: 10px;
     }
 
@@ -91,7 +148,7 @@
 
     .field-row label span {
       font-size: 12px;
-      color: #64748b;
+      color: var(--text-muted);
       margin-left: 4px;
     }
 
@@ -112,7 +169,7 @@
     input[type="text"]:focus,
     textarea:focus,
     input[type="number"]:focus {
-      border-color: #1d4ed8;
+      border-color: var(--accent-strong);
       box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
       background: #fff;
     }
@@ -155,7 +212,7 @@
 
     .small-text {
       font-size: 12px;
-      color: #64748b;
+      color: var(--text-muted);
     }
 
     .button-row {
@@ -177,18 +234,18 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: transform 0.08s.ease, box-shadow 0.08s ease, background 0.15s ease;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
       white-space: nowrap;
     }
 
     .btn-primary {
-      background: #2563eb;
+      background: var(--accent);
       color: #fff;
       box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
     }
 
     .btn-primary:hover {
-      background: #1d4ed8;
+      background: var(--accent-strong);
       transform: translateY(-1px);
       box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
     }
@@ -251,371 +308,362 @@
     }
 
     .hidden { display: none !important; }
-
-    @media (min-width: 768px) {
-      h1 { font-size: 28px; }
-      .page { padding: 32px 16px 56px; }
-      .card { padding: 22px 20px; }
-    }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <div class="badge">STEP 2 / 2｜事前ヒアリング</div>
-      <h1>FDA認証・米国輸出に関する事前ヒアリング</h1>
-      <p class="subtitle">
-        STEP1 のお問い合わせフォームに続き、より具体的なご状況をお伺いします。<br />
-        分かる範囲で構いませんので、ご記入いただけますと幸いです。
-      </p>
-    </header>
+  <div class="page-wrap">
+    <div class="page">
+      <main class="form-shell">
+        <div class="form-inner">
+          <header>
+            <div class="badge">STEP 2 / 2｜事前ヒアリング</div>
+            <h1>FDA認証・米国輸出に関する事前ヒアリング</h1>
+            <p class="subtitle">
+              STEP1 のお問い合わせフォームに続き、より具体的なご状況をお伺いします。<br />
+              分かる範囲で構いませんので、ご記入いただけますと幸いです。
+            </p>
+          </header>
 
-    <!-- きっかけ・目的 -->
-    <section class="card">
-      <div class="section-title">ご相談のきっかけ・目的</div>
-      <p class="section-note">複数選択可です。</p>
+          <!-- きっかけ・目的 -->
+          <section class="card">
+            <div class="section-title">ご相談のきっかけ・目的</div>
+            <p class="section-note">複数選択可です。</p>
 
-      <div class="checkbox-group">
-        <label class="checkbox-item">
-          <input type="checkbox" name="motivation" value="海外進出を検討しているため" />
-          <span>海外進出を検討しているため</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="motivation" value="AmazonやECを通じて米国市場で販売したいため" />
-          <span>AmazonやECを通じて米国市場で販売したいため</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="motivation" value="販売先からFDA登録や認証を求められたため" />
-          <span>販売先からFDA登録や認証を求められたため</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="motivation" value="自社商品が米国で販売できるか知りたい" />
-          <span>自社商品が米国で販売できるか知りたい</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="motivation" value="売上や市場拡大のため" />
-          <span>売上や市場拡大のため</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="motivation" value="米国進出のために必要な条件や規制を理解したい" />
-          <span>米国進出のために必要な条件や規制を理解したい</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="motivation" value="その他" />
-          <span>その他</span>
-        </label>
-      </div>
+            <div class="checkbox-group" id="motivation-group">
+              <label class="checkbox-item">
+                <input type="checkbox" name="motivation" value="海外進出を検討しているため" />
+                <span>海外進出を検討しているため</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="motivation" value="AmazonやECを通じて米国市場で販売したいため" />
+                <span>AmazonやECを通じて米国市場で販売したいため</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="motivation" value="販売先からFDA登録や認証を求められたため" />
+                <span>販売先からFDA登録や認証を求められたため</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="motivation" value="自社商品が米国で販売できるか知りたい" />
+                <span>自社商品が米国で販売できるか知りたい</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="motivation" value="売上や市場拡大のため" />
+                <span>売上や市場拡大のため</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="motivation" value="米国進出のために必要な条件や規制を理解したい" />
+                <span>米国進出のために必要な条件や規制を理解したい</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="motivation" value="その他" />
+                <span>その他</span>
+              </label>
+            </div>
 
-      <div class="field-row">
-        <label for="motivation-other">「その他」の場合（任意）</label>
-        <textarea id="motivation-other" placeholder="ご記載ください。"></textarea>
-      </div>
-    </section>
+            <div class="field-row hidden" id="motivation-other-row">
+              <label for="motivation-other">「その他」の場合（任意）</label>
+              <textarea id="motivation-other" placeholder="ご記載ください。"></textarea>
+            </div>
+          </section>
 
-    <!-- 不安・要望 -->
-    <section class="card">
-      <div class="section-title">現時点のご不安・要望</div>
-      <p class="section-note">複数選択可です。</p>
+          <!-- 不安・要望 -->
+          <section class="card">
+            <div class="section-title">現時点のご不安・要望</div>
+            <p class="section-note">複数選択可です。</p>
 
-      <div class="checkbox-group">
-        <label class="checkbox-item">
-          <input type="checkbox" name="concern" value="輸出予定の商品がFDA認証の対象かどうか分からない" />
-          <span>輸出予定の商品がFDA認証の対象かどうか分からない</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="concern" value="認証取得のために何をすれば良いか分からない" />
-          <span>認証取得のために何をすれば良いか分からない</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="concern" value="認証取得の業務を代行してほしい" />
-          <span>認証取得の業務を代行してほしい</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="concern" value="既に認証は取得しているが、登録の更新や乗り換えを検討している" />
-          <span>既に認証は取得しているが、登録の更新や乗り換えを検討している</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="concern" value="ラベル表記や成分表示の作成を依頼したい" />
-          <span>ラベル表記や成分表示の作成を依頼したい</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="concern" value="輸出時の規制等がわからない" />
-          <span>輸出時の規制等がわからない</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="concern" value="輸出に伴う作業などをすべて依頼したい" />
-          <span>輸出に伴う作業などをすべて依頼したい</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="concern" value="費用や期間の目安を把握したい" />
-          <span>費用や期間の目安を把握したい</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="concern" value="その他" />
-          <span>その他</span>
-        </label>
-      </div>
+            <div class="checkbox-group" id="concern-group">
+              <label class="checkbox-item">
+                <input type="checkbox" name="concern" value="輸出予定の商品がFDA認証の対象かどうか分からない" />
+                <span>輸出予定の商品がFDA認証の対象かどうか分からない</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="concern" value="認証取得のために何をすれば良いか分からない" />
+                <span>認証取得のために何をすれば良いか分からない</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="concern" value="認証取得の業務を代行してほしい" />
+                <span>認証取得の業務を代行してほしい</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="concern" value="既に認証は取得しているが、登録の更新や乗り換えを検討している" />
+                <span>既に認証は取得しているが、登録の更新や乗り換えを検討している</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="concern" value="ラベル表記や成分表示の作成を依頼したい" />
+                <span>ラベル表記や成分表示の作成を依頼したい</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="concern" value="輸出時の規制等がわからない" />
+                <span>輸出時の規制等がわからない</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="concern" value="輸出に伴う作業などをすべて依頼したい" />
+                <span>輸出に伴う作業などをすべて依頼したい</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="concern" value="費用や期間の目安を把握したい" />
+                <span>費用や期間の目安を把握したい</span>
+              </label>
+              <label class="checkbox-item">
+                <input type="checkbox" name="concern" value="その他" />
+                <span>その他</span>
+              </label>
+            </div>
 
-      <div class="field-row">
-        <label for="concern-other">「その他」の場合（任意）</label>
-        <textarea id="concern-other" placeholder="ご記載ください。"></textarea>
-      </div>
-    </section>
+            <div class="field-row hidden" id="concern-other-row">
+              <label for="concern-other">「その他」の場合（任意）</label>
+              <textarea id="concern-other" placeholder="ご記載ください。"></textarea>
+            </div>
+          </section>
 
-    <!-- 経験 -->
-    <section class="card">
-      <div class="section-title">FDA認証取得に関するご経験</div>
+          <!-- 経験 -->
+          <section class="card">
+            <div class="section-title">FDA認証取得に関するご経験</div>
 
-      <div class="field-row">
-        <label>これまでに、FDA認証に関してどのようなご対応をされたことがありますか？</label>
-        <div class="radio-group" id="experience-group">
-          <label class="radio-item">
-            <input type="radio" name="experience" value="実際に認証取得のための業務を行ったことがある" />
-            <span>実際に認証取得のための業務を行ったことがある</span>
-          </label>
-          <label class="radio-item">
-            <input type="radio" name="experience" value="情報収集はしたことがある" />
-            <span>情報収集はしたことがある</span>
-          </label>
-          <label class="radio-item">
-            <input type="radio" name="experience" value="まだ特に対応はしていない" />
-            <span>まだ特に対応はしていない</span>
-          </label>
+            <div class="field-row">
+              <label>これまでに、FDA認証に関してどのようなご対応をされたことがありますか？</label>
+              <div class="radio-group" id="experience-group">
+                <label class="radio-item">
+                  <input type="radio" name="experience" value="実際に認証取得のための業務を行ったことがある" />
+                  <span>実際に認証取得のための業務を行ったことがある</span>
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="experience" value="情報収集はしたことがある" />
+                  <span>情報収集はしたことがある</span>
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="experience" value="まだ特に対応はしていない" />
+                  <span>まだ特に対応はしていない</span>
+                </label>
+              </div>
+            </div>
+
+            <div id="experience-detail-1" class="field-row hidden">
+              <label>その際はどのように対応されましたか？</label>
+              <div class="radio-group">
+                <label class="radio-item">
+                  <input type="radio" name="experience-how" value="自社で対応した" />
+                  <span>自社で対応した</span>
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="experience-how" value="他社に依頼した" />
+                  <span>他社に依頼した</span>
+                </label>
+              </div>
+            </div>
+
+            <div id="experience-detail-2" class="field-row hidden">
+              <label>その後の状況や課題について教えてください。</label>
+              <div class="radio-group" id="experience-after-group">
+                <label class="radio-item">
+                  <input type="radio" name="experience-after" value="無事に認証取得できた" />
+                  <span>無事に認証取得できた</span>
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="experience-after" value="課題があり取得できなかった" />
+                  <span>課題があり、取得できなかった</span>
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="experience-after" value="情報は集めたが内容が複雑でよく分からなかった" />
+                  <span>情報は集めたが、内容が複雑でよく分からなかった</span>
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="experience-after" value="その他" />
+                  <span>その他</span>
+                </label>
+              </div>
+
+              <div class="field-row hidden" id="experience-reason-row">
+                <label for="experience-reason">「課題があり取得できなかった」または「その他」の場合</label>
+                <textarea id="experience-reason" placeholder="理由を具体的にご記載ください。"></textarea>
+              </div>
+            </div>
+          </section>
+
+          <!-- 今後の希望 -->
+          <section class="card">
+            <div class="section-title">今後のご希望</div>
+
+            <div class="field-row">
+              <label for="target-date">
+                認証取得や輸出開始を希望する時期（目安で構いません）
+              </label>
+              <input id="target-date" type="text" placeholder="例）2026年3月頃までに輸出開始" />
+            </div>
+
+            <div class="field-row">
+              <label>必要な支援範囲（複数選択可）</label>
+              <div class="checkbox-group" id="support-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" name="support" value="認証取得に関する全て" />
+                  <span>認証取得に関する全て</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="support" value="成分調査" />
+                  <span>成分調査</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="support" value="施設登録" />
+                  <span>施設登録</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="support" value="ラベル作成・サポート" />
+                  <span>ラベル作成・サポート</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="support" value="事前申告" />
+                  <span>事前申告</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="support" value="認証＋輸送まで一貫サポート" />
+                  <span>認証＋輸送まで一貫サポート</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="support" value="施設更新" />
+                  <span>施設更新</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="support" value="米Amazon新規アカウント作成～出荷まで" />
+                  <span>米Amazon新規アカウント作成～出荷まで</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="support" value="米Amazon商品ページ作成のみ" />
+                  <span>米Amazon商品ページ作成のみ</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="support" value="米AmazonFBA向けの物流代行" />
+                  <span>米AmazonFBA向けの物流代行</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="support" value="その他" />
+                  <span>その他</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field-row hidden" id="support-other-row">
+              <label for="support-other">「その他」の場合（任意）</label>
+              <textarea id="support-other" placeholder="ご記載ください。"></textarea>
+            </div>
+
+            <div class="field-row">
+              <label for="free-text">
+                無料相談で特に知りたいこと / 解決したいこと / ご要望（任意）
+              </label>
+              <textarea
+                id="free-text"
+                placeholder="例：どの販売方法が自社に合っているか相談したい、輸出全体の流れを知りたい、費用感のイメージを持ちたい など"
+              ></textarea>
+            </div>
+          </section>
+
+          <!-- 質問1（商材の決定状況） -->
+          <section class="card card--accent">
+            <div class="question-title">質問1：輸出する商材は決まっていますか？</div>
+            <p class="question-help">現在のご検討状況に一番近いものをお選びください。</p>
+
+            <div class="radio-group" id="q1-group">
+              <label class="radio-item">
+                <input type="radio" name="q1" value="1" />
+                <span>① 決まっている</span>
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="q1" value="2" />
+                <span>② まだ詳細には決まっていないが、考えているものはある</span>
+              </label>
+              <label class="radio-item">
+                <input type="radio" name="q1" value="3" />
+                <span>③ まだ決まっていない</span>
+              </label>
+            </div>
+          </section>
+
+          <!-- ケース① -->
+          <section id="section-1" class="card hidden">
+            <div class="section-title">① 輸出予定の商材に関してお聞かせください</div>
+            <p class="section-note">現時点で輸出が「ほぼ決まっている」商材についてご入力ください。</p>
+
+            <div class="field-row">
+              <label for="decided-count">FDA認証取得を検討している商材数</label>
+              <input id="decided-count" type="number" min="1" step="1" placeholder="例）2" />
+            </div>
+
+            <p class="small-text">商材数を入力すると、自動で入力欄が作成されます。</p>
+
+            <div id="decided-product-list" class="product-list"></div>
+          </section>
+
+          <!-- ケース② -->
+          <section id="section-2" class="card hidden">
+            <div class="section-title">② 考えている商材について教えてください</div>
+            <p class="section-note">「このあたりを輸出できたら…」と考えている段階でも構いません。</p>
+
+            <div class="field-row">
+              <label for="considered-count">考えている商材数</label>
+              <input id="considered-count" type="number" min="1" step="1" placeholder="例）3" />
+            </div>
+
+            <p class="small-text">商材数を入力すると、自動で入力欄が作成されます（分かる範囲で構いません）。</p>
+
+            <div id="considered-product-list" class="product-list"></div>
+          </section>
+
+          <!-- ケース③ -->
+          <section id="section-3" class="card hidden">
+            <div class="section-title">③ 参考となる既製品などがある場合</div>
+            <p class="section-note">
+              まだ具体的な商材が決まっていない場合でも、近しい商品があればシミュレーションが可能です。
+            </p>
+
+            <div class="field-row">
+              <label for="similar-text">
+                調査してもらいたい商品（既製品でもOK）がありましたら、以下情報を教えてください。
+              </label>
+              <textarea
+                id="similar-text"
+                placeholder="【記入例】&#10;・商品名：〇〇抹茶ラテ&#10;・メーカー名：株式会社〇〇&#10;・販売URL：https://〜&#10;・日本での販売形態：ECのみ／店舗のみ／両方&#10;・気になっている点：添加物・成分、賞味期限、温度管理など"
+              ></textarea>
+            </div>
+          </section>
+
+          <!-- 確認 -->
+          <section class="card">
+            <div class="section-title">入力内容の確認</div>
+            <p class="section-note">
+              「入力内容をまとめて表示」を押すと、ヒアリング内容のサマリーが表示されます。<br />
+              そのままメールに貼り付けて共有いただくことも可能です。
+            </p>
+
+            <div class="button-row">
+              <button type="button" class="btn btn-primary" id="btn-preview">
+                <span class="btn-icon">👁</span> 入力内容をまとめて表示
+              </button>
+            </div>
+
+            <div id="result" class="result-box hidden"></div>
+
+            <p class="footer-note">
+              ※ GitHub Pages上では、別途メール送信処理やフォーム連携を追加してお使いいただけます。<br />
+              ※ 必要に応じて、このサマリーをコピーしてGmailなどで共有してください。
+            </p>
+          </section>
         </div>
-      </div>
-
-      <div id="experience-detail-1" class="field-row hidden">
-        <label>その際はどのように対応されましたか？</label>
-        <div class="radio-group">
-          <label class="radio-item">
-            <input type="radio" name="experience-how" value="自社で対応した" />
-            <span>自社で対応した</span>
-          </label>
-          <label class="radio-item">
-            <input type="radio" name="experience-how" value="他社に依頼した" />
-            <span>他社に依頼した</span>
-          </label>
-        </div>
-      </div>
-
-      <div id="experience-detail-2" class="field-row hidden">
-        <label>その後の状況や課題について教えてください。</label>
-        <div class="radio-group">
-          <label class="radio-item">
-            <input type="radio" name="experience-after" value="無事に認証取得できた" />
-            <span>無事に認証取得できた</span>
-          </label>
-          <label class="radio-item">
-            <input type="radio" name="experience-after" value="課題があり取得できなかった" />
-            <span>課題があり、取得できなかった</span>
-          </label>
-          <label class="radio-item">
-            <input type="radio" name="experience-after" value="情報は集めたが内容が複雑でよく分からなかった" />
-            <span>情報は集めたが、内容が複雑でよく分からなかった</span>
-          </label>
-          <label class="radio-item">
-            <input type="radio" name="experience-after" value="その他" />
-            <span>その他</span>
-          </label>
-        </div>
-
-        <div class="field-row">
-          <label for="experience-reason">「課題があり取得できなかった」または「その他」の場合</label>
-          <textarea id="experience-reason" placeholder="理由を具体的にご記載ください。"></textarea>
-        </div>
-      </div>
-    </section>
-
-    <!-- 今後の希望 -->
-    <section class="card">
-      <div class="section-title">今後のご希望</div>
-
-      <div class="field-row">
-        <label for="target-date">
-          認証取得や輸出開始を希望する時期（目安で構いません）
-        </label>
-        <input id="target-date" type="text" placeholder="例）2026年3月頃までに輸出開始" />
-      </div>
-
-      <div class="field-row">
-        <label>必要な支援範囲（複数選択可）</label>
-        <div class="checkbox-group">
-          <label class="checkbox-item">
-            <input type="checkbox" name="support" value="認証取得に関する全て" />
-            <span>認証取得に関する全て</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="support" value="成分調査" />
-            <span>成分調査</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="support" value="施設登録" />
-            <span>施設登録</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="support" value="ラベル作成・サポート" />
-            <span>ラベル作成・サポート</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="support" value="事前申告" />
-            <span>事前申告</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="support" value="認証＋輸送まで一貫サポート" />
-            <span>認証＋輸送まで一貫サポート</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="support" value="施設更新" />
-            <span>施設更新</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="support" value="米Amazon新規アカウント作成～出荷まで" />
-            <span>米Amazon新規アカウント作成～出荷まで</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="support" value="米Amazon商品ページ作成のみ" />
-            <span>米Amazon商品ページ作成のみ</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="support" value="米AmazonFBA向けの物流代行" />
-            <span>米AmazonFBA向けの物流代行</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="support" value="その他" />
-            <span>その他</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <label for="support-other">「その他」の場合（任意）</label>
-        <textarea id="support-other" placeholder="ご記載ください。"></textarea>
-      </div>
-
-      <div class="field-row">
-        <label for="free-text">
-          無料相談で特に知りたいこと / 解決したいこと / ご要望（任意）
-        </label>
-        <textarea
-          id="free-text"
-          placeholder="例：どの販売方法が自社に合っているか相談したい、輸出全体の流れを知りたい、費用感のイメージを持ちたい など"
-        ></textarea>
-      </div>
-    </section>
-
-    <!-- 質問1（商材の決定状況） -->
-    <section class="card card--accent">
-      <div class="question-title">質問1：輸出する商材は決まっていますか？</div>
-      <p class="question-help">現在のご検討状況に一番近いものをお選びください。</p>
-
-      <div class="radio-group" id="q1-group">
-        <label class="radio-item">
-          <input type="radio" name="q1" value="1" />
-          <span>① 決まっている</span>
-        </label>
-        <label class="radio-item">
-          <input type="radio" name="q1" value="2" />
-          <span>② まだ詳細には決まっていないが、考えているものはある</span>
-        </label>
-        <label class="radio-item">
-          <input type="radio" name="q1" value="3" />
-          <span>③ まだ決まっていない</span>
-        </label>
-      </div>
-    </section>
-
-    <!-- ケース① -->
-    <section id="section-1" class="card hidden">
-      <div class="section-title">① 輸出予定の商材に関してお聞かせください</div>
-      <p class="section-note">現時点で輸出が「ほぼ決まっている」商材についてご入力ください。</p>
-
-      <div class="field-row">
-        <label for="decided-count">FDA認証取得を検討している商材数</label>
-        <input id="decided-count" type="number" min="1" step="1" placeholder="例）2" />
-      </div>
-
-      <div class="button-row">
-        <button type="button" class="btn btn-secondary" id="btn-generate-decided">
-          <span class="btn-icon">＋</span> 商材入力欄を作成
-        </button>
-      </div>
-
-      <p class="small-text">商材数をご入力後、「商材入力欄を作成」を押すと、入力欄が自動で生成されます。</p>
-
-      <div id="decided-product-list" class="product-list"></div>
-    </section>
-
-    <!-- ケース② -->
-    <section id="section-2" class="card hidden">
-      <div class="section-title">② 考えている商材について教えてください</div>
-      <p class="section-note">「このあたりを輸出できたら…」と考えている段階でも構いません。</p>
-
-      <div class="field-row">
-        <label for="considered-count">考えている商材数</label>
-        <input id="considered-count" type="number" min="1" step="1" placeholder="例）3" />
-      </div>
-
-      <div class="button-row">
-        <button type="button" class="btn btn-secondary" id="btn-generate-considered">
-          <span class="btn-icon">＋</span> 商材入力欄を作成
-        </button>
-      </div>
-
-      <p class="small-text">分かる部分のみで構いません。</p>
-
-      <div id="considered-product-list" class="product-list"></div>
-    </section>
-
-    <!-- ケース③ -->
-    <section id="section-3" class="card hidden">
-      <div class="section-title">③ 参考となる既製品などがある場合</div>
-      <p class="section-note">
-        まだ具体的な商材が決まっていない場合でも、近しい商品があればシミュレーションが可能です。
-      </p>
-
-      <div class="field-row">
-        <label for="similar-text">
-          調査してもらいたい商品（既製品でもOK）がありましたら、以下情報を教えてください。
-        </label>
-        <textarea
-          id="similar-text"
-          placeholder="【記入例】
-・商品名：〇〇抹茶ラテ
-・メーカー名：株式会社〇〇
-・販売URL：https://〜
-・日本での販売形態：ECのみ／店舗のみ／両方
-・気になっている点：添加物・成分、賞味期限、温度管理など"
-        ></textarea>
-      </div>
-    </section>
-
-    <!-- 確認 -->
-    <section class="card">
-      <div class="section-title">入力内容の確認</div>
-      <p class="section-note">
-        「入力内容をまとめて表示」を押すと、ヒアリング内容のサマリーが表示されます。<br />
-        そのままメールに貼り付けて共有いただくことも可能です。
-      </p>
-
-      <div class="button-row">
-        <button type="button" class="btn btn-primary" id="btn-preview">
-          <span class="btn-icon">👁</span> 入力内容をまとめて表示
-        </button>
-      </div>
-
-      <div id="result" class="result-box hidden"></div>
-
-      <p class="footer-note">
-        ※ GitHub Pages上では、別途メール送信処理やフォーム連携を追加してお使いいただけます。<br />
-        ※ 必要に応じて、このサマリーをコピーしてGmailなどで共有してください。
-      </p>
-    </section>
+      </main>
+    </div>
   </div>
 
   <script>
+    function getCheckedValues(name) {
+      return Array.from(document.querySelectorAll(`input[name='${name}']:checked`)).map(
+        (el) => el.value
+      );
+    }
+
     const experienceGroup = document.getElementById("experience-group");
     const experienceDetail1 = document.getElementById("experience-detail-1");
     const experienceDetail2 = document.getElementById("experience-detail-2");
+    const experienceAfterGroup = document.getElementById("experience-after-group");
+    const experienceReasonRow = document.getElementById("experience-reason-row");
 
     experienceGroup.addEventListener("change", (event) => {
       const value = event.target.value;
@@ -631,6 +679,39 @@
       }
     });
 
+    experienceAfterGroup.addEventListener("change", (event) => {
+      const value = event.target.value;
+      if (value === "課題があり取得できなかった" || value === "その他") {
+        experienceReasonRow.classList.remove("hidden");
+      } else {
+        experienceReasonRow.classList.add("hidden");
+        document.getElementById("experience-reason").value = "";
+      }
+    });
+
+    // 「その他」テキストエリアの表示制御
+    const motivationOtherRow = document.getElementById("motivation-other-row");
+    const concernOtherRow = document.getElementById("concern-other-row");
+    const supportOtherRow = document.getElementById("support-other-row");
+
+    document.getElementById("motivation-group").addEventListener("change", () => {
+      const hasOther = getCheckedValues("motivation").includes("その他");
+      motivationOtherRow.classList.toggle("hidden", !hasOther);
+      if (!hasOther) document.getElementById("motivation-other").value = "";
+    });
+
+    document.getElementById("concern-group").addEventListener("change", () => {
+      const hasOther = getCheckedValues("concern").includes("その他");
+      concernOtherRow.classList.toggle("hidden", !hasOther);
+      if (!hasOther) document.getElementById("concern-other").value = "";
+    });
+
+    document.getElementById("support-group").addEventListener("change", () => {
+      const hasOther = getCheckedValues("support").includes("その他");
+      supportOtherRow.classList.toggle("hidden", !hasOther);
+      if (!hasOther) document.getElementById("support-other").value = "";
+    });
+
     const q1Group = document.getElementById("q1-group");
     const section1 = document.getElementById("section-1");
     const section2 = document.getElementById("section-2");
@@ -642,8 +723,6 @@
     const decidedList = document.getElementById("decided-product-list");
     const consideredList = document.getElementById("considered-product-list");
 
-    const btnGenerateDecided = document.getElementById("btn-generate-decided");
-    const btnGenerateConsidered = document.getElementById("btn-generate-considered");
     const btnPreview = document.getElementById("btn-preview");
     const resultBox = document.getElementById("result");
 
@@ -702,29 +781,29 @@
       }
     }
 
-    btnGenerateDecided.addEventListener("click", () => {
+    function autoGenerateDecided() {
       const count = parseInt(decidedCountInput.value, 10);
       if (isNaN(count) || count <= 0) {
-        alert("商材数を1以上の数字でご入力ください。");
+        decidedList.innerHTML = "";
         return;
       }
       generateProductFields(decidedList, count, "decided");
-    });
+    }
 
-    btnGenerateConsidered.addEventListener("click", () => {
+    function autoGenerateConsidered() {
       const count = parseInt(consideredCountInput.value, 10);
       if (isNaN(count) || count <= 0) {
-        alert("商材数を1以上の数字でご入力ください。");
+        consideredList.innerHTML = "";
         return;
       }
       generateProductFields(consideredList, count, "considered");
-    });
-
-    function getCheckedValues(name) {
-      return Array.from(document.querySelectorAll(`input[name='${name}']:checked`)).map(
-        (el) => el.value
-      );
     }
+
+    decidedCountInput.addEventListener("change", autoGenerateDecided);
+    decidedCountInput.addEventListener("blur", autoGenerateDecided);
+
+    consideredCountInput.addEventListener("change", autoGenerateConsidered);
+    consideredCountInput.addEventListener("blur", autoGenerateConsidered);
 
     btnPreview.addEventListener("click", () => {
       let summary = "";
