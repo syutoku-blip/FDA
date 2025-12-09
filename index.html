@@ -37,7 +37,6 @@
       padding: 32px 16px;
     }
 
-    /* フォーム全体を中央寄せ1カラムで */
     .page {
       width: 100%;
       max-width: 840px;
@@ -78,7 +77,7 @@
     .badge-row {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 8px;
       margin-bottom: 10px;
     }
@@ -96,21 +95,6 @@
     }
 
     .badge span { font-size: 14px; }
-
-    .step-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .step-indicator-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #22c55e;
-    }
 
     h1 {
       font-size: 22px;
@@ -249,7 +233,6 @@
       line-height: 1.6;
     }
 
-    /* ▼ 選択肢は縦並びに */
     .checkbox-group {
       display: flex;
       flex-direction: column;
@@ -384,20 +367,15 @@
               <div class="badge">
                 <span>STEP 1 / 2</span>｜お問い合わせ
               </div>
-              <div class="step-indicator">
-                <span class="step-indicator-dot"></span>
-                無料相談をご希望の方は、このあと事前ヒアリングへ
-              </div>
             </div>
 
             <h1>FDA認証取得サポート｜お問い合わせフォーム</h1>
             <p class="subtitle">
-              まずは御社の基本情報とお問い合わせ内容をお知らせください。<br />
-              「無料相談を希望」を含む場合のみ、このあと STEP2 の事前ヒアリングに進みます。
+              貴社の基本情報とお問い合わせ内容をお知らせください。
             </p>
             <div class="highlight-note">
               <span class="highlight-note-emoji">🕒</span>
-              <span>ご入力のめやす時間：2〜3分ほどです。</span>
+              <span>ご入力の目安時間：2～3分ほど。</span>
             </div>
           </header>
 
@@ -446,6 +424,32 @@
               <select id="country">
                 <option value="">選択してください</option>
                 <option value="日本" selected>日本</option>
+                <option value="アメリカ合衆国">アメリカ合衆国</option>
+                <option value="カナダ">カナダ</option>
+                <option value="メキシコ">メキシコ</option>
+                <option value="ブラジル">ブラジル</option>
+                <option value="イギリス">イギリス</option>
+                <option value="フランス">フランス</option>
+                <option value="ドイツ">ドイツ</option>
+                <option value="イタリア">イタリア</option>
+                <option value="スペイン">スペイン</option>
+                <option value="オランダ">オランダ</option>
+                <option value="スイス">スイス</option>
+                <option value="オーストラリア">オーストラリア</option>
+                <option value="ニュージーランド">ニュージーランド</option>
+                <option value="中国">中国</option>
+                <option value="香港">香港</option>
+                <option value="台湾">台湾</option>
+                <option value="韓国">韓国</option>
+                <option value="シンガポール">シンガポール</option>
+                <option value="タイ">タイ</option>
+                <option value="ベトナム">ベトナム</option>
+                <option value="マレーシア">マレーシア</option>
+                <option value="インドネシア">インドネシア</option>
+                <option value="フィリピン">フィリピン</option>
+                <option value="インド">インド</option>
+                <option value="アラブ首長国連邦">アラブ首長国連邦</option>
+                <option value="サウジアラビア">サウジアラビア</option>
                 <option value="その他">その他</option>
               </select>
             </div>
@@ -467,7 +471,7 @@
               </div>
             </div>
             <p class="section-note">
-              複数選択できます。「無料相談を希望」が含まれる場合のみ、STEP2 に進みます。
+              複数選択できます。
             </p>
 
             <div class="field-row">
@@ -528,9 +532,6 @@
                 商品について（無料相談以外の方）
               </div>
             </div>
-            <p class="section-note">
-              「無料相談を希望」が含まれない場合のみ、ご入力をお願いしております。分かる範囲で構いません。
-            </p>
 
             <div class="field-row">
               <label for="product-count" class="field-label">
@@ -701,7 +702,6 @@
 
     const productSection = document.getElementById("product-section");
 
-    // お問い合わせ内容の選択に応じて表示を制御
     inquiryGroup.addEventListener("change", () => {
       const inquiries = getCheckedValues("inquiryType");
       const hasFreeConsult = inquiries.includes("無料相談を希望");
@@ -714,7 +714,7 @@
       } else {
         productSection.classList.remove("hidden");
         btnNext.innerHTML =
-          '<span class="btn-icon">✔</span> この内容でお問い合わせを完了（STEP2には進みません）';
+          '<span class="btn-icon">✔</span> この内容でお問い合わせを完了';
       }
 
       if (hasOther) {
