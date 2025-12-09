@@ -14,7 +14,6 @@
       --accent: #2563eb;
       --accent-soft: #dbeafe;
       --accent-strong: #1d4ed8;
-      --danger: #ef4444;
       --text-main: #0f172a;
       --text-muted: #64748b;
       --card-radius: 18px;
@@ -86,9 +85,9 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 12px;
+      padding: 5px 12px;
       border-radius: 999px;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
       background: #eff6ff;
       color: #1d4ed8;
@@ -97,18 +96,18 @@
     .badge span { font-size: 14px; }
 
     h1 {
-      font-size: 22px;
+      font-size: 24px;
       margin: 0 0 6px;
       font-weight: 700;
       letter-spacing: 0.02em;
     }
 
     @media (min-width: 768px) {
-      h1 { font-size: 26px; }
+      h1 { font-size: 27px; }
     }
 
     .subtitle {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-muted);
       line-height: 1.7;
       margin: 0 0 8px;
@@ -118,29 +117,28 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      font-size: 12px;
+      font-size: 13px;
       color: #0f172a;
-      padding: 4px 10px;
+      padding: 5px 11px;
       border-radius: 999px;
       background: #fefce8;
       border: 1px solid #facc15;
       margin-top: 4px;
     }
 
-    .highlight-note-emoji { font-size: 14px; }
+    .highlight-note-emoji { font-size: 15px; }
 
     .card {
       background: #ffffff;
       border-radius: var(--card-radius);
       border: 1px solid var(--border-soft);
-      padding: 16px 14px 18px;
-      margin-bottom: 14px;
+      padding: 18px 16px 20px;
+      margin-bottom: 16px;
     }
 
     @media (min-width: 768px) {
       .card {
-        padding: 18px 18px 20px;
-        margin-bottom: 16px;
+        padding: 20px 18px 22px;
       }
     }
 
@@ -149,11 +147,11 @@
       align-items: baseline;
       justify-content: space-between;
       gap: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .section-title {
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 700;
       display: inline-flex;
       align-items: center;
@@ -161,20 +159,20 @@
     }
 
     .section-title-icon {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 999px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       background: var(--accent-soft);
       color: var(--accent-strong);
-      font-size: 11px;
+      font-size: 12px;
       flex-shrink: 0;
     }
 
     .section-note {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-muted);
     }
 
@@ -182,19 +180,21 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      margin-bottom: 10px;
-      font-size: 13px;
+      margin-bottom: 12px;
+      font-size: 14px;
     }
 
     .field-label {
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 14px;
+      color: #0f172a;
     }
 
     .required {
-      color: var(--danger);
+      color: #ef4444;
       font-size: 11px;
     }
 
@@ -207,12 +207,13 @@
       width: 100%;
       border-radius: 10px;
       border: 1px solid #cbd5e1;
-      padding: 8px 10px;
-      font-size: 13px;
+      padding: 9px 11px;
+      font-size: 14px;
       font-family: inherit;
       outline: none;
       transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, transform 0.08s ease;
       background: #f8fafc;
+      color: #0f172a;
     }
 
     input[type="number"]:focus,
@@ -237,7 +238,7 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      font-size: 13px;
+      font-size: 14px;
     }
 
     .checkbox-item {
@@ -262,20 +263,22 @@
     }
 
     .checkbox-item input {
-      width: 14px;
-      height: 14px;
+      width: 15px;
+      height: 15px;
       accent-color: var(--accent-strong);
       margin-top: 3px;
       flex-shrink: 0;
     }
 
     .checkbox-label-text {
-      font-size: 12px;
+      font-size: 13px;
       line-height: 1.7;
+      color: #0f172a;
+      font-weight: 500;
     }
 
     .small-text {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-muted);
     }
 
@@ -292,7 +295,7 @@
       outline: none;
       cursor: pointer;
       border-radius: 999px;
-      padding: 8px 14px;
+      padding: 9px 15px;
       font-size: 13px;
       font-weight: 500;
       display: inline-flex;
@@ -339,7 +342,7 @@
       border-radius: 14px;
       background: #f8fafc;
       border: 1px dashed #cbd5e1;
-      font-size: 11px;
+      font-size: 12px;
       color: #0f172a;
       white-space: pre-wrap;
       word-break: break-all;
@@ -649,18 +652,21 @@
               </div>
             </div>
             <p class="section-note">
-              個人情報の取り扱いをご確認のうえ、ご同意いただける場合のみ送信してください。
+              入力内容をご確認のうえ、送信方法をお選びください。
             </p>
 
-            <div class="field-row">
-              <label class="field-label">
-                <input id="consent" type="checkbox" />
-                <span>個人情報の取り扱いに同意します</span>
-                <span class="required">＊</span>
-              </label>
-              <p class="small-text">
-                ※ 送信内容は、FDA認証・輸出サポートに関するご案内と社内記録のみに利用いたします。
-              </p>
+            <div id="privacy-consent-step1">
+              <div class="field-row">
+                <label class="field-label">
+                  <input id="consent" type="checkbox" />
+                  <span>個人情報の取り扱いに同意します</span>
+                  <span class="required">＊</span>
+                </label>
+                <p class="small-text">
+                  ※ 送信内容は、FDA認証・輸出サポートに関するご案内と社内記録のみに利用いたします。<br />
+                  ※ 無料相談（STEP2）をご希望の場合は、STEP2側でも個人情報の取り扱いをご案内いたします。
+                </p>
+              </div>
             </div>
 
             <div class="button-row">
@@ -701,6 +707,7 @@
     const inquiryOther = document.getElementById("inquiry-other");
 
     const productSection = document.getElementById("product-section");
+    const privacyConsentStep1 = document.getElementById("privacy-consent-step1");
 
     inquiryGroup.addEventListener("change", () => {
       const inquiries = getCheckedValues("inquiryType");
@@ -709,10 +716,12 @@
 
       if (hasFreeConsult) {
         productSection.classList.add("hidden");
+        privacyConsentStep1.classList.add("hidden");
         btnNext.innerHTML =
           '<span class="btn-icon">➡</span> 無料相談の事前ヒアリング（STEP2）へ進む';
       } else {
         productSection.classList.remove("hidden");
+        privacyConsentStep1.classList.remove("hidden");
         btnNext.innerHTML =
           '<span class="btn-icon">✔</span> この内容でお問い合わせを完了';
       }
@@ -799,7 +808,11 @@
       summary += "\n";
 
       summary += "【個人情報の取り扱いへの同意】\n";
-      summary += consent.checked ? "同意する\n" : "まだチェックされていません\n";
+      if (hasFreeConsult) {
+        summary += "※ 無料相談をご希望のため、STEP2側にてご案内・同意をいただきます。\n";
+      } else {
+        summary += consent.checked ? "同意する\n" : "まだチェックされていません\n";
+      }
 
       resultBox.textContent = summary;
       resultBox.classList.remove("hidden");
@@ -823,11 +836,11 @@
       if (!email) errors.push("・メールアドレス");
       if (!country) errors.push("・所在地（国）");
       if (!inquiries.length) errors.push("・お問い合わせ内容（少なくとも1つ）");
-      if (!consent.checked) errors.push("・個人情報の取り扱いへの同意");
 
       if (!hasFreeConsult) {
         if (!productCount) errors.push("・商材数・種類");
         if (!categories.length) errors.push("・商品カテゴリー（少なくとも1つ）");
+        if (!consent.checked) errors.push("・個人情報の取り扱いへの同意");
       }
 
       if (errors.length) {
@@ -836,8 +849,10 @@
       }
 
       if (hasFreeConsult) {
+        // 無料相談あり → STEP2へ
         window.location.href = "hearing.html";
       } else {
+        // 無料相談以外 → STEP1で完了
         alert(
           "お問い合わせありがとうございます。\n\n" +
           "今回のお問い合わせ内容は「無料相談」以外のため、\n" +
