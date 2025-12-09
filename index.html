@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>FDA事前ヒアリングフォーム</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- フォント（任意） -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fb;
+      color: #222;
+    }
+
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    header {
+      margin-bottom: 24px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #e5f3ff;
+      color: #1a73e8;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin: 0 0 8px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px 18px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      margin-bottom: 16px;
+    }
+
+    .card--accent {
+      border: 1px solid #e2e8f0;
+    }
+
+    .question-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .question-help {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 14px;
+    }
+
+    .radio-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      transition: background 0.15s ease;
+    }
+
+    .radio-item:hover {
+      background: #f1f5f9;
+    }
+
+    .radio-item input[type="radio"] {
+      margin-top: 2px;
+    }
+
+    label {
+      cursor: pointer;
+    }
+
+    .field-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .field-row label span {
+      font-size: 12px;
+      color: #64748b;
+      margin-left: 4px;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    input[type="date"],
+    textarea {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      padding: 8px 10px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      background: #f8fafc;
+    }
+
+    input[type="number"]:focus,
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    textarea:focus {
+      border-color: #1d4ed8;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .small-text {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .product-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .product-item {
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      padding: 10px 12px;
+      background: #f8fafc;
+    }
+
+    .product-item-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .btn-secondary:hover {
+      background: #cbd5e1;
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    .btn-icon {
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .section-note {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 10px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .footer-note {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+
+    .result-box {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      font-size: 12px;
+      color: #0f172a;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 28px;
+      }
+      .page {
+        padding: 32px 16px 56px;
+      }
+      .card {
+        padding: 22px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="badge">事前ヒアリングフォーム（FDA関連）</div>
+      <h1>輸出予定商品の事前質問</h1>
+      <p class="subtitle">
+        無料相談・具体的なご提案に進む前に、現在わかっている範囲でご状況をお聞かせください。<br />
+        「ざっくりした検討段階」の内容でも問題ございません。
+      </p>
+    </header>
+
+    <!-- 質問1 -->
+    <section class="card card--accent">
+      <div class="question-title">質問1：輸出する商材は決まっていますか？</div>
+      <p class="question-help">現在のご検討状況に一番近いものをお選びください。</p>
+
+      <div class="radio-group" id="q1-group">
+        <label class="radio-item">
+          <input type="radio" name="q1" value="1" />
+          <span>① 決まっている</span>
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="q1" value="2" />
+          <span>② まだ詳細には決まっていないが、考えているものはある</span>
+        </label>
+        <label class="radio-item">
+          <input type="radio" name="q1" value="3" />
+          <span>③ まだ決まっていない</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- ケース①：商材が決まっている -->
+    <section id="section-1" class="card hidden">
+      <div class="section-title">① 輸出予定の商材に関してお聞かせください</div>
+      <p class="section-note">
+        現時点で輸出が「ほぼ決まっている」商材についてご入力ください。
+      </p>
+
+      <div class="field-row">
+        <label for="decided-count">
+          輸出予定の商材数は？
+          <span>（おおよそで問題ございません）</span>
+        </label>
+        <input id="decided-count" type="number" min="1" step="1" placeholder="例）3" />
+      </div>
+
+      <div class="button-row">
+        <button type="button" class="btn btn-secondary" id="btn-generate-decided">
+          <span class="btn-icon">＋</span> 商材入力欄を作成
+        </button>
+      </div>
+
+      <p class="small-text">
+        ※ 商材数をご入力後、「商材入力欄を作成」を押すと、個別の入力欄が自動で生成されます。
+      </p>
+
+      <div id="decided-product-list" class="product-list"></div>
+    </section>
+
+    <!-- ケース②：商材はなんとなく決まっている -->
+    <section id="section-2" class="card hidden">
+      <div class="section-title">② 考えている商材について教えてください</div>
+      <p class="section-note">
+        「このあたりを輸出できたら…」と考えている段階でも構いません。分かる範囲でご入力ください。
+      </p>
+
+      <div class="field-row">
+        <label for="considered-count">
+          考えている商材数は？
+          <span>（ざっくりの数で大丈夫です）</span>
+        </label>
+        <input id="considered-count" type="number" min="1" step="1" placeholder="例）2" />
+      </div>
+
+      <div class="button-row">
+        <button type="button" class="btn btn-secondary" id="btn-generate-considered">
+          <span class="btn-icon">＋</span> 商材入力欄を作成
+        </button>
+      </div>
+
+      <p class="small-text">
+        ※ 下記は「分かる部分のみ」のご記入で構いません。
+      </p>
+
+      <div id="considered-product-list" class="product-list"></div>
+    </section>
+
+    <!-- ケース③：まだ決まっていない -->
+    <section id="section-3" class="card hidden">
+      <div class="section-title">③ 現状近しい商品がある場合のシミュレーション</div>
+      <p class="section-note">
+        まだ具体的な商材が決まっていない場合でも、<br />
+        「こんな商品に近いものを輸出したい」という参考商品があれば、シミュレーションや課題の洗い出しが可能です。
+      </p>
+
+      <div class="field-row">
+        <label for="similar-text">
+          調査してもらいたい商品（既製品でもOK）がありましたら、以下情報を教えてください。
+          <span>（分かる範囲で構いません）</span>
+        </label>
+        <textarea
+          id="similar-text"
+          placeholder="【記入例】
+・商品名：〇〇抹茶ラテ
+・メーカー名：株式会社〇〇
+・販売URL：https://〜
+・日本での販売形態：ECのみ／店舗のみ／両方
+・気になっている点：添加物・成分、賞味期限、温度管理など"
+        ></textarea>
+      </div>
+    </section>
+
+    <!-- 送信ボタン & 出力表示 -->
+    <section class="card">
+      <div class="section-title">送信</div>
+      <p class="section-note">
+        まだこのページではメール送信などは行われません。<br />
+        下の「入力内容を確認する」ボタンを押すと、入力内容のサマリーが画面下部に表示されます。
+      </p>
+
+      <div class="button-row">
+        <button type="button" class="btn btn-primary" id="btn-preview">
+          <span class="btn-icon">👁</span> 入力内容を確認する
+        </button>
+        <!-- あとで実際に使うときに mailto などを付けたい場合用 -->
+        <!-- <button type="button" class="btn btn-secondary">メールで送信</button> -->
+      </div>
+
+      <div id="result" class="result-box hidden"></div>
+
+      <p class="footer-note">
+        ※ 実際の運用では、このページの入力結果をメール送信したり、フォームサービスと連携させたりすることも可能です。<br />
+        GitHub Pages 上では、別途バックエンドや外部フォームサービス（Googleフォーム等）と組み合わせてご利用ください。
+      </p>
+    </section>
+  </div>
+
+  <script>
+    // 要素取得
+    const q1Group = document.getElementById("q1-group");
+    const section1 = document.getElementById("section-1");
+    const section2 = document.getElementById("section-2");
+    const section3 = document.getElementById("section-3");
+
+    const decidedCountInput = document.getElementById("decided-count");
+    const consideredCountInput = document.getElementById("considered-count");
+
+    const decidedList = document.getElementById("decided-product-list");
+    const consideredList = document.getElementById("considered-product-list");
+
+    const btnGenerateDecided = document.getElementById("btn-generate-decided");
+    const btnGenerateConsidered = document.getElementById("btn-generate-considered");
+    const btnPreview = document.getElementById("btn-preview");
+    const resultBox = document.getElementById("result");
+
+    // 質問1の選択によって表示セクションを切り替え
+    q1Group.addEventListener("change", (event) => {
+      const value = event.target.value;
+      section1.classList.add("hidden");
+      section2.classList.add("hidden");
+      section3.classList.add("hidden");
+
+      if (value === "1") {
+        section1.classList.remove("hidden");
+      } else if (value === "2") {
+        section2.classList.remove("hidden");
+      } else if (value === "3") {
+        section3.classList.remove("hidden");
+      }
+
+      // プレビューは一旦消しておく
+      resultBox.classList.add("hidden");
+      resultBox.textContent = "";
+    });
+
+    // 商材入力欄を生成する共通関数
+    function generateProductFields(container, count, type) {
+      container.innerHTML = "";
+      const safeCount = Math.max(1, Math.min(50, count || 0)); // 1〜50に制限
+
+      for (let i = 1; i <= safeCount; i++) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "product-item";
+
+        const title = document.createElement("div");
+        title.className = "product-item-title";
+        title.textContent = `商材 ${i}`;
+        wrapper.appendChild(title);
+
+        // 賞味期限
+        const row1 = document.createElement("div");
+        row1.className = "field-row";
+        const label1 = document.createElement("label");
+        label1.textContent = "賞味期限";
+        const input1 = document.createElement("input");
+        input1.type = "date";
+        input1.name = `${type}-product-${i}-exp`;
+        input1.placeholder = "例）2026-12-31";
+        row1.appendChild(label1);
+        row1.appendChild(input1);
+
+        // 製造者
+        const row2 = document.createElement("div");
+        row2.className = "field-row";
+        const label2 = document.createElement("label");
+        label2.textContent = "製造者";
+        const input2 = document.createElement("input");
+        input2.type = "text";
+        input2.name = `${type}-product-${i}-maker`;
+        input2.placeholder = "例）株式会社〇〇食品工業";
+        row2.appendChild(label2);
+        row2.appendChild(input2);
+
+        wrapper.appendChild(row1);
+        wrapper.appendChild(row2);
+
+        container.appendChild(wrapper);
+      }
+    }
+
+    // ケース① 商材入力欄生成
+    btnGenerateDecided.addEventListener("click", () => {
+      const count = parseInt(decidedCountInput.value, 10);
+      if (isNaN(count) || count <= 0) {
+        alert("商材数を1以上の数字でご入力ください。");
+        return;
+      }
+      generateProductFields(decidedList, count, "decided");
+    });
+
+    // ケース② 商材入力欄生成
+    btnGenerateConsidered.addEventListener("click", () => {
+      const count = parseInt(consideredCountInput.value, 10);
+      if (isNaN(count) || count <= 0) {
+        alert("商材数を1以上の数字でご入力ください。");
+        return;
+      }
+      generateProductFields(consideredList, count, "considered");
+    });
+
+    // 入力内容のサマリーを表示
+    btnPreview.addEventListener("click", () => {
+      const selected = document.querySelector("input[name='q1']:checked");
+      if (!selected) {
+        alert("まずは「輸出する商材は決まっていますか？」のご回答をお選びください。");
+        return;
+      }
+
+      const value = selected.value;
+      let summary = "【質問1】輸出する商材は決まっていますか？\n";
+
+      if (value === "1") {
+        summary += "→ ① 決まっている\n\n";
+        const count = parseInt(decidedCountInput.value, 10) || 0;
+        summary += `【輸出予定の商材数】${count}件\n\n`;
+
+        const items = decidedList.querySelectorAll(".product-item");
+        items.forEach((item, index) => {
+          const exp = item.querySelector("input[name^='decided-product-'][type='date']").value;
+          const maker = item.querySelector("input[name^='decided-product-'][type='text']").value;
+
+          summary += `▼ 商材 ${index + 1}\n`;
+          summary += `・賞味期限：${exp || "未入力"}\n`;
+          summary += `・製造者　：${maker || "未入力"}\n\n`;
+        });
+      } else if (value === "2") {
+        summary += "→ ② まだ詳細には決まっていないが、考えているものはある\n\n";
+        const count = parseInt(consideredCountInput.value, 10) || 0;
+        summary += `【考えている商材数】${count}件\n\n`;
+
+        const items = consideredList.querySelectorAll(".product-item");
+        items.forEach((item, index) => {
+          const exp = item.querySelector("input[name^='considered-product-'][type='date']").value;
+          const maker = item.querySelector("input[name^='considered-product-'][type='text']").value;
+
+          summary += `▼ 商材 ${index + 1}\n`;
+          summary += `・賞味期限：${exp || "未入力"}\n`;
+          summary += `・製造者　：${maker || "未入力"}\n\n`;
+        });
+      } else if (value === "3") {
+        summary += "→ ③ まだ決まっていない\n\n";
+        const similarText = document.getElementById("similar-text").value;
+        summary += "【調査してもらいたい商品（既製品でもOK）】\n";
+        summary += (similarText || "（未入力）") + "\n";
+      }
+
+      resultBox.textContent = summary;
+      resultBox.classList.remove("hidden");
+      // console.log("送信内容:", summary); // 必要ならコンソールにも
+    });
+  </script>
+</body>
+</html>
