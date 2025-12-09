@@ -7,9 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     :root {
       --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #eff6ff 40%, #fdf2ff 100%);
@@ -39,22 +37,12 @@
       padding: 32px 16px;
     }
 
+    /* フォーム全体を中央寄せ1カラムで */
     .page {
       width: 100%;
-      max-width: 1040px;
-      display: grid;
-      grid-template-columns: minmax(0, 3fr);
-      gap: 20px;
-      position: relative;
+      max-width: 840px;
     }
 
-    @media (min-width: 960px) {
-      .page {
-        grid-template-columns: minmax(0, 3.2fr) minmax(0, 2.3fr);
-      }
-    }
-
-    /* 左側：フォーム全体コンテナ */
     .form-shell {
       background: #ffffff;
       border-radius: 28px;
@@ -70,7 +58,6 @@
       }
     }
 
-    /* 縦のアクセントバー */
     .form-shell::before {
       content: "";
       position: absolute;
@@ -86,9 +73,7 @@
       margin-left: 10px;
     }
 
-    header {
-      margin-bottom: 18px;
-    }
+    header { margin-bottom: 18px; }
 
     .badge-row {
       display: flex;
@@ -110,9 +95,7 @@
       color: #1d4ed8;
     }
 
-    .badge span {
-      font-size: 14px;
-    }
+    .badge span { font-size: 14px; }
 
     .step-indicator {
       display: inline-flex;
@@ -137,9 +120,7 @@
     }
 
     @media (min-width: 768px) {
-      h1 {
-        font-size: 26px;
-      }
+      h1 { font-size: 26px; }
     }
 
     .subtitle {
@@ -162,11 +143,8 @@
       margin-top: 4px;
     }
 
-    .highlight-note-emoji {
-      font-size: 14px;
-    }
+    .highlight-note-emoji { font-size: 14px; }
 
-    /* セクションカード */
     .card {
       background: #ffffff;
       border-radius: var(--card-radius);
@@ -271,26 +249,26 @@
       line-height: 1.6;
     }
 
-    /* チェックボックス群（ pill 風 ） */
+    /* ▼ 選択肢は縦並びに */
     .checkbox-group {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 6px;
       font-size: 13px;
     }
 
     .checkbox-item {
       position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 10px 6px 8px;
-      border-radius: 999px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 10px;
       border: 1px solid #cbd5e1;
       background: #f8fafc;
       cursor: pointer;
       transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
-      white-space: nowrap;
+      width: 100%;
     }
 
     .checkbox-item:hover {
@@ -304,11 +282,13 @@
       width: 14px;
       height: 14px;
       accent-color: var(--accent-strong);
-      margin: 0;
+      margin-top: 3px;
+      flex-shrink: 0;
     }
 
     .checkbox-label-text {
       font-size: 12px;
+      line-height: 1.7;
     }
 
     .small-text {
@@ -316,7 +296,6 @@
       color: var(--text-muted);
     }
 
-    /* ボタン */
     .button-row {
       display: flex;
       flex-wrap: wrap;
@@ -369,9 +348,7 @@
       box-shadow: none;
     }
 
-    .btn-icon {
-      font-size: 14px;
-    }
+    .btn-icon { font-size: 14px; }
 
     .result-box {
       margin-top: 10px;
@@ -394,80 +371,12 @@
       line-height: 1.7;
     }
 
-    .hidden {
-      display: none !important;
-    }
-
-    /* 右カラム：説明ボックス（PCのみ表示） */
-    .side-panel {
-      display: none;
-    }
-
-    @media (min-width: 960px) {
-      .side-panel {
-        display: block;
-        align-self: stretch;
-      }
-
-      .side-card {
-        position: sticky;
-        top: 32px;
-        border-radius: 24px;
-        padding: 20px 18px 22px;
-        background: rgba(15, 23, 42, 0.9);
-        color: #e5e7eb;
-        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.4);
-        backdrop-filter: blur(8px);
-      }
-
-      .side-title {
-        font-size: 14px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .side-badge {
-        font-size: 11px;
-        padding: 3px 8px;
-        border-radius: 999px;
-        background: rgba(34, 197, 94, 0.1);
-        color: #bbf7d0;
-        border: 1px solid rgba(34, 197, 94, 0.5);
-      }
-
-      .side-list {
-        list-style: none;
-        padding: 0;
-        margin: 10px 0 8px;
-        font-size: 12px;
-        line-height: 1.8;
-      }
-
-      .side-list li {
-        display: flex;
-        gap: 6px;
-        align-items: flex-start;
-      }
-
-      .side-list li span {
-        margin-top: 2px;
-      }
-
-      .side-caption {
-        font-size: 11px;
-        color: #9ca3af;
-        margin-top: 8px;
-      }
-    }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
   <div class="page-wrap">
     <div class="page">
-      <!-- 左：フォーム本体 -->
       <main class="form-shell">
         <div class="form-inner">
           <header>
@@ -549,7 +458,7 @@
             </div>
           </section>
 
-          <!-- お問い合わせ内容（複数選択可） -->
+          <!-- お問い合わせ内容 -->
           <section class="card">
             <div class="card-header">
               <div class="section-title">
@@ -578,7 +487,6 @@
               </div>
             </div>
 
-            <!-- その他詳細：その他選択時のみ表示 -->
             <div class="field-row hidden" id="inquiry-other-row">
               <label for="inquiry-other" class="field-label">
                 「その他」の内容
@@ -612,7 +520,7 @@
             </div>
           </section>
 
-          <!-- 商品に関する情報（無料相談含む場合はスキップ） -->
+          <!-- 商品に関する情報 -->
           <section class="card" id="product-section">
             <div class="card-header">
               <div class="section-title">
@@ -678,7 +586,7 @@
             </div>
           </section>
 
-          <!-- 参考情報（任意） -->
+          <!-- 参考情報 -->
           <section class="card" id="reference-section">
             <div class="card-header">
               <div class="section-title">
@@ -772,39 +680,6 @@
           </section>
         </div>
       </main>
-
-      <!-- 右：説明パネル（PCのみ） -->
-      <aside class="side-panel">
-        <div class="side-card">
-          <div class="side-title">
-            <span>フォームの流れ</span>
-            <span class="side-badge">自動で分岐します</span>
-          </div>
-          <ul class="side-list">
-            <li>
-              <span>①</span>
-              <span><strong>STEP1（このページ）</strong>で基本情報とお問い合わせ内容をご入力いただきます。</span>
-            </li>
-            <li>
-              <span>②</span>
-              <span>
-                お問い合わせ内容に<strong>「無料相談を希望」</strong>が含まれる場合のみ、<br />
-                つづいて <strong>STEP2：事前ヒアリングフォーム</strong> に進みます。
-              </span>
-            </li>
-            <li>
-              <span>③</span>
-              <span>
-                無料相談以外のお問い合わせの場合は、STEP1の内容をもとに、<br />
-                メールにてご案内・ご連絡を差し上げます。
-              </span>
-            </li>
-          </ul>
-          <div class="side-caption">
-            ※ どのパターンの場合でも、まずは一度メールにて内容を確認させていただきます。
-          </div>
-        </div>
-      </aside>
     </div>
   </div>
 
@@ -832,7 +707,6 @@
       const hasFreeConsult = inquiries.includes("無料相談を希望");
       const hasOther = inquiries.includes("その他");
 
-      // 無料相談を含む → 商品情報はスキップ
       if (hasFreeConsult) {
         productSection.classList.add("hidden");
         btnNext.innerHTML =
@@ -843,7 +717,6 @@
           '<span class="btn-icon">✔</span> この内容でお問い合わせを完了（STEP2には進みません）';
       }
 
-      // その他を含む場合だけ、その他記入欄を表示
       if (hasOther) {
         inquiryOtherRow.classList.remove("hidden");
       } else {
@@ -943,10 +816,8 @@
       const categories = getCheckedValues("category");
 
       const errors = [];
-
       const hasFreeConsult = inquiries.includes("無料相談を希望");
 
-      // 共通必須
       if (!company) errors.push("・会社名");
       if (!person) errors.push("・ご担当者様氏名");
       if (!email) errors.push("・メールアドレス");
@@ -954,7 +825,6 @@
       if (!inquiries.length) errors.push("・お問い合わせ内容（少なくとも1つ）");
       if (!consent.checked) errors.push("・個人情報の取り扱いへの同意");
 
-      // 無料相談を含まない場合のみ、商品情報を必須に
       if (!hasFreeConsult) {
         if (!productCount) errors.push("・商材数・種類");
         if (!categories.length) errors.push("・商品カテゴリー（少なくとも1つ）");
@@ -966,16 +836,13 @@
       }
 
       if (hasFreeConsult) {
-        // 無料相談を含む → STEP2（事前ヒアリング）へ
         window.location.href = "hearing.html";
       } else {
-        // 無料相談を含まない → STEP1のみで完結
         alert(
           "お問い合わせありがとうございます。\n\n" +
           "今回のお問い合わせ内容は「無料相談」以外のため、\n" +
-          "本フォーム（STEP1）での内容をもとに、担当者よりメールにてご連絡いたします。"
+          "本フォーム（STEP1）の内容をもとに、担当者よりメールにてご連絡いたします。"
         );
-        // 実運用ではここに送信処理（GAS / API 連携など）を追加
       }
     });
   </script>
