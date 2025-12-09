@@ -2,85 +2,238 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>FDA認証取得サポート｜お問い合わせフォーム（STEP1）</title>
+  <title>FDA認証取得サポート｜お問い合わせ（STEP1）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet" />
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-gradient: linear-gradient(135deg, #e0f2fe 0%, #eff6ff 40%, #fdf2ff 100%);
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --accent-strong: #1d4ed8;
+      --danger: #ef4444;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --card-radius: 18px;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.08);
+      --border-soft: #e2e8f0;
+    }
 
     body {
       margin: 0;
       font-family: "Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f7fb;
-      color: #222;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+    }
+
+    .page-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px;
     }
 
     .page {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 24px 16px 48px;
+      width: 100%;
+      max-width: 1040px;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr);
+      gap: 20px;
+      position: relative;
     }
 
-    header { margin-bottom: 24px; }
+    @media (min-width: 960px) {
+      .page {
+        grid-template-columns: minmax(0, 3.2fr) minmax(0, 2.3fr);
+      }
+    }
+
+    /* 左側：フォーム全体コンテナ */
+    .form-shell {
+      background: #ffffff;
+      border-radius: 28px;
+      box-shadow: var(--shadow-soft);
+      padding: 24px 18px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .form-shell {
+        padding: 28px 26px 36px;
+      }
+    }
+
+    /* 縦のアクセントバー */
+    .form-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      width: 6px;
+      background: linear-gradient(180deg, #2563eb, #9333ea);
+      border-radius: 999px;
+      opacity: 0.9;
+      left: 0;
+    }
+
+    .form-inner {
+      margin-left: 10px;
+    }
+
+    header {
+      margin-bottom: 18px;
+    }
+
+    .badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
 
     .badge {
-      display: inline-block;
-      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
       border-radius: 999px;
-      font-size: 12px;
-      background: #e5f3ff;
-      color: #1a73e8;
+      font-size: 11px;
       font-weight: 600;
-      margin-bottom: 8px;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .badge span {
+      font-size: 14px;
+    }
+
+    .step-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .step-indicator-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
     }
 
     h1 {
-      font-size: 24px;
-      margin: 0 0 8px;
+      font-size: 22px;
+      margin: 0 0 6px;
       font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 26px;
+      }
     }
 
     .subtitle {
-      font-size: 14px;
-      color: #555;
+      font-size: 13px;
+      color: var(--text-muted);
       line-height: 1.7;
+      margin: 0 0 8px;
     }
 
+    .highlight-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #0f172a;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #fefce8;
+      border: 1px solid #facc15;
+      margin-top: 4px;
+    }
+
+    .highlight-note-emoji {
+      font-size: 14px;
+    }
+
+    /* セクションカード */
     .card {
-      background: #fff;
-      border-radius: 18px;
-      padding: 20px 18px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-      margin-bottom: 16px;
+      background: #ffffff;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-soft);
+      padding: 16px 14px 18px;
+      margin-bottom: 14px;
     }
 
-    .card--accent { border: 1px solid #e2e8f0; }
+    @media (min-width: 768px) {
+      .card {
+        padding: 18px 18px 20px;
+        margin-bottom: 16px;
+      }
+    }
+
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
 
     .section-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
-      margin-bottom: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .section-title-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-size: 11px;
+      flex-shrink: 0;
     }
 
     .section-note {
-      font-size: 12px;
-      color: #64748b;
-      margin-bottom: 10px;
+      font-size: 11px;
+      color: var(--text-muted);
     }
 
     .field-row {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      margin-bottom: 12px;
-      font-size: 14px;
+      margin-bottom: 10px;
+      font-size: 13px;
     }
 
-    .field-row label span {
-      font-size: 12px;
-      color: #64748b;
-      margin-left: 4px;
+    .field-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 500;
+    }
+
+    .required {
+      color: var(--danger);
+      font-size: 11px;
     }
 
     input[type="number"],
@@ -93,10 +246,10 @@
       border-radius: 10px;
       border: 1px solid #cbd5e1;
       padding: 8px 10px;
-      font-size: 14px;
+      font-size: 13px;
       font-family: inherit;
       outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, transform 0.08s ease;
       background: #f8fafc;
     }
 
@@ -106,57 +259,69 @@
     input[type="email"]:focus,
     textarea:focus,
     select:focus {
-      border-color: #1d4ed8;
+      border-color: var(--accent-strong);
       box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
-      background: #fff;
+      background: #ffffff;
+      transform: translateY(-0.5px);
     }
 
     textarea {
-      min-height: 100px;
+      min-height: 90px;
       resize: vertical;
       line-height: 1.6;
     }
 
-    .radio-group,
+    /* チェックボックス群（ pill 風 ） */
     .checkbox-group {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
       gap: 6px;
-      font-size: 14px;
+      font-size: 13px;
     }
 
-    .radio-item,
     .checkbox-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      padding: 6px 8px;
-      border-radius: 10px;
-      transition: background 0.15s ease;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px 6px 8px;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
+      white-space: nowrap;
     }
 
-    .radio-item:hover,
     .checkbox-item:hover {
-      background: #f1f5f9;
+      background: #e5edff;
+      border-color: var(--accent-strong);
+      box-shadow: 0 3px 10px rgba(37, 99, 235, 0.18);
+      transform: translateY(-0.5px);
     }
 
-    .radio-item input,
     .checkbox-item input {
-      margin-top: 2px;
+      width: 14px;
+      height: 14px;
+      accent-color: var(--accent-strong);
+      margin: 0;
     }
 
-    label { cursor: pointer; }
+    .checkbox-label-text {
+      font-size: 12px;
+    }
 
     .small-text {
-      font-size: 12px;
-      color: #64748b;
+      font-size: 11px;
+      color: var(--text-muted);
     }
 
+    /* ボタン */
     .button-row {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 4px;
+      margin-top: 6px;
       margin-bottom: 4px;
     }
 
@@ -171,21 +336,21 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
+      transition: transform 0.08s ease, box-shadow 0.1s ease, background 0.15s ease;
       white-space: nowrap;
       text-decoration: none;
     }
 
     .btn-primary {
-      background: #2563eb;
-      color: #fff;
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
     }
 
     .btn-primary:hover {
-      background: #1d4ed8;
+      background: var(--accent-strong);
       transform: translateY(-1px);
-      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
+      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.45);
     }
 
     .btn-secondary {
@@ -196,6 +361,7 @@
     .btn-secondary:hover {
       background: #cbd5e1;
       transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(148, 163, 184, 0.4);
     }
 
     .btn:active {
@@ -203,275 +369,448 @@
       box-shadow: none;
     }
 
-    .btn-icon { font-size: 14px; }
+    .btn-icon {
+      font-size: 14px;
+    }
 
     .result-box {
-      margin-top: 12px;
+      margin-top: 10px;
       padding: 10px 12px;
       border-radius: 14px;
       background: #f8fafc;
       border: 1px dashed #cbd5e1;
-      font-size: 12px;
+      font-size: 11px;
       color: #0f172a;
       white-space: pre-wrap;
       word-break: break-all;
+      max-height: 260px;
+      overflow: auto;
     }
 
     .footer-note {
-      margin-top: 8px;
+      margin-top: 6px;
       font-size: 11px;
-      color: #94a3b8;
-      line-height: 1.6;
+      color: var(--text-muted);
+      line-height: 1.7;
     }
 
-    .hidden { display: none !important; }
+    .hidden {
+      display: none !important;
+    }
 
-    @media (min-width: 768px) {
-      h1 { font-size: 28px; }
-      .page { padding: 32px 16px 56px; }
-      .card { padding: 22px 20px; }
+    /* 右カラム：説明ボックス（PCのみ表示） */
+    .side-panel {
+      display: none;
+    }
+
+    @media (min-width: 960px) {
+      .side-panel {
+        display: block;
+        align-self: stretch;
+      }
+
+      .side-card {
+        position: sticky;
+        top: 32px;
+        border-radius: 24px;
+        padding: 20px 18px 22px;
+        background: rgba(15, 23, 42, 0.9);
+        color: #e5e7eb;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(8px);
+      }
+
+      .side-title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .side-badge {
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: rgba(34, 197, 94, 0.1);
+        color: #bbf7d0;
+        border: 1px solid rgba(34, 197, 94, 0.5);
+      }
+
+      .side-list {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0 8px;
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .side-list li {
+        display: flex;
+        gap: 6px;
+        align-items: flex-start;
+      }
+
+      .side-list li span {
+        margin-top: 2px;
+      }
+
+      .side-caption {
+        font-size: 11px;
+        color: #9ca3af;
+        margin-top: 8px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header>
-      <div class="badge">STEP 1 / 2｜お問い合わせ</div>
-      <h1>FDA認証取得サポート｜お問い合わせフォーム</h1>
-      <p class="subtitle">
-        まずはお問い合わせ内容と基本情報をお知らせください。<br />
-        「無料相談を希望」の方のみ、この後 STEP2 の事前ヒアリングに進んでいただけます。
-      </p>
-    </header>
+  <div class="page-wrap">
+    <div class="page">
+      <!-- 左：フォーム本体 -->
+      <main class="form-shell">
+        <div class="form-inner">
+          <header>
+            <div class="badge-row">
+              <div class="badge">
+                <span>STEP 1 / 2</span>｜お問い合わせ
+              </div>
+              <div class="step-indicator">
+                <span class="step-indicator-dot"></span>
+                無料相談をご希望の方は、このあと事前ヒアリングへ
+              </div>
+            </div>
 
-    <!-- 企業情報 -->
-    <section class="card card--accent">
-      <div class="section-title">企業情報</div>
-      <p class="section-note">※「*」の付いている項目は必須です。</p>
+            <h1>FDA認証取得サポート｜お問い合わせフォーム</h1>
+            <p class="subtitle">
+              まずは御社の基本情報とお問い合わせ内容をお知らせください。<br />
+              「無料相談を希望」を含む場合のみ、このあと STEP2 の事前ヒアリングに進みます。
+            </p>
+            <div class="highlight-note">
+              <span class="highlight-note-emoji">🕒</span>
+              <span>ご入力のめやす時間：2〜3分ほどです。</span>
+            </div>
+          </header>
 
-      <div class="field-row">
-        <label for="company-name">会社名<span>*</span></label>
-        <input id="company-name" type="text" placeholder="例）ワールドシフト株式会社" />
-      </div>
+          <!-- 企業情報 -->
+          <section class="card">
+            <div class="card-header">
+              <div class="section-title">
+                <div class="section-title-icon">🏢</div>
+                企業情報
+              </div>
+              <div class="section-note">※「<span class="required">＊</span>」は必須項目です。</div>
+            </div>
 
-      <div class="field-row">
-        <label for="person-name">ご担当者様氏名<span>*</span></label>
-        <input id="person-name" type="text" placeholder="例）山田 太郎" />
-      </div>
+            <div class="field-row">
+              <label for="company-name" class="field-label">
+                会社名 <span class="required">＊</span>
+              </label>
+              <input id="company-name" type="text" placeholder="例）ワールドシフト株式会社" />
+            </div>
 
-      <div class="field-row">
-        <label for="email">メールアドレス<span>*</span></label>
-        <input id="email" type="email" placeholder="例）info@example.co.jp" />
-      </div>
+            <div class="field-row">
+              <label for="person-name" class="field-label">
+                ご担当者様氏名 <span class="required">＊</span>
+              </label>
+              <input id="person-name" type="text" placeholder="例）山田 太郎" />
+            </div>
 
-      <div class="field-row">
-        <label for="tel">電話番号</label>
-        <input id="tel" type="tel" placeholder="例）03-1234-5678" />
-      </div>
+            <div class="field-row">
+              <label for="email" class="field-label">
+                メールアドレス <span class="required">＊</span>
+              </label>
+              <input id="email" type="email" placeholder="例）info@example.co.jp" />
+            </div>
 
-      <div class="field-row">
-        <label for="country">所在地（国）<span>*</span></label>
-        <select id="country">
-          <option value="">選択してください</option>
-          <option value="日本" selected>日本</option>
-          <option value="その他">その他</option>
-        </select>
-      </div>
+            <div class="field-row">
+              <label for="tel" class="field-label">
+                電話番号
+              </label>
+              <input id="tel" type="tel" placeholder="例）03-1234-5678" />
+            </div>
 
-      <div class="field-row">
-        <label for="pref">所在地（都道府県）</label>
-        <input id="pref" type="text" placeholder="例）東京都渋谷区..." />
-      </div>
-    </section>
+            <div class="field-row">
+              <label for="country" class="field-label">
+                所在地（国） <span class="required">＊</span>
+              </label>
+              <select id="country">
+                <option value="">選択してください</option>
+                <option value="日本" selected>日本</option>
+                <option value="その他">その他</option>
+              </select>
+            </div>
 
-    <!-- お問い合わせ内容 -->
-    <section class="card">
-      <div class="section-title">お問い合わせ内容</div>
+            <div class="field-row">
+              <label for="pref" class="field-label">
+                所在地（都道府県・市区町村）
+              </label>
+              <input id="pref" type="text" placeholder="例）東京都渋谷区..." />
+            </div>
+          </section>
 
-      <div class="field-row">
-        <label>お問い合わせ内容<span>*</span></label>
-        <div class="radio-group" id="inquiry-group">
-          <label class="radio-item">
-            <input type="radio" name="inquiryType" value="サービス詳細を知りたい（資料送付希望）" />
-            <span>サービス詳細を知りたい（資料送付希望）</span>
-          </label>
-          <label class="radio-item">
-            <input type="radio" name="inquiryType" value="無料相談を希望" />
-            <span>無料相談を希望</span>
-          </label>
-          <label class="radio-item">
-            <input type="radio" name="inquiryType" value="その他" />
-            <span>その他</span>
-          </label>
+          <!-- お問い合わせ内容（複数選択可） -->
+          <section class="card">
+            <div class="card-header">
+              <div class="section-title">
+                <div class="section-title-icon">💬</div>
+                お問い合わせ内容
+              </div>
+            </div>
+            <p class="section-note">
+              複数選択できます。「無料相談を希望」が含まれる場合のみ、STEP2 に進みます。
+            </p>
+
+            <div class="field-row">
+              <div class="checkbox-group" id="inquiry-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" name="inquiryType" value="サービス詳細を知りたい（資料送付希望）" />
+                  <span class="checkbox-label-text">サービスの内容や料金を知りたい（資料希望）</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="inquiryType" value="無料相談を希望" />
+                  <span class="checkbox-label-text">無料相談を希望している</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="inquiryType" value="その他" />
+                  <span class="checkbox-label-text">その他の相談・質問がある</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- その他詳細：その他選択時のみ表示 -->
+            <div class="field-row hidden" id="inquiry-other-row">
+              <label for="inquiry-other" class="field-label">
+                「その他」の内容
+              </label>
+              <textarea id="inquiry-other" placeholder="例）既に一部登録済みのため、その見直し可否を相談したい など"></textarea>
+            </div>
+
+            <div class="field-row">
+              <label class="field-label">
+                他に気になっているサービス（任意）
+              </label>
+              <p class="small-text">※ あてはまるものがあればお選びください（複数選択可）。</p>
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" name="otherService" value="AmaNavi（Amazon進出サポート）" />
+                  <span class="checkbox-label-text">AmaNavi（米Amazon進出サポート）</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="otherService" value="SLCサービス（米AmazonFBA向け物流サービス）" />
+                  <span class="checkbox-label-text">SLC（米AmazonFBA向け物流）</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="otherService" value="Allynair（海外発送サービス）" />
+                  <span class="checkbox-label-text">Allynair（海外発送サービス）</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="otherService" value="SHiFT塾（米Amazon輸出ビジネスコンサル）" />
+                  <span class="checkbox-label-text">SHiFT塾（米Amazon輸出講座）</span>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <!-- 商品に関する情報（無料相談含む場合はスキップ） -->
+          <section class="card" id="product-section">
+            <div class="card-header">
+              <div class="section-title">
+                <div class="section-title-icon">📦</div>
+                商品について（無料相談以外の方）
+              </div>
+            </div>
+            <p class="section-note">
+              「無料相談を希望」が含まれない場合のみ、ご入力をお願いしております。分かる範囲で構いません。
+            </p>
+
+            <div class="field-row">
+              <label for="product-count" class="field-label">
+                輸出予定の商材数・種類 <span class="required">＊</span>
+              </label>
+              <input id="product-count" type="number" min="1" max="50" placeholder="例）3" />
+            </div>
+
+            <div class="field-row">
+              <label class="field-label">
+                商品カテゴリー（複数選択可） <span class="required">＊</span>
+              </label>
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" name="category" value="食品・飲料" />
+                  <span class="checkbox-label-text">食品・飲料</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="category" value="化粧品・美容" />
+                  <span class="checkbox-label-text">化粧品・美容</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="category" value="健康食品" />
+                  <span class="checkbox-label-text">健康食品</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="category" value="雑貨・日用品" />
+                  <span class="checkbox-label-text">雑貨・日用品</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="category" value="医薬品・医療機器" />
+                  <span class="checkbox-label-text">医薬品・医療機器</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="category" value="その他" />
+                  <span class="checkbox-label-text">その他</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <label for="category-other" class="field-label">
+                「その他」の具体的な内容（任意）
+              </label>
+              <textarea id="category-other" placeholder="例）ペット用サプリメント、ペット用フード など"></textarea>
+            </div>
+
+            <div class="field-row">
+              <label for="free-question" class="field-label">
+                商品に関して特に知りたいこと（任意）
+              </label>
+              <textarea id="free-question" placeholder="例）この成分構成で輸出可能か知りたい、温度管理や賞味期限の条件を知りたい など"></textarea>
+            </div>
+          </section>
+
+          <!-- 参考情報（任意） -->
+          <section class="card" id="reference-section">
+            <div class="card-header">
+              <div class="section-title">
+                <div class="section-title-icon">🔍</div>
+                このサービスを知ったきっかけ（任意）
+              </div>
+            </div>
+
+            <div class="field-row">
+              <label class="field-label">
+                どこで本サービスをお知りになりましたか？
+              </label>
+              <div class="checkbox-group">
+                <label class="checkbox-item">
+                  <input type="checkbox" name="howKnow" value="Google検索" />
+                  <span class="checkbox-label-text">Google検索</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="howKnow" value="ChatGPTなどのAI検索" />
+                  <span class="checkbox-label-text">ChatGPTなどのAI検索</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="howKnow" value="知人・友人の紹介" />
+                  <span class="checkbox-label-text">知人・友人の紹介</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="howKnow" value="SNS" />
+                  <span class="checkbox-label-text">SNS</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="howKnow" value="パンフレット" />
+                  <span class="checkbox-label-text">パンフレット</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="howKnow" value="過去に他のサービスを利用したことがある" />
+                  <span class="checkbox-label-text">過去に他のサービスを利用した</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="howKnow" value="その他" />
+                  <span class="checkbox-label-text">その他</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <label for="howKnow-other" class="field-label">
+                「その他」の場合（任意）
+              </label>
+              <textarea id="howKnow-other" placeholder="例）展示会・セミナーで知った、別サービス経由で知った など"></textarea>
+            </div>
+          </section>
+
+          <!-- 個人情報・確認 -->
+          <section class="card">
+            <div class="card-header">
+              <div class="section-title">
+                <div class="section-title-icon">✅</div>
+                ご入力内容の確認と送信
+              </div>
+            </div>
+            <p class="section-note">
+              個人情報の取り扱いをご確認のうえ、ご同意いただける場合のみ送信してください。
+            </p>
+
+            <div class="field-row">
+              <label class="field-label">
+                <input id="consent" type="checkbox" />
+                <span>個人情報の取り扱いに同意します</span>
+                <span class="required">＊</span>
+              </label>
+              <p class="small-text">
+                ※ 送信内容は、FDA認証・輸出サポートに関するご案内と社内記録のみに利用いたします。
+              </p>
+            </div>
+
+            <div class="button-row">
+              <button type="button" class="btn btn-secondary" id="btn-preview">
+                <span class="btn-icon">👁</span> 入力内容を確認する
+              </button>
+              <button type="button" class="btn btn-primary" id="btn-next">
+                <span class="btn-icon">➡</span> この内容で次へ進む
+              </button>
+            </div>
+
+            <div id="result" class="result-box hidden"></div>
+
+            <p class="footer-note">
+              ※ 現在、このページから直接メール送信は行いません。<br />
+              ※ 「無料相談を希望」を含む場合のみ、このあと STEP2 の事前ヒアリングフォームに進みます。
+            </p>
+          </section>
         </div>
-      </div>
+      </main>
 
-      <div class="field-row">
-        <label for="inquiry-other">「その他」の場合（任意）</label>
-        <textarea id="inquiry-other" placeholder="具体的な内容をご記載ください。"></textarea>
-      </div>
-
-      <div class="field-row">
-        <label>弊社の他サービスについてもお問い合わせをご希望の場合</label>
-        <p class="small-text">※ 複数選択可</p>
-        <div class="checkbox-group">
-          <label class="checkbox-item">
-            <input type="checkbox" name="otherService" value="AmaNavi（Amazon進出サポート）" />
-            <span>AmaNavi（Amazon進出サポート）</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="otherService" value="SLCサービス（米AmazonFBA向け物流サービス）" />
-            <span>SLCサービス（米AmazonFBA向け物流サービス）</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="otherService" value="Allynair（海外発送サービス）" />
-            <span>Allynair（海外発送サービス）</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="otherService" value="SHiFT塾（米Amazon輸出ビジネスコンサル）" />
-            <span>SHiFT塾（米Amazon輸出ビジネスコンサル）</span>
-          </label>
+      <!-- 右：説明パネル（PCのみ） -->
+      <aside class="side-panel">
+        <div class="side-card">
+          <div class="side-title">
+            <span>フォームの流れ</span>
+            <span class="side-badge">自動で分岐します</span>
+          </div>
+          <ul class="side-list">
+            <li>
+              <span>①</span>
+              <span><strong>STEP1（このページ）</strong>で基本情報とお問い合わせ内容をご入力いただきます。</span>
+            </li>
+            <li>
+              <span>②</span>
+              <span>
+                お問い合わせ内容に<strong>「無料相談を希望」</strong>が含まれる場合のみ、<br />
+                つづいて <strong>STEP2：事前ヒアリングフォーム</strong> に進みます。
+              </span>
+            </li>
+            <li>
+              <span>③</span>
+              <span>
+                無料相談以外のお問い合わせの場合は、STEP1の内容をもとに、<br />
+                メールにてご案内・ご連絡を差し上げます。
+              </span>
+            </li>
+          </ul>
+          <div class="side-caption">
+            ※ どのパターンの場合でも、まずは一度メールにて内容を確認させていただきます。
+          </div>
         </div>
-      </div>
-    </section>
-
-    <!-- 商品に関する情報（★無料相談の人はスキップする用に id を付ける） -->
-    <section class="card" id="product-section">
-      <div class="section-title">商品に関する情報</div>
-      <p class="section-note">
-        現時点で分かる範囲でご入力ください。<br />
-        ※「サービス詳細を知りたい」「その他」を選択された方のみ対象です。
-      </p>
-
-      <div class="field-row">
-        <label for="product-count">輸出予定の商材数・種類<span>*</span></label>
-        <input id="product-count" type="number" min="1" max="10" placeholder="例）3" />
-      </div>
-
-      <div class="field-row">
-        <label>商品カテゴリー（複数選択可）<span>*</span></label>
-        <div class="checkbox-group">
-          <label class="checkbox-item">
-            <input type="checkbox" name="category" value="食品・飲料" />
-            <span>食品・飲料</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="category" value="化粧品・美容" />
-            <span>化粧品・美容</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="category" value="健康食品" />
-            <span>健康食品</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="category" value="雑貨・日用品" />
-            <span>雑貨・日用品</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="category" value="医薬品・医療機器" />
-            <span>医薬品・医療機器</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="category" value="その他" />
-            <span>その他</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <label for="category-other">「その他」の内容（任意）</label>
-        <textarea id="category-other" placeholder="例）ペット用サプリメント など"></textarea>
-      </div>
-
-      <div class="field-row">
-        <label for="free-question">その他、ご相談やご質問（任意）</label>
-        <textarea id="free-question" placeholder="自由にご記入ください。"></textarea>
-      </div>
-    </section>
-
-    <!-- 参考情報（任意）★無料相談の人はここだけ聞いてSTEP2へ -->
-    <section class="card" id="reference-section">
-      <div class="section-title">参考情報（任意）</div>
-      <p class="section-note">
-        今後のサポートやご提案の参考にさせていただきます。
-      </p>
-
-      <div class="field-row">
-        <label>このサービスをどのように知りましたか？（複数選択可）</label>
-        <div class="checkbox-group">
-          <label class="checkbox-item">
-            <input type="checkbox" name="howKnow" value="Google検索" />
-            <span>Google検索</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="howKnow" value="ChatGPTなどのAI検索" />
-            <span>ChatGPTなどのAI検索</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="howKnow" value="知人・友人の紹介" />
-            <span>知人・友人の紹介</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="howKnow" value="SNS" />
-            <span>SNS</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="howKnow" value="パンフレット" />
-            <span>パンフレット</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="howKnow" value="過去に他のサービスを利用したことがある" />
-            <span>過去に他のサービスを利用したことがある</span>
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" name="howKnow" value="その他" />
-            <span>その他</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="field-row">
-        <label for="howKnow-other">「その他」の場合（任意）</label>
-        <textarea id="howKnow-other" placeholder="ご記載ください。"></textarea>
-      </div>
-    </section>
-
-    <!-- 個人情報・確認 -->
-    <section class="card">
-      <div class="section-title">個人情報の取り扱いについて</div>
-      <p class="section-note">
-        本フォームをご利用いただくにあたり、事前に「個人情報の取り扱いについて」をご確認ください。
-      </p>
-
-      <div class="field-row">
-        <label>
-          <input id="consent" type="checkbox" />
-          <span>上記「個人情報の取り扱いについて」に同意します<span>*</span></span>
-        </label>
-      </div>
-
-      <div class="button-row">
-        <button type="button" class="btn btn-secondary" id="btn-preview">
-          <span class="btn-icon">👁</span> 入力内容を確認する
-        </button>
-        <button type="button" class="btn btn-primary" id="btn-next">
-          <!-- ★ラベルは JS 側で出し分け -->
-          <span class="btn-icon">➡</span> この内容で次へ進む
-        </button>
-      </div>
-
-      <div id="result" class="result-box hidden"></div>
-
-      <p class="footer-note">
-        ※ 現状、このページから直接メール送信などは行われません。<br />
-        ※ 「無料相談を希望」の方のみ、この後 STEP2 の事前ヒアリングに進みます。
-      </p>
-    </section>
+      </aside>
+    </div>
   </div>
 
   <script>
     function getCheckedValues(name) {
-      return Array.from(document.querySelectorAll(`input[name='${name}']:checked`)).map(
+      return Array.from(document.querySelectorAll("input[name='" + name + "']:checked")).map(
         (el) => el.value
       );
     }
@@ -481,20 +820,35 @@
     const resultBox = document.getElementById("result");
     const consent = document.getElementById("consent");
 
-    const inquiryGroup = document.getElementById("inquiry-group"); // ★追加
-    const productSection = document.getElementById("product-section"); // ★追加
+    const inquiryGroup = document.getElementById("inquiry-group");
+    const inquiryOtherRow = document.getElementById("inquiry-other-row");
+    const inquiryOther = document.getElementById("inquiry-other");
 
-    // ★お問い合わせ内容に応じて表示・ボタン文言を出し分け
-    inquiryGroup.addEventListener("change", (e) => {
-      const value = (e.target && e.target.value) || "";
-      if (value === "無料相談を希望") {
-        // 無料相談の人 → 商品情報は非表示、すぐSTEP2へ
+    const productSection = document.getElementById("product-section");
+
+    // お問い合わせ内容の選択に応じて表示を制御
+    inquiryGroup.addEventListener("change", () => {
+      const inquiries = getCheckedValues("inquiryType");
+      const hasFreeConsult = inquiries.includes("無料相談を希望");
+      const hasOther = inquiries.includes("その他");
+
+      // 無料相談を含む → 商品情報はスキップ
+      if (hasFreeConsult) {
         productSection.classList.add("hidden");
-        btnNext.innerHTML = '<span class="btn-icon">➡</span> 無料相談用の事前ヒアリング（STEP2）へ進む';
+        btnNext.innerHTML =
+          '<span class="btn-icon">➡</span> 無料相談の事前ヒアリング（STEP2）へ進む';
       } else {
-        // それ以外 → 商品情報を表示、STEP2へは行かない
         productSection.classList.remove("hidden");
-        btnNext.innerHTML = '<span class="btn-icon">✔</span> この内容でお問い合わせを完了（STEP2には進みません）';
+        btnNext.innerHTML =
+          '<span class="btn-icon">✔</span> この内容でお問い合わせを完了（STEP2には進みません）';
+      }
+
+      // その他を含む場合だけ、その他記入欄を表示
+      if (hasOther) {
+        inquiryOtherRow.classList.remove("hidden");
+      } else {
+        inquiryOtherRow.classList.add("hidden");
+        inquiryOther.value = "";
       }
     });
 
@@ -506,8 +860,8 @@
       const country = document.getElementById("country").value;
       const pref = document.getElementById("pref").value;
 
-      const inquirySelected = document.querySelector("input[name='inquiryType']:checked");
-      const inquiryOther = document.getElementById("inquiry-other").value;
+      const inquiries = getCheckedValues("inquiryType");
+      const inquiryOtherText = inquiryOther.value;
       const otherServices = getCheckedValues("otherService");
 
       const productCount = document.getElementById("product-count").value;
@@ -518,48 +872,60 @@
       const howKnow = getCheckedValues("howKnow");
       const howKnowOther = document.getElementById("howKnow-other").value;
 
+      const hasFreeConsult = inquiries.includes("無料相談を希望");
+
       let summary = "";
 
       summary += "【企業情報】\n";
-      summary += `会社名：${company || "未入力"}\n`;
-      summary += `ご担当者様氏名：${person || "未入力"}\n`;
-      summary += `メールアドレス：${email || "未入力"}\n`;
-      summary += `電話番号：${tel || "未入力"}\n`;
-      summary += `所在地（国）：${country || "未入力"}\n`;
-      summary += `所在地（都道府県）：${pref || "未入力"}\n\n`;
+      summary += "会社名：" + (company || "未入力") + "\n";
+      summary += "ご担当者様氏名：" + (person || "未入力") + "\n";
+      summary += "メールアドレス：" + (email || "未入力") + "\n";
+      summary += "電話番号：" + (tel || "未入力") + "\n";
+      summary += "所在地（国）：" + (country || "未入力") + "\n";
+      summary += "所在地（都道府県・市区町村）：" + (pref || "未入力") + "\n\n";
 
       summary += "【お問い合わせ内容】\n";
-      summary += `お問い合わせ内容：${inquirySelected ? inquirySelected.value : "未選択"}\n`;
-      if (inquiryOther) {
-        summary += `お問い合わせ詳細（その他）：${inquiryOther}\n`;
+      summary +=
+        "お問い合わせ種別：" +
+        (inquiries.length ? inquiries.join(" / ") : "未選択") +
+        "\n";
+      if (inquiries.includes("その他") && inquiryOtherText) {
+        summary += "「その他」の内容：" + inquiryOtherText + "\n";
       }
-      summary += `他サービスへのお問い合わせ：${
-        otherServices.length ? otherServices.join(" / ") : "なし"
-      }\n\n`;
+      summary +=
+        "関心のある他サービス：" +
+        (otherServices.length ? otherServices.join(" / ") : "なし") +
+        "\n\n";
 
-      const isFreeConsult = inquirySelected && inquirySelected.value === "無料相談を希望";
-
-      if (!isFreeConsult) {
+      if (!hasFreeConsult) {
         summary += "【商品に関する情報】\n";
-        summary += `商材数・種類：${productCount || "未入力"}\n`;
-        summary += `商品カテゴリー：${categories.length ? categories.join(" / ") : "未選択"}\n`;
+        summary += "商材数・種類：" + (productCount || "未入力") + "\n";
+        summary +=
+          "商品カテゴリー：" +
+          (categories.length ? categories.join(" / ") : "未選択") +
+          "\n";
         if (categoryOther) {
-          summary += `商品カテゴリー（その他）：${categoryOther}\n`;
+          summary += "商品カテゴリー（その他）：" + categoryOther + "\n";
         }
-        summary += `その他ご相談・ご質問：${freeQuestion || "（未入力）"}\n\n`;
+        summary +=
+          "商品に関して特に知りたいこと：" +
+          (freeQuestion || "（未入力）") +
+          "\n\n";
       } else {
         summary += "【商品に関する情報】\n";
         summary += "無料相談をご希望のため、詳細はSTEP2にてお伺いします。\n\n";
       }
 
       summary += "【このサービスを知ったきっかけ】\n";
-      summary += `${howKnow.length ? howKnow.join(" / ") : "未選択"}\n`;
+      summary +=
+        (howKnow.length ? howKnow.join(" / ") : "未選択") +
+        "\n";
       if (howKnowOther) {
-        summary += `その他：${howKnowOther}\n`;
+        summary += "その他：" + howKnowOther + "\n";
       }
       summary += "\n";
 
-      summary += `【個人情報の取り扱いへの同意】\n`;
+      summary += "【個人情報の取り扱いへの同意】\n";
       summary += consent.checked ? "同意する\n" : "まだチェックされていません\n";
 
       resultBox.textContent = summary;
@@ -571,45 +937,45 @@
       const person = document.getElementById("person-name").value.trim();
       const email = document.getElementById("email").value.trim();
       const country = document.getElementById("country").value;
+      const inquiries = getCheckedValues("inquiryType");
+
       const productCount = document.getElementById("product-count").value;
       const categories = getCheckedValues("category");
-      const inquirySelected = document.querySelector("input[name='inquiryType']:checked");
 
       const errors = [];
 
-      const isFreeConsult =
-        inquirySelected && inquirySelected.value === "無料相談を希望";
+      const hasFreeConsult = inquiries.includes("無料相談を希望");
 
       // 共通必須
       if (!company) errors.push("・会社名");
       if (!person) errors.push("・ご担当者様氏名");
       if (!email) errors.push("・メールアドレス");
       if (!country) errors.push("・所在地（国）");
-      if (!inquirySelected) errors.push("・お問い合わせ内容");
+      if (!inquiries.length) errors.push("・お問い合わせ内容（少なくとも1つ）");
       if (!consent.checked) errors.push("・個人情報の取り扱いへの同意");
 
-      // 無料相談「以外」の人だけ、商品情報を必須にする
-      if (!isFreeConsult) {
+      // 無料相談を含まない場合のみ、商品情報を必須に
+      if (!hasFreeConsult) {
         if (!productCount) errors.push("・商材数・種類");
         if (!categories.length) errors.push("・商品カテゴリー（少なくとも1つ）");
       }
 
       if (errors.length) {
-        alert("以下の必須項目をご確認ください：\n\n" + errors.join("\n"));
+        alert("以下の項目をご確認ください：\n\n" + errors.join("\n"));
         return;
       }
 
-      if (isFreeConsult) {
-        // 無料相談希望 → STEP2（事前ヒアリング）へ
+      if (hasFreeConsult) {
+        // 無料相談を含む → STEP2（事前ヒアリング）へ
         window.location.href = "hearing.html";
       } else {
-        // それ以外 → STEP1のみで完結
+        // 無料相談を含まない → STEP1のみで完結
         alert(
           "お問い合わせありがとうございます。\n\n" +
-          "今回の内容は「無料相談」ではないため、このSTEP1の内容をもとにご連絡させていただきます。\n" +
-          "（事前ヒアリングSTEP2は、このまま実施いたしません）"
+          "今回のお問い合わせ内容は「無料相談」以外のため、\n" +
+          "本フォーム（STEP1）での内容をもとに、担当者よりメールにてご連絡いたします。"
         );
-        // 実運用ではここで送信処理（GAS / フォーム連携 等）を入れるイメージ
+        // 実運用ではここに送信処理（GAS / API 連携など）を追加
       }
     });
   </script>
