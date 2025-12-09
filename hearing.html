@@ -75,7 +75,7 @@
 
     .badge {
       display: inline-block;
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 999px;
       font-size: 12px;
       background: #eff6ff;
@@ -91,7 +91,7 @@
     }
 
     @media (min-width: 768px) {
-      h1 { font-size: 28px; }
+      h1 { font-size: 27px; }
     }
 
     .subtitle {
@@ -115,20 +115,20 @@
     }
 
     .section-title {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       margin-bottom: 6px;
     }
 
     .section-note {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-muted);
       margin-bottom: 10px;
     }
 
     .question-title {
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 8px;
     }
 
@@ -146,10 +146,17 @@
       font-size: 14px;
     }
 
+    .field-row label {
+      font-weight: 600;
+      font-size: 14px;
+      color: #0f172a;
+    }
+
     .field-row label span {
       font-size: 12px;
       color: var(--text-muted);
       margin-left: 4px;
+      font-weight: 400;
     }
 
     input[type="text"],
@@ -158,12 +165,13 @@
       width: 100%;
       border-radius: 10px;
       border: 1px solid #cbd5e1;
-      padding: 8px 10px;
+      padding: 9px 11px;
       font-size: 14px;
       font-family: inherit;
       outline: none;
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
       background: #f8fafc;
+      color: #0f172a;
     }
 
     input[type="text"]:focus,
@@ -208,6 +216,14 @@
       margin-top: 2px;
     }
 
+    .radio-item span,
+    .checkbox-item span {
+      font-size: 13px;
+      color: #0f172a;
+      line-height: 1.7;
+      font-weight: 500;
+    }
+
     label { cursor: pointer; }
 
     .small-text {
@@ -228,7 +244,7 @@
       outline: none;
       cursor: pointer;
       border-radius: 999px;
-      padding: 8px 14px;
+      padding: 9px 15px;
       font-size: 13px;
       font-weight: 500;
       display: inline-flex;
@@ -565,15 +581,15 @@
             <div class="radio-group" id="q1-group">
               <label class="radio-item">
                 <input type="radio" name="q1" value="1" />
-                <span>① 決まっている</span>
+                <span>決まっている</span>
               </label>
               <label class="radio-item">
                 <input type="radio" name="q1" value="2" />
-                <span>② まだ詳細には決まっていないが、考えているものはある</span>
+                <span>まだ詳細には決まっていないが、考えているものはある</span>
               </label>
               <label class="radio-item">
                 <input type="radio" name="q1" value="3" />
-                <span>③ まだ決まっていない</span>
+                <span>まだ決まっていない</span>
               </label>
             </div>
           </section>
@@ -612,12 +628,12 @@
           <section id="section-3" class="card hidden">
             <div class="section-title">参考となる既製品などがある場合</div>
             <p class="section-note">
-              まだ具体的な商材が決まっていない場合でも、近しい商品があれば調査が可能です。
+              まだ具体的な商材が決まっていない場合でも、近しい商品があればシミュレーションが可能です。
             </p>
 
             <div class="field-row">
               <label for="similar-text">
-                調査してもらいたい商品（既製品でも可）がありましたら、以下情報を教えてください。
+                調査してもらいたい商品（既製品でもOK）がありましたら、以下情報を教えてください。
               </label>
               <textarea
                 id="similar-text"
@@ -646,6 +662,28 @@
               ※ GitHub Pages上では、別途メール送信処理やフォーム連携を追加してお使いいただけます。<br />
               ※ 必要に応じて、このサマリーをコピーしてGmailなどで共有してください。
             </p>
+          </section>
+
+          <!-- 個人情報の取り扱い -->
+          <section class="card">
+            <div class="section-title">個人情報のお取り扱いについて</div>
+            <p class="section-note">
+              ご入力いただいた情報は、FDA認証取得および米国輸出サポートに関するご案内・対応のためにのみ利用し、<br />
+              お客様の同意なく第三者へ提供することはございません。詳細は弊社プライバシーポリシーをご確認ください。
+            </p>
+            <div class="field-row">
+              <label>
+                <input id="consent-step2" type="checkbox" />
+                <span>個人情報の取り扱いに同意します</span>
+              </label>
+              <p class="small-text">
+                ※ 現時点では本ページから直接送信は行われませんが、実運用時には本同意を前提としてお取り扱いいたします。
+              </p>
+            </div>
+            <a href="https://worldshift-inc.jp/privacy" target="_blank"
+               style="color:#2563eb; text-decoration: underline; font-size: 13px;">
+              ▶ プライバシーポリシーを見る
+            </a>
           </section>
         </div>
       </main>
@@ -689,7 +727,7 @@
       }
     });
 
-    // 「その他」テキストエリアの表示制御
+    // 「その他」テキストエリア表示制御
     const motivationOtherRow = document.getElementById("motivation-other-row");
     const concernOtherRow = document.getElementById("concern-other-row");
     const supportOtherRow = document.getElementById("support-other-row");
@@ -851,7 +889,7 @@
       summary += `${freeText || "（未入力）"}\n\n`;
 
       const selectedQ1 = document.querySelector("input[name='q1']:checked");
-      summary += "【質問1】輸出する商材は決まっていますか？\n";
+      summary += "【輸出する商材の決定状況】\n";
       if (!selectedQ1) {
         summary += "→ 未選択\n";
       } else {
