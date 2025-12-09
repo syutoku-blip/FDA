@@ -240,7 +240,7 @@
       <h1>FDA認証取得サポート｜お問い合わせフォーム</h1>
       <p class="subtitle">
         まずはお問い合わせ内容と基本情報をお知らせください。<br />
-        送信後、詳細の事前ヒアリング（STEP2）に進んでいただけます。
+        「無料相談を希望」の方のみ、この後 STEP2 の事前ヒアリングに進んでいただけます。
       </p>
     </header>
 
@@ -335,11 +335,12 @@
       </div>
     </section>
 
-    <!-- 商品に関する情報 -->
-    <section class="card">
+    <!-- 商品に関する情報（★無料相談の人はスキップする用に id を付ける） -->
+    <section class="card" id="product-section">
       <div class="section-title">商品に関する情報</div>
       <p class="section-note">
-        現時点で分かる範囲でご入力ください。詳細は次の「事前ヒアリング」でお伺いします。
+        現時点で分かる範囲でご入力ください。<br />
+        ※「サービス詳細を知りたい」「その他」を選択された方のみ対象です。
       </p>
 
       <div class="field-row">
@@ -388,8 +389,8 @@
       </div>
     </section>
 
-    <!-- 参考情報 -->
-    <section class="card">
+    <!-- 参考情報（任意）★無料相談の人はここだけ聞いてSTEP2へ -->
+    <section class="card" id="reference-section">
       <div class="section-title">参考情報（任意）</div>
       <p class="section-note">
         今後のサポートやご提案の参考にさせていただきます。
@@ -454,7 +455,8 @@
           <span class="btn-icon">👁</span> 入力内容を確認する
         </button>
         <button type="button" class="btn btn-primary" id="btn-next">
-          <span class="btn-icon">➡</span> この内容で事前ヒアリング（STEP2）へ進む
+          <!-- ★ラベルは JS 側で出し分け -->
+          <span class="btn-icon">➡</span> この内容で次へ進む
         </button>
       </div>
 
@@ -462,7 +464,7 @@
 
       <p class="footer-note">
         ※ 現状、このページから直接メール送信などは行われません。<br />
-        ※ 「事前ヒアリング（STEP2）」ページでは、より詳細な情報をお伺いします。
+        ※ 「無料相談を希望」の方のみ、この後 STEP2 の事前ヒアリングに進みます。
       </p>
     </section>
   </div>
@@ -478,6 +480,23 @@
     const btnNext = document.getElementById("btn-next");
     const resultBox = document.getElementById("result");
     const consent = document.getElementById("consent");
+
+    const inquiryGroup = document.getElementById("inquiry-group"); // ★追加
+    const productSection = document.getElementById("product-section"); // ★追加
+
+    // ★お問い合わせ内容に応じて表示・ボタン文言を出し分け
+    inquiryGroup.addEventListener("change", (e) => {
+      const value = (e.target && e.target.value) || "";
+      if (value === "無料相談を希望") {
+        // 無料相談の人 → 商品情報は非表示、すぐSTEP2へ
+        productSection.classList.add("hidden");
+        btnNext.innerHTML = '<span class="btn-icon">➡</span> 無料相談用の事前ヒアリング（STEP2）へ進む';
+      } else {
+        // それ以外 → 商品情報を表示、STEP2へは行かない
+        productSection.classList.remove("hidden");
+        btnNext.innerHTML = '<span class="btn-icon">✔</span> この内容でお問い合わせを完了（STEP2には進みません）';
+      }
+    });
 
     btnPreview.addEventListener("click", () => {
       const company = document.getElementById("company-name").value;
@@ -518,13 +537,20 @@
         otherServices.length ? otherServices.join(" / ") : "なし"
       }\n\n`;
 
-      summary += "【商品に関する情報】\n";
-      summary += `商材数・種類：${productCount || "未入力"}\n`;
-      summary += `商品カテゴリー：${categories.length ? categories.join(" / ") : "未選択"}\n`;
-      if (categoryOther) {
-        summary += `商品カテゴリー（その他）：${categoryOther}\n`;
+      const isFreeConsult = inquirySelected && inquirySelected.value === "無料相談を希望";
+
+      if (!isFreeConsult) {
+        summary += "【商品に関する情報】\n";
+        summary += `商材数・種類：${productCount || "未入力"}\n`;
+        summary += `商品カテゴリー：${categories.length ? categories.join(" / ") : "未選択"}\n`;
+        if (categoryOther) {
+          summary += `商品カテゴリー（その他）：${categoryOther}\n`;
+        }
+        summary += `その他ご相談・ご質問：${freeQuestion || "（未入力）"}\n\n`;
+      } else {
+        summary += "【商品に関する情報】\n";
+        summary += "無料相談をご希望のため、詳細はSTEP2にてお伺いします。\n\n";
       }
-      summary += `その他ご相談・ご質問：${freeQuestion || "（未入力）"}\n\n`;
 
       summary += "【このサービスを知ったきっかけ】\n";
       summary += `${howKnow.length ? howKnow.join(" / ") : "未選択"}\n`;
@@ -551,23 +577,40 @@
 
       const errors = [];
 
+      const isFreeConsult =
+        inquirySelected && inquirySelected.value === "無料相談を希望";
+
+      // 共通必須
       if (!company) errors.push("・会社名");
       if (!person) errors.push("・ご担当者様氏名");
       if (!email) errors.push("・メールアドレス");
       if (!country) errors.push("・所在地（国）");
       if (!inquirySelected) errors.push("・お問い合わせ内容");
-      if (!productCount) errors.push("・商材数・種類");
-      if (!categories.length) errors.push("・商品カテゴリー（少なくとも1つ）");
       if (!consent.checked) errors.push("・個人情報の取り扱いへの同意");
+
+      // 無料相談「以外」の人だけ、商品情報を必須にする
+      if (!isFreeConsult) {
+        if (!productCount) errors.push("・商材数・種類");
+        if (!categories.length) errors.push("・商品カテゴリー（少なくとも1つ）");
+      }
 
       if (errors.length) {
         alert("以下の必須項目をご確認ください：\n\n" + errors.join("\n"));
         return;
       }
 
-      // 実際の運用でここで送信処理を入れることも可能
-      // ひとまず、STEP2の事前ヒアリングへ遷移
-      window.location.href = "hearing.html";
+      if (isFreeConsult) {
+        // 無料相談希望 → STEP2（事前ヒアリング）へ
+        window.location.href = "hearing.html";
+      } else {
+        // それ以外 → STEP1のみで完結
+        alert(
+          "お問い合わせありがとうございます。\n\n" +
+          "今回の内容は「無料相談」ではないため、このSTEP1の内容をもとにご連絡させていただきます。\n" +
+          "（事前ヒアリングSTEP2は、このまま実施いたしません）"
+        );
+        // 実運用ではここで送信処理（GAS / フォーム連携 等）を入れるイメージ
+      }
     });
   </script>
 </body>
