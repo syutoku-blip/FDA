@@ -21,12 +21,30 @@
 
     function setStatus(msg){
       document.getElementById("status").innerText = msg;
+      console.log(msg);
+    }
+
+    function getMemberNo() {
+      const url = new URL(window.location.href);
+
+      // 1) 通常の ?member_no=1001
+      let memberNo = url.searchParams.get("member_no");
+      if (memberNo) return memberNo;
+
+      // 2) LIFFの liff.state から取得
+      const liffState = url.searchParams.get("liff.state");
+      if (liffState) {
+        const inner = new URLSearchParams(liffState.replace(/^\?/, ""));
+        memberNo = inner.get("member_no");
+        if (memberNo) return memberNo;
+      }
+
+      return "";
     }
 
     async function main(){
       try{
-        const params = new URLSearchParams(window.location.search);
-        const memberNo = params.get("member_no");
+        const memberNo = getMemberNo();
 
         if (!memberNo) {
           setStatus("エラー：会員番号がありません");
@@ -55,7 +73,7 @@
         if (text !== "ok") throw new Error(text);
 
         setStatus("連携が完了しました。閉じて大丈夫です。");
-      }catch(e){
+      } catch(e) {
         setStatus("エラー: " + e.message);
       }
     }
