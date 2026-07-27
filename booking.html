@@ -515,6 +515,69 @@ const CLOSED_WEEKDAYS = [0, 6];
 const BOOKABLE_RANGE_DAYS = 60;
 // 1日あたりの時間帯
 const TIME_SLOTS = ["10:00", "11:00", "13:00", "14:00", "15:00", "16:00"];
+// 1枠あたりの所要時間（分）。GAS側の予約登録時間と合わせる
+const SLOT_DURATION_MIN = 60;
+
+/* =========================================================
+   kintone連携：予約済み枠の取得・キャッシュ
+   ========================================================= */
+// { "2026-7": { "2026-07-28": {allDay:false, ranges:[{start,end}]}, ... }, ... }
+const busyCache = {};
+// 現在fetch中の月を覚えておき、二重fetchを防ぐ
+const busyFetching = {};
+
+async function ensureBusyForMonth(year, month /* 0-11 */){
+  const key = `${year}-${month}`;
+  if(busyCache[key] || busyFetching[key]) return busyCache[key];
+
+  busyFetching[key] = true;
+  try{
+    const url = `${ENDPOINT_URL}?action=busy&year=${year}&month=${month + 1}`;
+    const res = await fetch(url);
+    const json = await res.json();
+    busyCache[key] = (json && json.result === 'success' && json.busy) ? json.busy : {};
+  }catch(err){
+    // 取得に失敗した場合は「空き情報なし＝全枠表示」にフェイルセーフする
+    console.error('kintone予約状況の取得に失敗しました', err);
+    busyCache[key] = {};
+  }finally{
+    delete busyFetching[key];
+  }
+  return busyCache[key];
+}
+
+function getBusyInfoForDate(dateStr){
+  const [y, m] = dateStr.split('-').map(Number);
+  const key = `${y}-${m - 1}`;
+  const monthMap = busyCache[key];
+  if(!monthMap) return null;
+  return monthMap[dateStr] || { allDay: false, ranges: [] };
+}
+
+function timeToMinutes(hhmm){
+  const [h, m] = hhmm.split(':').map(Number);
+  return h * 60 + m;
+}
+
+function isSlotTaken(dateStr, slotTime){
+  const info = getBusyInfoForDate(dateStr);
+  if(!info) return false; // 未取得の間は空き扱い（取得完了後に再描画される）
+  if(info.allDay) return true;
+  const slotStart = timeToMinutes(slotTime);
+  const slotEnd = slotStart + SLOT_DURATION_MIN;
+  return info.ranges.some(r => {
+    const rStart = timeToMinutes(r.start);
+    const rEnd = timeToMinutes(r.end);
+    return slotStart < rEnd && rStart < slotEnd; // 時間帯が重なっているか
+  });
+}
+
+function isDateFullyBooked(dateStr){
+  const info = getBusyInfoForDate(dateStr);
+  if(!info) return false;
+  if(info.allDay) return true;
+  return TIME_SLOTS.every(t => isSlotTaken(dateStr, t));
+}
 
 /* =========================================================
    カレンダー
@@ -539,6 +602,18 @@ function renderCalendar(){
   const label = document.getElementById('calMonthLabel');
   label.textContent = `${calYear}年 ${calMonth+1}月`;
 
+  // この月のkintone予約状況がまだ無ければ取得しにいき、届いたら再描画する
+  const monthKey = `${calYear}-${calMonth}`;
+  if(!busyCache[monthKey]){
+    ensureBusyForMonth(calYear, calMonth).then(() => {
+      // 表示中の月がまだ同じ月のままなら再描画（月送り連打時の描画ズレを防ぐ）
+      if(calYear === Number(monthKey.split('-')[0]) && calMonth === Number(monthKey.split('-')[1])){
+        renderCalendar();
+        renderSlots();
+      }
+    });
+  }
+
   grid.innerHTML = '';
   const firstDay = new Date(calYear, calMonth, 1);
   const startWeekday = firstDay.getDay();
@@ -562,6 +637,7 @@ function renderCalendar(){
     const isClosed = CLOSED_WEEKDAYS.includes(cellDate.getDay());
     const isToday = cellDate.getTime() === today.getTime();
     const dateStr = fmtDate(calYear, calMonth, d);
+    const isFullyBooked = isDateFullyBooked(dateStr);
 
     if(isToday) cell.classList.add('today');
 
@@ -569,6 +645,10 @@ function renderCalendar(){
       cell.classList.add('past');
     } else if(isClosed){
       cell.classList.add('weekend-off');
+    } else if(isFullyBooked){
+      // kintoneカレンダー上ですでに予定が入っている（＝空き枠が無い）日
+      cell.classList.add('past');
+      cell.title = '既にご予約が埋まっています';
     } else {
       cell.classList.add('available');
       cell.addEventListener('click', () => selectDate(dateStr, cell));
@@ -606,16 +686,13 @@ function renderSlots(){
   }
   section.classList.remove('disabled');
 
-  // ※ takenSlots は本来サーバー側（スプレッドシート）の予約状況と突き合わせる想定。
-  //    ここでは全枠を空きとして表示するシンプル版です。
-  const takenSlots = [];
-
+  // kintoneカレンダーの予約状況と突き合わせて、埋まっている枠を判定する
   TIME_SLOTS.forEach(t => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'slot-btn';
     btn.textContent = t;
-    if(takenSlots.includes(t)){
+    if(isSlotTaken(selectedDate, t)){
       btn.classList.add('taken');
       btn.disabled = true;
     } else {
@@ -644,10 +721,12 @@ function updateSummary(){
 document.getElementById('calPrev').addEventListener('click', () => {
   calMonth--; if(calMonth < 0){ calMonth = 11; calYear--; }
   renderCalendar();
+  renderSlots();
 });
 document.getElementById('calNext').addEventListener('click', () => {
   calMonth++; if(calMonth > 11){ calMonth = 0; calYear++; }
   renderCalendar();
+  renderSlots();
 });
 
 renderCalendar();
