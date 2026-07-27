@@ -141,6 +141,9 @@ img{max-width:100%;display:block}
   content:'';position:absolute;bottom:5px;left:50%;transform:translateX(-50%);
   width:4px;height:4px;border-radius:50%;background:var(--amber);
 }
+.cal-loading{
+  grid-column:1 / -1;padding:40px 0;text-align:center;color:var(--ink3);font-size:13px;
+}
 
 .cal-legend{display:flex;gap:16px;margin-top:16px;font-size:12px;color:var(--ink2);}
 .cal-legend span{display:flex;align-items:center;gap:6px;}
@@ -507,7 +510,7 @@ img{max-width:100%;display:block}
    ========================================================= */
 // Google Apps Script のウェブアプリURLをここに設定してください
 // （デプロイ手順は同梱の gas-booking-script.gs 内のコメントを参照）
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwau_lwj4MkLXnOggRytybZakDdxMorJh_TYvT0owcW1waKuyxqMet7F1JjLXYsrmy6/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/【ここにデプロイIDを貼り付け】/exec";
 
 // 予約受付曜日（0=日,1=月,...,6=土）。土日を休業とする例
 const CLOSED_WEEKDAYS = [0, 6];
@@ -602,9 +605,17 @@ function renderCalendar(){
   const label = document.getElementById('calMonthLabel');
   label.textContent = `${calYear}年 ${calMonth+1}月`;
 
-  // この月のkintone予約状況がまだ無ければ取得しにいき、届いたら再描画する
+  // ★この月の空き状況（kintone予約状況）がまだ届いていない間は、
+  //   「全部選べる」ように見える一瞬の表示（ちらつき）を防ぐため、
+  //   仮の読み込み中表示にとどめ、実際のマス目はデータが揃ってから描画する。
   const monthKey = `${calYear}-${calMonth}`;
   if(!busyCache[monthKey]){
+    grid.innerHTML = '';
+    const loading = document.createElement('div');
+    loading.className = 'cal-loading';
+    loading.textContent = '空き状況を確認しています…';
+    grid.appendChild(loading);
+
     ensureBusyForMonth(calYear, calMonth).then(() => {
       // 表示中の月がまだ同じ月のままなら再描画（月送り連打時の描画ズレを防ぐ）
       if(calYear === Number(monthKey.split('-')[0]) && calMonth === Number(monthKey.split('-')[1])){
@@ -612,6 +623,7 @@ function renderCalendar(){
         renderSlots();
       }
     });
+    return;
   }
 
   grid.innerHTML = '';
