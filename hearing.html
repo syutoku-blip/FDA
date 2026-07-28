@@ -374,7 +374,7 @@ img{max-width:100%;display:block}
    設定
    ========================================================= */
 // Google Apps Script のウェブアプリURL（booking.htmlと同じデプロイURLを設定してください）
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwau_lwj4MkLXnOggRytybZakDdxMorJh_TYvT0owcW1waKuyxqMet7F1JjLXYsrmy6/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/【ここにデプロイIDを貼り付け】/exec";
 
 // URLの ?id=XXXX を、どの申込みに対するヒアリングかの紐付けIDとして使用
 const params = new URLSearchParams(location.search);
@@ -586,10 +586,17 @@ if(submissionId){
       if(res && res.result === 'success' && res.data){
         populateForm(res.data);
         statusBox.className = 'hs-status ok';
-        statusBox.textContent = '前回の回答を読み込みました。内容を確認・修正して送信すると上書きされます。';
+        statusBox.textContent = '内容を修正して再度送信すると上書きされます。';
+      } else if(res && res.result === 'error'){
+        console.error('ヒアリングシート読み込みエラー:', res.error);
       }
+      // result:'not_found' は初回アクセス（まだ回答が無い）なので、何もしない
     })
-    .catch(() => { /* 初回アクセス時など、まだ回答が無い場合は何もしない */ });
+    .catch(err => {
+      // 初回アクセス時など、まだ回答が無い場合もここに来ることがあるが、
+      // ENDPOINT_URLの設定ミスなど本当のエラーもここに来るので必ずログに残す
+      console.error('ヒアリングシート読み込みエラー（通信自体に失敗）:', err);
+    });
 }
 
 function getCheckedValues(groupId){
@@ -640,22 +647,37 @@ form.addEventListener('submit', async (e) => {
     submittedAt: new Date().toISOString()
   };
 
+  if(!submissionId){
+    statusBox.className = 'hs-status err';
+    statusBox.textContent = 'このページには紐付けIDが含まれていないため、回答を保存できません。予約完了メール記載のリンクから改めてお開きください。';
+    return;
+  }
+
   submitBtn.disabled = true;
   submitLabel.innerHTML = '<span class="spinner"></span>送信中…';
 
   try {
-    await fetch(ENDPOINT_URL, {
+    // ★以前はno-corsで送信して応答を読んでいませんでしたが、それだと保存に失敗しても
+    //   気づけないため、応答を読める形に変更しました。
+    const res = await fetch(ENDPOINT_URL, {
       method: 'POST',
-      mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     });
+    const json = await res.json();
 
-    statusBox.className = 'hs-status ok';
-    statusBox.textContent = 'ヒアリングシートを受け付けました。内容を修正して再度送信すると、上書きで更新されます。';
+    if(json && json.result === 'success'){
+      statusBox.className = 'hs-status ok';
+      statusBox.textContent = 'ヒアリングシートを受け付けました。内容を修正して再度送信すると、上書きで更新されます。';
+    } else {
+      console.error('ヒアリングシート送信エラー:', json && json.error);
+      statusBox.className = 'hs-status err';
+      statusBox.textContent = '送信に失敗しました。お手数ですが時間をおいて再度お試しください。';
+    }
     submitLabel.textContent = 'ヒアリングシートを送信する →';
     submitBtn.disabled = false;
   } catch(err){
+    console.error('ヒアリングシート送信エラー（通信自体に失敗）:', err);
     statusBox.className = 'hs-status err';
     statusBox.textContent = '送信に失敗しました。お手数ですが時間をおいて再度お試しください。';
     submitLabel.textContent = 'ヒアリングシートを送信する →';
