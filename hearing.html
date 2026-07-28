@@ -210,7 +210,7 @@ img{max-width:100%;display:block}
   position:relative;
   width:100%;max-width:460px;
   background:#fff;border-radius:20px;
-  padding:40px 36px 32px;
+  padding:40px 24px 32px;
   box-shadow:0 30px 70px rgba(10,20,40,.35);
   text-align:center;
   transform:translateY(16px) scale(.98);
@@ -225,8 +225,8 @@ img{max-width:100%;display:block}
 }
 .hs-modal-icon svg{width:28px;height:28px;}
 .hs-modal-title{
-  font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;
-  color:#1c3c66;margin-bottom:16px;
+  font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;
+  color:#1c3c66;margin-bottom:16px;white-space:nowrap;
 }
 .hs-modal-text{font-size:13.5px;color:var(--ink2);line-height:1.85;text-align:left;}
 .hs-modal-note{
@@ -421,7 +421,7 @@ img{max-width:100%;display:block}
    設定
    ========================================================= */
 // Google Apps Script のウェブアプリURL（booking.htmlと同じデプロイURLを設定してください）
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwau_lwj4MkLXnOggRytybZakDdxMorJh_TYvT0owcW1waKuyxqMet7F1JjLXYsrmy6/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/【ここにデプロイIDを貼り付け】/exec";
 
 // URLの ?id=XXXX を、どの申込みに対するヒアリングかの紐付けIDとして使用
 const params = new URLSearchParams(location.search);
