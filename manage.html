@@ -194,10 +194,6 @@ a{text-decoration:none;color:inherit}
       </div>
     </div>
 
-    <div id="processingState" class="mg-hidden" style="text-align:center;padding:48px 0;">
-      <div class="spinner" style="width:34px;height:34px;border-width:4px;"></div>
-    </div>
-
     <div id="doneState" class="mg-hidden">
       <p class="mg-msg ok" id="doneMessage"></p>
     </div>
@@ -211,7 +207,7 @@ a{text-decoration:none;color:inherit}
 
 <script>
 // ▼▼▼ ここをbooking.htmlと同じデプロイURLに差し替えてください ▼▼▼
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwau_lwj4MkLXnOggRytybZakDdxMorJh_TYvT0owcW1waKuyxqMet7F1JjLXYsrmy6/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/【ここにデプロイIDを貼り付け】/exec";
 // ▲▲▲ ここまで ▲▲▲
 
 const TIME_SLOTS = ["10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00"];
@@ -222,7 +218,7 @@ const BOOKABLE_RANGE_DAYS = 60;
 const params = new URLSearchParams(location.search);
 const submissionId = params.get('id') || '';
 
-const states = ['loadingState','notFoundState','cancelledState','ineligibleState','mainState','processingState','doneState','errorState'];
+const states = ['loadingState','notFoundState','cancelledState','ineligibleState','mainState','doneState','errorState'];
 function showState(name){
   states.forEach(s => document.getElementById(s).classList.toggle('mg-hidden', s !== name));
 }
@@ -305,23 +301,22 @@ document.getElementById('backFromCancel').addEventListener('click', () => {
   document.getElementById('choiceActions').classList.remove('mg-hidden');
 });
 
-function startProgress(){
-  showState('processingState');
-}
-function stopProgress(){
-  // 何もしない（processingStateから次の状態へshowState()で切り替わるだけ）
+function withMinDelay(promise, ms){
+  return Promise.all([promise, new Promise(res => setTimeout(res, ms))]).then(([result]) => result);
 }
 
 document.getElementById('confirmCancelBtn').addEventListener('click', async () => {
-  startProgress();
+  const btn = document.getElementById('confirmCancelBtn');
+  const originalLabel = btn.textContent;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>';
   try{
-    const res = await fetch(ENDPOINT_URL, {
+    const res = await withMinDelay(fetch(ENDPOINT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ formType: 'cancel', id: submissionId })
-    });
+    }), 900);
     const json = await res.json();
-    stopProgress();
     if(json.result === 'success'){
       document.getElementById('doneMessage').textContent = 'ご予約のキャンセルが完了しました。キャンセル完了メールをお送りしましたのでご確認ください。';
       showState('doneState');
@@ -330,23 +325,27 @@ document.getElementById('confirmCancelBtn').addEventListener('click', async () =
       showState('errorState');
     }
   }catch(err){
-    stopProgress();
     document.getElementById('errorMessage').textContent = 'キャンセルに失敗しました。時間をおいて再度お試しください。';
     showState('errorState');
+  }finally{
+    btn.disabled = false;
+    btn.textContent = originalLabel;
   }
 });
 
 document.getElementById('confirmRescheduleBtn').addEventListener('click', async () => {
   if(!selectedDate || !selectedTime) return;
-  startProgress();
+  const btn = document.getElementById('confirmRescheduleBtn');
+  const originalLabel = btn.textContent;
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>';
   try{
-    const res = await fetch(ENDPOINT_URL, {
+    const res = await withMinDelay(fetch(ENDPOINT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ formType: 'reschedule', id: submissionId, date: selectedDate, time: selectedTime, page: location.href })
-    });
+    }), 900);
     const json = await res.json();
-    stopProgress();
     if(json.result === 'success'){
       document.getElementById('doneMessage').textContent = `ご予約日時の変更が完了しました（${formatDateTimeLabel(selectedDate, selectedTime)}）。変更完了メールをお送りしましたのでご確認ください。`;
       showState('doneState');
@@ -355,9 +354,11 @@ document.getElementById('confirmRescheduleBtn').addEventListener('click', async 
       showState('errorState');
     }
   }catch(err){
-    stopProgress();
     document.getElementById('errorMessage').textContent = '変更に失敗しました。時間をおいて再度お試しください。';
     showState('errorState');
+  }finally{
+    btn.disabled = false;
+    btn.textContent = originalLabel;
   }
 });
 
