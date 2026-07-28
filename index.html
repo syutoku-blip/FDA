@@ -3566,10 +3566,12 @@ function switchTab(index) {
 
       await new Promise(resolve => setTimeout(resolve, 1300));
 
-      statusBox.className = 'f-status ok';
+      statusBox.className = 'f-status';
       statusBox.textContent = '';
       submitBtn.textContent = origLabel;
-      const modalOverlay = document.getElementById('bkModalOverlay');
+
+      const modalId = skipCalendar ? 'ctacInquiryModalOverlay' : 'bkModalOverlay';
+      const modalOverlay = document.getElementById(modalId);
       if(modalOverlay) modalOverlay.classList.add('show');
     }catch(err){
       statusBox.className = 'f-status err';
@@ -3776,6 +3778,35 @@ a.btn-amber:hover{
 (function(){
   const overlay = document.getElementById('bkModalOverlay');
   const okBtn = document.getElementById('bkModalOk');
+  function closeModal(){ overlay.classList.remove('show'); }
+  if(okBtn) okBtn.addEventListener('click', closeModal);
+  if(overlay) overlay.addEventListener('click', (e) => { if(e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
+})();
+</script>
+<div class="bk-modal-overlay" id="ctacInquiryModalOverlay">
+  <div class="bk-modal">
+    <div class="bk-modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h2 class="bk-modal-title">お問い合わせを受け付けました</h2>
+    <p class="bk-modal-text">
+      この度はお問い合わせいただき、誠にありがとうございます。<br>
+      内容を確認のうえ、担当者よりご返信いたします。
+    </p>
+    <div class="bk-modal-note">
+      <p class="bk-modal-text">
+        ご入力いただいたメールアドレス宛に、送信完了のご案内メールをお送りしておりますので、あわせてご確認ください。<br>
+        ※恐れ入りますが、迷惑メールフォルダに振り分けられていないかもご確認をお願いいたします。
+      </p>
+    </div>
+    <button type="button" class="bk-modal-ok" id="ctacInquiryModalOk">閉じる</button>
+  </div>
+</div>
+<script>
+(function(){
+  const overlay = document.getElementById('ctacInquiryModalOverlay');
+  const okBtn = document.getElementById('ctacInquiryModalOk');
   function closeModal(){ overlay.classList.remove('show'); }
   if(okBtn) okBtn.addEventListener('click', closeModal);
   if(overlay) overlay.addEventListener('click', (e) => { if(e.target === overlay) closeModal(); });
