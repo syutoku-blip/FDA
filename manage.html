@@ -194,9 +194,8 @@ a{text-decoration:none;color:inherit}
       </div>
     </div>
 
-    <div id="processingState" class="mg-hidden" style="text-align:center;padding:36px 0;">
-      <div class="spinner" style="width:30px;height:30px;border-width:4px;margin-bottom:18px;"></div>
-      <div id="processingText" style="font-size:14px;color:var(--ink2);font-weight:600;"></div>
+    <div id="processingState" class="mg-hidden" style="text-align:center;padding:48px 0;">
+      <div class="spinner" style="width:34px;height:34px;border-width:4px;"></div>
     </div>
 
     <div id="doneState" class="mg-hidden">
@@ -212,7 +211,7 @@ a{text-decoration:none;color:inherit}
 
 <script>
 // ▼▼▼ ここをbooking.htmlと同じデプロイURLに差し替えてください ▼▼▼
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwau_lwj4MkLXnOggRytybZakDdxMorJh_TYvT0owcW1waKuyxqMet7F1JjLXYsrmy6/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/【ここにデプロイIDを貼り付け】/exec";
 // ▲▲▲ ここまで ▲▲▲
 
 const TIME_SLOTS = ["10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00"];
@@ -306,27 +305,15 @@ document.getElementById('backFromCancel').addEventListener('click', () => {
   document.getElementById('choiceActions').classList.remove('mg-hidden');
 });
 
-let progressTimer = null;
-function startProgress(messages){
-  let i = 0;
-  document.getElementById('processingText').textContent = messages[0];
+function startProgress(){
   showState('processingState');
-  progressTimer = setInterval(() => {
-    i = (i + 1) % messages.length;
-    document.getElementById('processingText').textContent = messages[i];
-  }, 1300);
 }
 function stopProgress(){
-  if(progressTimer){ clearInterval(progressTimer); progressTimer = null; }
+  // 何もしない（processingStateから次の状態へshowState()で切り替わるだけ）
 }
 
 document.getElementById('confirmCancelBtn').addEventListener('click', async () => {
-  startProgress([
-    'キャンセル処理を送信しています…',
-    'kintoneの予定を削除しています…',
-    'カレンダーに反映しています…',
-    'もう少しで完了します…'
-  ]);
+  startProgress();
   try{
     const res = await fetch(ENDPOINT_URL, {
       method: 'POST',
@@ -351,13 +338,7 @@ document.getElementById('confirmCancelBtn').addEventListener('click', async () =
 
 document.getElementById('confirmRescheduleBtn').addEventListener('click', async () => {
   if(!selectedDate || !selectedTime) return;
-  startProgress([
-    '変更内容を送信しています…',
-    '空き状況を確認しています…',
-    'kintoneの予定を差し替えています…',
-    'カレンダーに反映しています…',
-    'もう少しで完了します…'
-  ]);
+  startProgress();
   try{
     const res = await fetch(ENDPOINT_URL, {
       method: 'POST',

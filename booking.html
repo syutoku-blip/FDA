@@ -527,7 +527,7 @@ img{max-width:100%;display:block}
    ========================================================= */
 // Google Apps Script のウェブアプリURLをここに設定してください
 // （デプロイ手順は同梱の gas-booking-script.gs 内のコメントを参照）
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwau_lwj4MkLXnOggRytybZakDdxMorJh_TYvT0owcW1waKuyxqMet7F1JjLXYsrmy6/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/【ここにデプロイIDを貼り付け】/exec";
 
 // 予約受付曜日（0=日,1=月,...,6=土）。土日を休業とする例
 const CLOSED_WEEKDAYS = [0, 6];
@@ -895,12 +895,14 @@ form.addEventListener('submit', async (e) => {
   try {
     // Apps Script は preflight(OPTIONS) に対応していないため、
     // text/plain + no-cors で送信します（応答内容は読み取れません）。
-    await fetch(ENDPOINT_URL, {
+    // no-corsで応答が読めない以上、待っても得られる情報が無いため、
+    // 送信の完了は待たずに（バックグラウンドで進めつつ）UIはすぐ次に進める。
+    fetch(ENDPOINT_URL, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
-    });
+    }).catch(err => console.error('予約送信エラー:', err));
 
     form.reset();
     document.querySelectorAll('.csel').forEach(csel => {
