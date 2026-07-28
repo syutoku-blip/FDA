@@ -196,6 +196,53 @@ img{max-width:100%;display:block}
   border-radius:50%;display:inline-block;animation:spin .7s linear infinite;margin-right:6px;vertical-align:-2px;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
+
+.hs-modal-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(10,20,40,.55);
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  opacity:0;visibility:hidden;
+  transition:opacity .25s ease,visibility .25s ease;
+}
+.hs-modal-overlay.show{opacity:1;visibility:visible;}
+.hs-modal{
+  position:relative;
+  width:100%;max-width:460px;
+  background:#fff;border-radius:20px;
+  padding:40px 36px 32px;
+  box-shadow:0 30px 70px rgba(10,20,40,.35);
+  text-align:center;
+  transform:translateY(16px) scale(.98);
+  transition:transform .25s ease;
+  max-height:88vh;overflow-y:auto;
+}
+.hs-modal-overlay.show .hs-modal{transform:translateY(0) scale(1);}
+.hs-modal-icon{
+  width:60px;height:60px;border-radius:50%;margin:0 auto 20px;
+  background:var(--greenl);color:var(--green);
+  display:flex;align-items:center;justify-content:center;
+}
+.hs-modal-icon svg{width:28px;height:28px;}
+.hs-modal-title{
+  font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;
+  color:#1c3c66;margin-bottom:16px;
+}
+.hs-modal-text{font-size:13.5px;color:var(--ink2);line-height:1.85;text-align:left;}
+.hs-modal-note{
+  margin-top:22px;padding:18px 20px;border-radius:12px;
+  background:var(--amber2);border:1px solid rgba(217,168,45,.3);
+  text-align:left;
+}
+.hs-modal-note .hs-modal-text{color:#7a5a12;}
+.hs-modal-ok{
+  margin-top:26px;width:100%;
+  background:linear-gradient(135deg,#4a7bc4,#2f5590);color:#fff;
+  border:none;border-radius:10px;padding:13px;
+  font-size:14px;font-weight:700;cursor:pointer;
+  transition:opacity .2s;
+}
+.hs-modal-ok:hover{opacity:.9;}
 </style>
 </head>
 <body>
@@ -374,7 +421,7 @@ img{max-width:100%;display:block}
    設定
    ========================================================= */
 // Google Apps Script のウェブアプリURL（booking.htmlと同じデプロイURLを設定してください）
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwau_lwj4MkLXnOggRytybZakDdxMorJh_TYvT0owcW1waKuyxqMet7F1JjLXYsrmy6/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/【ここにデプロイIDを貼り付け】/exec";
 
 // URLの ?id=XXXX を、どの申込みに対するヒアリングかの紐付けIDとして使用
 const params = new URLSearchParams(location.search);
@@ -669,6 +716,9 @@ form.addEventListener('submit', async (e) => {
     if(json && json.result === 'success'){
       statusBox.className = 'hs-status ok';
       statusBox.textContent = 'ヒアリングシートを受け付けました。内容を修正して再度送信すると、上書きで更新されます。';
+      if(json.firstSubmission){
+        document.getElementById('hsModalOverlay').classList.add('show');
+      }
     } else {
       console.error('ヒアリングシート送信エラー:', json && json.error);
       statusBox.className = 'hs-status err';
@@ -685,5 +735,37 @@ form.addEventListener('submit', async (e) => {
   }
 });
 </script>
+<div class="hs-modal-overlay" id="hsModalOverlay">
+  <div class="hs-modal">
+    <div class="hs-modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h2 class="hs-modal-title">ヒアリングシートを受け付けました</h2>
+    <p class="hs-modal-text">
+      ヒアリングシートのご記入ありがとうございます。<br>
+      お申込み時のメールアドレスに、当日のオンラインミーティングのURLをお送りいたしましたので、当日はこちらよりご参加ください。
+    </p>
+    <div class="hs-modal-note">
+      <p class="hs-modal-text">
+        ※ヒアリングシートは編集可能です。内容に変更がある場合は、再度ご入力のうえ送信ボタンを押してください。<br>
+        ミーティング1日前までにご変更をお願いいたします。
+      </p>
+    </div>
+    <button type="button" class="hs-modal-ok" id="hsModalOk">閉じる</button>
+  </div>
+</div>
+
+<script>
+/* ヒアリングシート初回送信完了モーダル */
+(function(){
+  const overlay = document.getElementById('hsModalOverlay');
+  const okBtn = document.getElementById('hsModalOk');
+  function closeModal(){ overlay.classList.remove('show'); }
+  if(okBtn) okBtn.addEventListener('click', closeModal);
+  if(overlay) overlay.addEventListener('click', (e) => { if(e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
+})();
+</script>
+
 </body>
 </html>
