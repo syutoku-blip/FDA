@@ -562,6 +562,8 @@ function timeToMinutes(hhmm){
   return h * 60 + m;
 }
 
+const BUFFER_AFTER_MIN = 30; // 既存の予定の終了後、この分数が経過するまでは次の予約を入れられないようにする（延長対策）
+
 function isSlotTaken(dateStr, slotTime){
   const info = getBusyInfoForDate(dateStr);
   if(!info) return false; // 未取得の間は空き扱い（取得完了後に再描画される）
@@ -570,7 +572,7 @@ function isSlotTaken(dateStr, slotTime){
   const slotEnd = slotStart + SLOT_DURATION_MIN;
   return info.ranges.some(r => {
     const rStart = timeToMinutes(r.start);
-    const rEnd = timeToMinutes(r.end);
+    const rEnd = timeToMinutes(r.end) + BUFFER_AFTER_MIN; // ★終了後30分はバッファとして予約不可にする
     return slotStart < rEnd && rStart < slotEnd; // 時間帯が重なっているか
   });
 }
