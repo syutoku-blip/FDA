@@ -510,14 +510,14 @@ img{max-width:100%;display:block}
    ========================================================= */
 // Google Apps Script のウェブアプリURLをここに設定してください
 // （デプロイ手順は同梱の gas-booking-script.gs 内のコメントを参照）
-const ENDPOINT_URL = "https://script.google.com/macros/s/【ここにデプロイIDを貼り付け】/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwau_lwj4MkLXnOggRytybZakDdxMorJh_TYvT0owcW1waKuyxqMet7F1JjLXYsrmy6/exec";
 
 // 予約受付曜日（0=日,1=月,...,6=土）。土日を休業とする例
 const CLOSED_WEEKDAYS = [0, 6];
 // 何日先まで予約可能か
 const BOOKABLE_RANGE_DAYS = 60;
 // 1日あたりの時間帯
-const TIME_SLOTS = ["10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]; // 対応可能時間 10:00〜18:00（1時間枠、最終開始17:00）
+const TIME_SLOTS = ["10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00"]; // 対応可能時間 10:00〜18:00、30分刻みで表示（最終開始17:00＝18:00終了）
 // 1枠あたりの所要時間（分）。GAS側の予約登録時間と合わせる
 const SLOT_DURATION_MIN = 60;
 
