@@ -503,6 +503,10 @@ h1.hero-h{animation:heroFadeUp .9s ease both;animation-delay:.1s}
   font-size:15px;color:var(--ink2);letter-spacing:.02em;font-weight:500;white-space:nowrap;
 }
 @media(max-width:640px){
+  /* 追尾CTAバーを画面中央に */
+  .float-cta-group{left:50%;right:auto;transform:translate(-50%,-6px);}
+  .float-cta-group.visible{transform:translate(-50%,0);}
+
   /* ─── スマホ専用レイアウト（PC版のスタイルには影響しません） ─── */
   .hero-inner{align-items:center;text-align:center;}
   .hero-left{align-items:center;text-align:center;width:100%;padding:56px 20px 2px;}
@@ -526,25 +530,29 @@ h1.hero-h{animation:heroFadeUp .9s ease both;animation-delay:.1s}
       );
   }
 
-  /* CTAパネルを中央寄せ・ひとまわり小さく */
+  /* CTAパネルを中央寄せ・横並び2列に */
   .hero-cta-panel{
     margin-left:0;margin-right:0;margin-inline:auto;
-    width:100%;max-width:340px;
-    padding:18px 22px 22px;border-radius:20px;
+    width:100%;max-width:400px;
+    padding:16px 14px 18px;border-radius:20px;
   }
-  .hero-cta-tagline-in{text-align:center;font-size:15.5px;}
-  .hero-cta-items-row{flex-direction:column;align-items:stretch;gap:14px;}
-  .hero-cta-item{flex-direction:column;text-align:center;gap:8px;}
+  .hero-cta-tagline-in{
+    text-align:center;font-size:13.5px;
+    white-space:normal;line-height:1.5;
+  }
+  .hero-cta-items-row{flex-direction:row;align-items:stretch;gap:0;}
+  .hero-cta-item{flex:1 1 0;min-width:0;flex-direction:column;text-align:center;gap:6px;}
   .hero-cta-item:first-child{
-    border-right:none;border-bottom:1px solid rgba(64,106,175,.18);
-    padding-right:0;margin-right:0;padding-bottom:16px;margin-bottom:2px;
+    border-right:1px solid rgba(64,106,175,.18);border-bottom:none;
+    padding-right:8px;margin-right:8px;padding-bottom:0;margin-bottom:0;
   }
-  .hero-cta-top{justify-content:center;}
-  .hero-cta-icon{width:44px;height:44px;}
-  .hero-cta-icon svg{width:20px;height:20px;}
-  .hero-cta-title{font-size:19px;}
-  .hero-cta-arrow{font-size:18px;}
-  .hero-cta-label{font-size:13px;}
+  .hero-cta-item:last-child{padding-left:8px;}
+  .hero-cta-top{justify-content:center;gap:4px;}
+  .hero-cta-icon{width:38px;height:38px;}
+  .hero-cta-icon svg{width:17px;height:17px;}
+  .hero-cta-title{font-size:15px;white-space:nowrap;}
+  .hero-cta-arrow{font-size:15px;}
+  .hero-cta-label{font-size:10.5px;white-space:normal;}
 }
 .hero-sub{
   font-size:14.5px;color:var(--ink2);line-height:1.95;font-weight:300;
@@ -2536,8 +2544,21 @@ footer{
 .cta-tile-wide-inner.compact .cta-tile-wide-sub{font-size:12.5px;}
 .cta-tile-wide-inner.compact .cta-tile-wide-arrow{width:40px;height:40px;font-size:16px;}
 @media(max-width:640px){
-  .cta-tile-wide-inner{flex-direction:column;text-align:center;padding:32px 26px;}
-  .cta-tile-wide-arrow{width:48px;height:48px;}
+  .cta-tile-wide-inner{flex-direction:column;text-align:center;padding:26px 22px;gap:14px;}
+  .cta-tile-wide-icon{width:56px;height:56px;}
+  .cta-tile-wide-icon svg{width:24px;height:24px;}
+  .cta-tile-wide-divider{display:none;}
+  .cta-tile-wide-title{font-size:21px;}
+  .cta-tile-wide-sub{font-size:13px;}
+  .cta-tile-wide-tags{justify-content:center;}
+  .cta-tile-wide-arrow{width:40px;height:40px;font-size:16px;}
+
+  .cta-tile-wide-inner.compact{padding:22px 20px;gap:12px;}
+  .cta-tile-wide-inner.compact .cta-tile-wide-icon{width:48px;height:48px;}
+  .cta-tile-wide-inner.compact .cta-tile-wide-icon svg{width:20px;height:20px;}
+  .cta-tile-wide-inner.compact .cta-tile-wide-title{font-size:17px;white-space:normal;}
+  .cta-tile-wide-inner.compact .cta-tile-wide-sub{font-size:12px;}
+  .cta-tile-wide-inner.compact .cta-tile-wide-arrow{width:36px;height:36px;font-size:15px;}
 }
 
 
@@ -2661,6 +2682,7 @@ function switchTab(index) {
       </div>
 
     </div><!-- /svc-card-grid -->
+    <div class="svc-dots" id="svcDots"></div>
 
     <div class="cta-tile-wide reveal">
       <a href="booking.html" class="cta-tile-wide-inner" data-cta="Service-相談">
@@ -3029,9 +3051,32 @@ function switchTab(index) {
   font-size:12px;color:var(--ink3);margin-top:8px;
 }
 
+.svc-dots{display:none;}
+
 @media(max-width:768px){
-  .svc-card-grid{grid-template-columns:1fr;}
-  .svc-card-wide{grid-column:auto;}
+  .svc-card-grid{
+    display:flex;grid-template-columns:none;
+    overflow-x:auto;scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    gap:14px;padding-bottom:4px;
+    scrollbar-width:none;
+  }
+  .svc-card-grid::-webkit-scrollbar{display:none;}
+  .svc-card,
+  .svc-card-wide{
+    flex:0 0 84%;scroll-snap-align:center;
+    grid-column:auto;flex-direction:column;text-align:center;align-items:center;
+  }
+  .svc-card-body{width:100%;}
+  .svc-dots{
+    display:flex;justify-content:center;gap:7px;margin:14px 0 4px;
+  }
+  .svc-dots span{
+    width:7px;height:7px;border-radius:50%;
+    background:rgba(64,106,175,.25);
+    transition:background .2s,transform .2s;
+  }
+  .svc-dots span.active{background:#406AAF;transform:scale(1.3);}
 }
 </style>
 
@@ -3931,14 +3976,15 @@ a.btn-amber:hover{
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
 })();
 
-// ★二刀流チームの3枚カード：スマホ幅の時だけ、横スワイプの現在位置をドットで表示する。
-(function(){
+// ★横スワイプカルーセル（カードの下にドットで現在位置を表示）の共通処理。
+//   スマホ幅の時だけ動かす。
+function initSwipeCarouselDots_(gridSelector, dotsId, itemSelector, cardWidthRatio){
   if(window.innerWidth > 768) return;
-  var grid = document.querySelector('.strength-list-grid');
-  var dots = document.getElementById('strengthDots');
+  var grid = document.querySelector(gridSelector);
+  var dots = document.getElementById(dotsId);
   if(!grid || !dots) return;
 
-  var items = grid.querySelectorAll('.strength-list-item');
+  var items = grid.querySelectorAll(itemSelector);
   if(items.length === 0) return;
 
   items.forEach(function(_, i){
@@ -3949,11 +3995,17 @@ a.btn-amber:hover{
   var dotEls = dots.querySelectorAll('span');
 
   grid.addEventListener('scroll', function(){
-    var idx = Math.round(grid.scrollLeft / (grid.clientWidth * 0.78));
+    var idx = Math.round(grid.scrollLeft / (grid.clientWidth * cardWidthRatio));
     idx = Math.max(0, Math.min(items.length - 1, idx));
     dotEls.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
   }, { passive: true });
-})();
+}
+
+// ★二刀流チームの3枚カード
+initSwipeCarouselDots_('.strength-list-grid', 'strengthDots', '.strength-list-item', 0.78);
+
+// ★サービス紹介の5枚カード
+initSwipeCarouselDots_('.svc-card-grid', 'svcDots', '.svc-card', 0.84);
 </script>
 
 <div class="bk-modal-overlay" id="ctacInquiryModalOverlay">
