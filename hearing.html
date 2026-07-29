@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JLD56Z8ZR7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-JLD56Z8ZR7');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>無料相談ヒアリングシート | FDA Compliance Partner</title>
@@ -374,9 +383,9 @@ img{max-width:100%;display:block}
     <div class="hs-q">
       <div class="hs-q-label">FDA認証取得（アメリカ輸出）を検討している商材数<span class="req">*</span></div>
       <div class="hs-product-count">
-        <button type="button" class="hs-count-btn" id="prodMinus">−</button>
+        <button type="button" class="hs-count-btn" id="prodMinus" data-action="hearing-商品数マイナス">−</button>
         <span class="hs-count-num" id="prodCountLabel">1</span>
-        <button type="button" class="hs-count-btn" id="prodPlus">＋</button>
+        <button type="button" class="hs-count-btn" id="prodPlus" data-action="hearing-商品数プラス">＋</button>
       </div>
     </div>
     <div id="productList"></div>
@@ -404,7 +413,7 @@ img{max-width:100%;display:block}
   </div>
 
   <div class="hs-card" style="animation-delay:.1s;">
-    <button type="submit" class="hs-submit" id="hsSubmitBtn">
+    <button type="submit" class="hs-submit" id="hsSubmitBtn" data-cta="hearing-送信">
       <span class="hs-submit-icon">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
       </span>
@@ -421,7 +430,7 @@ img{max-width:100%;display:block}
    設定
    ========================================================= */
 // Google Apps Script のウェブアプリURL（booking.htmlと同じデプロイURLを設定してください）
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwau_lwj4MkLXnOggRytybZakDdxMorJh_TYvT0owcW1waKuyxqMet7F1JjLXYsrmy6/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/【ここにデプロイIDを貼り付け】/exec";
 
 // URLの ?id=XXXX を、どの申込みに対するヒアリングかの紐付けIDとして使用
 const params = new URLSearchParams(location.search);
@@ -764,6 +773,26 @@ form.addEventListener('submit', async (e) => {
   if(okBtn) okBtn.addEventListener('click', closeModal);
   if(overlay) overlay.addEventListener('click', (e) => { if(e.target === overlay) closeModal(); });
   document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
+})();
+</script>
+
+<script>
+// ★CTAボタンは cta_click、それ以外の操作（商品数の増減など）は action_click として計測する。
+(function(){
+  document.querySelectorAll('[data-cta]').forEach(function(el){
+    el.addEventListener('click', function(){
+      if(typeof gtag === 'function'){
+        gtag('event', 'cta_click', { cta_name: el.dataset.cta });
+      }
+    });
+  });
+  document.querySelectorAll('[data-action]').forEach(function(el){
+    el.addEventListener('click', function(){
+      if(typeof gtag === 'function'){
+        gtag('event', 'action_click', { action_name: el.dataset.action });
+      }
+    });
+  });
 })();
 </script>
 

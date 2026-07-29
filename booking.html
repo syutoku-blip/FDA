@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JLD56Z8ZR7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-JLD56Z8ZR7');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>無料相談のご予約 | FDA Compliance Partner</title>
@@ -341,9 +350,9 @@ img{max-width:100%;display:block}
     <div class="bk-card-title"><span class="num">1</span>ご希望の日時を選択</div>
 
     <div class="cal-nav">
-      <button type="button" class="cal-btn" id="calPrev" aria-label="前の月">&lsaquo;</button>
+      <button type="button" class="cal-btn" id="calPrev" aria-label="前の月" data-action="booking-calender-monthaction">&lsaquo;</button>
       <div class="cal-month" id="calMonthLabel"></div>
-      <button type="button" class="cal-btn" id="calNext" aria-label="次の月">&rsaquo;</button>
+      <button type="button" class="cal-btn" id="calNext" aria-label="次の月" data-action="booking-calender-monthaction">&rsaquo;</button>
     </div>
     <div class="cal-weekdays">
       <div>日</div><div>月</div><div>火</div><div>水</div><div>木</div><div>金</div><div>土</div>
@@ -508,7 +517,7 @@ img{max-width:100%;display:block}
       </label>
     </div>
 
-    <button type="submit" class="f-submit" id="submitBtn" disabled>
+    <button type="submit" class="f-submit" id="submitBtn" disabled data-cta="booking-calender-送信">
       <span class="f-submit-icon">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
       </span>
@@ -527,7 +536,7 @@ img{max-width:100%;display:block}
    ========================================================= */
 // Google Apps Script のウェブアプリURLをここに設定してください
 // （デプロイ手順は同梱の gas-booking-script.gs 内のコメントを参照）
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwau_lwj4MkLXnOggRytybZakDdxMorJh_TYvT0owcW1waKuyxqMet7F1JjLXYsrmy6/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/【ここにデプロイIDを貼り付け】/exec";
 
 // 予約受付曜日（0=日,1=月,...,6=土）。土日を休業とする例
 const CLOSED_WEEKDAYS = [0, 6];
@@ -961,6 +970,48 @@ form.addEventListener('submit', async (e) => {
   if(okBtn) okBtn.addEventListener('click', closeModal);
   if(overlay) overlay.addEventListener('click', (e) => { if(e.target === overlay) closeModal(); });
   document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
+})();
+</script>
+
+<script>
+// ★CTAボタン（送信ボタンなど）は cta_click、月送りなどの操作は action_click として、
+//   それぞれGoogleアナリティクス（GA4）へ計測イベントを送る。
+(function(){
+  document.querySelectorAll('[data-cta]').forEach(function(el){
+    el.addEventListener('click', function(){
+      if(typeof gtag === 'function'){
+        gtag('event', 'cta_click', { cta_name: el.dataset.cta });
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-action]').forEach(function(el){
+    el.addEventListener('click', function(){
+      if(typeof gtag === 'function'){
+        gtag('event', 'action_click', { action_name: el.dataset.action });
+      }
+    });
+  });
+
+  // カレンダーの日付マス・時間枠ボタンは月ごとに動的に作り直されるため、
+  // 親要素へのイベント委任で計測する。
+  var calGrid = document.getElementById('calGrid');
+  if(calGrid){
+    calGrid.addEventListener('click', function(e){
+      if(e.target.closest('.cal-cell.available') && typeof gtag === 'function'){
+        gtag('event', 'action_click', { action_name: 'booking-calender-dayaction' });
+      }
+    });
+  }
+  var slotGrid = document.getElementById('slotGrid');
+  if(slotGrid){
+    slotGrid.addEventListener('click', function(e){
+      var btn = e.target.closest('.slot-btn');
+      if(btn && !btn.classList.contains('taken') && typeof gtag === 'function'){
+        gtag('event', 'action_click', { action_name: 'booking-calender-timeaction' });
+      }
+    });
+  }
 })();
 </script>
 

@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JLD56Z8ZR7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-JLD56Z8ZR7');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ご予約の変更・キャンセル | FDA Compliance Partner</title>
@@ -163,24 +172,24 @@ a{text-decoration:none;color:inherit}
       </div>
 
       <div id="choiceActions" class="mg-actions">
-        <button type="button" class="mg-btn primary" id="showRescheduleBtn">日程を変更する</button>
-        <button type="button" class="mg-btn danger" id="showCancelBtn">予約をキャンセルする</button>
+        <button type="button" class="mg-btn primary" id="showRescheduleBtn" data-action="manage-日程変更を選択">日程を変更する</button>
+        <button type="button" class="mg-btn danger" id="showCancelBtn" data-action="manage-キャンセルを選択">予約をキャンセルする</button>
       </div>
 
       <!-- 変更フロー -->
       <div id="rescheduleFlow" class="mg-hidden">
         <div class="cal-nav">
-          <button type="button" class="cal-btn" id="calPrev" aria-label="前の月">&lsaquo;</button>
+          <button type="button" class="cal-btn" id="calPrev" aria-label="前の月" data-action="manage-calender-monthaction">&lsaquo;</button>
           <div class="cal-month" id="calMonthLabel"></div>
-          <button type="button" class="cal-btn" id="calNext" aria-label="次の月">&rsaquo;</button>
+          <button type="button" class="cal-btn" id="calNext" aria-label="次の月" data-action="manage-calender-monthaction">&rsaquo;</button>
         </div>
         <div class="cal-weekdays"><div>日</div><div>月</div><div>火</div><div>水</div><div>木</div><div>金</div><div>土</div></div>
         <div class="cal-grid" id="calGrid"></div>
         <div class="slot-grid" id="slotGrid"></div>
 
         <div class="mg-actions">
-          <button type="button" class="mg-btn primary" id="confirmRescheduleBtn" disabled>この日時に変更する</button>
-          <span class="mg-back" id="backFromReschedule">戻る</span>
+          <button type="button" class="mg-btn primary" id="confirmRescheduleBtn" disabled data-cta="manage-変更確定">この日時に変更する</button>
+          <span class="mg-back" id="backFromReschedule" data-action="manage-戻る">戻る</span>
         </div>
       </div>
 
@@ -188,8 +197,8 @@ a{text-decoration:none;color:inherit}
       <div id="cancelFlow" class="mg-hidden">
         <p class="mg-msg">上記のご予約をキャンセルします。よろしいですか？　この操作は取り消せません。</p>
         <div class="mg-actions">
-          <button type="button" class="mg-btn danger" id="confirmCancelBtn">キャンセルを確定する</button>
-          <span class="mg-back" id="backFromCancel">戻る</span>
+          <button type="button" class="mg-btn danger" id="confirmCancelBtn" data-cta="manage-キャンセル確定">キャンセルを確定する</button>
+          <span class="mg-back" id="backFromCancel" data-action="manage-戻る">戻る</span>
         </div>
       </div>
     </div>
@@ -207,7 +216,7 @@ a{text-decoration:none;color:inherit}
 
 <script>
 // ▼▼▼ ここをbooking.htmlと同じデプロイURLに差し替えてください ▼▼▼
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwau_lwj4MkLXnOggRytybZakDdxMorJh_TYvT0owcW1waKuyxqMet7F1JjLXYsrmy6/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/【ここにデプロイIDを貼り付け】/exec";
 // ▲▲▲ ここまで ▲▲▲
 
 const TIME_SLOTS = ["10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00"];
@@ -538,6 +547,47 @@ document.getElementById('calNext').addEventListener('click', () => {
 });
 
 init();
+</script>
+
+<script>
+// ★CTAボタンは cta_click、それ以外の操作（初期の選択・月送り・戻るなど）は
+//   action_click として、それぞれGoogleアナリティクス（GA4）へ計測イベントを送る。
+(function(){
+  document.querySelectorAll('[data-cta]').forEach(function(el){
+    el.addEventListener('click', function(){
+      if(typeof gtag === 'function'){
+        gtag('event', 'cta_click', { cta_name: el.dataset.cta });
+      }
+    });
+  });
+  document.querySelectorAll('[data-action]').forEach(function(el){
+    el.addEventListener('click', function(){
+      if(typeof gtag === 'function'){
+        gtag('event', 'action_click', { action_name: el.dataset.action });
+      }
+    });
+  });
+
+  // カレンダーの日付マス・時間枠ボタンは月ごとに動的に作り直されるため、
+  // 親要素へのイベント委任で計測する。
+  var calGrid = document.getElementById('calGrid');
+  if(calGrid){
+    calGrid.addEventListener('click', function(e){
+      if(e.target.closest('.cal-cell.available') && typeof gtag === 'function'){
+        gtag('event', 'action_click', { action_name: 'manage-calender-dayaction' });
+      }
+    });
+  }
+  var slotGrid = document.getElementById('slotGrid');
+  if(slotGrid){
+    slotGrid.addEventListener('click', function(e){
+      var btn = e.target.closest('.slot-btn');
+      if(btn && !btn.classList.contains('taken') && typeof gtag === 'function'){
+        gtag('event', 'action_click', { action_name: 'manage-calender-timeaction' });
+      }
+    });
+  }
+})();
 </script>
 </body>
 </html>
