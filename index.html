@@ -1893,7 +1893,7 @@ footer{
     <!-- 区切り -->
     <div class="strength-bridge reveal" style="margin-top:48px;">
       <div class="strength-bridge-line"></div>
-      <div class="strength-bridge-text">FDAだけに留まらない。<span class="strength-bridge-sub">ワールドシフトの最大の強み</span></div>
+      <div class="strength-bridge-text">FDAだけに留まらない。<br class="tagline-break"><span class="strength-bridge-sub">ワールドシフトの最大の強み</span></div>
       <div class="strength-bridge-line"></div>
     </div>
 
@@ -1901,7 +1901,7 @@ footer{
 
       <!-- 左：メインコピー -->
       <div class="strength-left">
-        <h3 class="strength-title">FDA対応×輸出に精通した<br><em>二刀流チーム</em></h3>
+        <h3 class="strength-title"><span class="st-line1">FDA対応×輸出に精通した</span><br><em>二刀流チーム</em></h3>
         <div class="strength-divider"></div>
 
         <p class="strength-body">ワールドシフトでは、FDA対応の専門家と、Amazon輸出・物流・販路支援に精通した実務チームが<strong>社内で連携</strong>しています。<br>私たちは、<strong>FDA取得だけを行う代行会社ではありません</strong>。実際に米国向けの物販・物流支援を行い、日本の商品を米国市場へ届ける現場に日々携わっている会社です。</p>
@@ -1964,6 +1964,8 @@ footer{
 }
 @media(max-width:640px){
   .strength-bridge{padding:56px 20px 40px;}
+  .strength-bridge-text{font-size:22px;white-space:nowrap;}
+  .strength-bridge-sub{white-space:nowrap;}
 }
 .strength-bridge-line{
   width:48px;height:2px;
@@ -2154,8 +2156,15 @@ footer{
 
 @media(max-width:768px){
   .strength-wrap{padding:48px 24px;}
+  .strength-title{font-size:23px;}
+  .st-line1{display:block;white-space:nowrap;font-size:20px;}
+  #ch-pain-cards{padding:48px 18px!important;}
+  .pain-grid-img{margin-bottom:20px;}
   .pain-grid-img{margin-left:0;margin-right:0;width:100%;}
   #pain-panel-0 .pain-grid-img{margin-left:0;margin-right:0;width:100%;}
+  .pain-tab{padding:10px 8px;font-size:11.5px;gap:5px;}
+  .pain-tab svg{width:14px;height:14px;}
+  .pain-tab svg{width:14px;height:14px;}
 }
 </style>
 
@@ -2952,8 +2961,26 @@ function switchTab(index) {
 }
 .adv-plan-table tbody tr{border-bottom:1px solid var(--border);}
 .adv-td-item{padding:16px 24px;vertical-align:top;}
-.adv-item-name{display:block;font-weight:700;color:var(--ink);margin-bottom:4px;font-size:14px;}
-.adv-item-desc{display:block;font-size:12px;color:var(--ink3);line-height:1.7;}
+.adv-item-name{
+  display:flex;align-items:center;gap:6px;
+  font-weight:700;color:var(--ink);margin-bottom:4px;font-size:14px;
+  cursor:pointer;user-select:none;
+}
+.adv-item-name::after{
+  content:'';flex-shrink:0;margin-left:auto;
+  width:7px;height:7px;
+  border-right:1.5px solid var(--ink3);border-bottom:1.5px solid var(--ink3);
+  transform:rotate(45deg);
+  transition:transform .2s;
+}
+.adv-td-item.expanded .adv-item-name{margin-bottom:6px;}
+.adv-td-item.expanded .adv-item-name::after{transform:rotate(-135deg);}
+.adv-item-desc{
+  display:block;font-size:12px;color:var(--ink3);line-height:1.7;
+  max-height:0;overflow:hidden;
+  transition:max-height .25s ease;
+}
+.adv-td-item.expanded .adv-item-desc{max-height:300px;}
 .adv-td-check{
   padding:16px 12px;text-align:center;vertical-align:middle;
   border-left:1px solid var(--border);
@@ -4011,6 +4038,18 @@ function initSwipeCarouselDots_(gridSelector, dotsId, itemSelector, cardWidthRat
     dotEls.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
   }, { passive: true });
 }
+
+// ★月額サービス比較表：項目名をタップすると説明文の開閉ができる（初期状態は非表示）。
+(function(){
+  var table = document.querySelector('.adv-plan-table');
+  if(!table) return;
+  table.addEventListener('click', function(e){
+    var nameEl = e.target.closest('.adv-item-name');
+    if(!nameEl) return;
+    var cell = nameEl.closest('.adv-td-item');
+    if(cell) cell.classList.toggle('expanded');
+  });
+})();
 
 // ★二刀流チームの3枚カード
 initSwipeCarouselDots_('.strength-list-grid', 'strengthDots', '.strength-list-item', 0.78);
