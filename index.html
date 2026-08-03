@@ -517,7 +517,7 @@ h1.hero-h{animation:heroFadeUp .9s ease both;animation-delay:.1s}
   .hero-bottom-row{justify-content:center;}
 
   /* 背景画像を中央基準の均等なフェードにする（PC版の左→右フェードだと偏って見えるため） */
-  .hero-collage-img{background-position:center 30%;}
+  .hero-collage-img{background-position:top center;background-size:contain;background-image:url('hero-mobile.png');}
   .hero-collage-overlay{
     background:
       radial-gradient(ellipse 90% 60% at 50% 15%, rgba(255,255,255,.98), transparent 75%),
@@ -1503,7 +1503,7 @@ footer{
     </span>
     <span class="float-tile-label">1分で問い合わせ</span>
   </a>
-  <a href="#ch-cta" class="float-tile float-tile-ai" data-cta="Follow-まずはAIに相談する">
+  <a href="#" class="float-tile float-tile-ai ws-consult-open" data-open="ai" data-item="FDA全般" data-topic="FDA規制" data-cta="Follow-まずはAIに相談する" data-service="fda-ai" data-category="fda" data-article="fda-lp">
     <span class="float-tile-icon">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M12 7V3M9 3h6"/><circle cx="9" cy="13" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1.2" fill="currentColor" stroke="none"/></svg>
     </span>
@@ -3377,7 +3377,7 @@ function switchTab(index) {
     </div>
 
     <div class="portal-links reveal">
-      <a href="#" class="portal-link-card" data-cta="portalsite">
+      <a href="https://news.worldshift-inc.jp/index.html" class="portal-link-card" data-cta="portalsite" target="_blank" rel="noopener">
         <span class="portal-link-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
         </span>
@@ -4133,6 +4133,72 @@ initSwipeCarouselDots_('.svc-card-grid', 'svcDots', '.svc-card', 0.84);
     });
   }
 })();
+</script>
+
+<!-- ══════════════════════════════
+     AI相談ウィジェット（ポータルサイトと同一エンジン）
+     「まずはAIに相談する」ボタン（class="ws-consult-open"）を押すと
+     画面右側にパネルが出現してチャットが始まる。
+     ※このブロックと consult/ フォルダ以外、LPの既存内容には手を加えていません
+══════════════════════════════ -->
+<link rel="stylesheet" href="consult/widget.css">
+<style>
+#ws-cm{position:fixed;inset:0;z-index:10000}#ws-cm[hidden]{display:none}
+#ws-cm .ws-bd{position:absolute;inset:0;background:rgba(8,18,36,.5)}
+#ws-cm .ws-pn{position:absolute;right:0;top:0;bottom:0;width:min(460px,100%);background:#fff;display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.2)}
+#ws-cm .ws-top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #e3e8ee;font-size:14px;font-weight:900;color:#0c2340}
+#ws-cm .ws-x{border:0;background:none;font-size:22px;color:#9aa7b2;cursor:pointer;line-height:1}
+#ws-mount{flex:1;min-height:0;display:flex}
+#ws-cm .ws-confirm{position:absolute;z-index:10;width:248px;max-width:calc(100vw - 16px);background:#fff;border:1px solid #f0c3bd;border-radius:12px;box-shadow:0 10px 34px rgba(8,18,36,.28);padding:12px 13px}
+#ws-cm .ws-confirm-q{font-size:14px;font-weight:800;color:#c0392b;margin:0 0 10px}
+#ws-cm .ws-confirm-btns{display:flex;gap:8px}
+#ws-cm .ws-confirm-yes{flex:1;background:#c0392b;border:1px solid #c0392b;color:#fff;font-size:13.5px;font-weight:800;padding:9px 0;border-radius:9px;cursor:pointer}
+#ws-cm .ws-confirm-no{flex:1;background:#fff;border:1px solid #e3e8ee;color:#5b6b7a;font-size:13.5px;font-weight:800;padding:9px 0;border-radius:9px;cursor:pointer}
+</style>
+<div id="ws-cm" hidden><div class="ws-bd"></div><div class="ws-pn"><div class="ws-top"><span>FDA・米国輸出の相談</span><button class="ws-x" data-wsclose aria-label="閉じる">×</button></div><div id="ws-mount"></div></div></div>
+<script type="module">
+import { mountConsultWidget } from "./consult/widget.js";
+const cm=document.getElementById("ws-cm"), mt=document.getElementById("ws-mount");
+// consultUrl＝「個別相談へ進む」の遷移先。このLPは自前の予約フォームを持っているのでそこへ送る
+function openConsult(ctx,open){ cm.hidden=false; mountConsultWidget(mt,{context:ctx,open:open,consultUrl:"booking.html"}); }
+// 終了確認をクリックした位置に出す（離れた場所に出ると気付かないため）
+function showCloseConfirm(x,y,onYes){
+  var ex=cm.querySelector(".ws-confirm"); if(ex) ex.remove();
+  var p=document.createElement("div"); p.className="ws-confirm";
+  p.innerHTML='<div class="ws-confirm-q">相談を終了しますか？</div>'+
+    '<div class="ws-confirm-btns"><button class="ws-confirm-yes" type="button">終了する</button>'+
+    '<button class="ws-confirm-no" type="button">戻る</button></div>';
+  cm.appendChild(p);
+  var pw=p.offsetWidth||248, ph=p.offsetHeight||96;
+  p.style.left=Math.round(Math.min(Math.max(8,x),window.innerWidth-pw-8))+"px";
+  p.style.top=Math.round(Math.min(Math.max(8,y),window.innerHeight-ph-8))+"px";
+  p.querySelector(".ws-confirm-yes").onclick=function(){ p.remove(); onYes(); };
+  p.querySelector(".ws-confirm-no").onclick=function(){ p.remove(); };
+}
+// チャット進行中ならクリック位置に確認を出してから閉じる。未開始なら即閉じ
+function dismissConsult(ev){
+  var active = mt.__consultChatActive && mt.__consultChatActive();
+  if(!active){ cm.hidden=true; return; }
+  var x = ev ? ev.clientX : Math.round(window.innerWidth/2-124);
+  var y = ev ? ev.clientY : Math.round(window.innerHeight/2-48);
+  showCloseConfirm(x,y,function(){ if(mt.__consultEndChat) mt.__consultEndChat(); cm.hidden=true; });
+}
+cm.addEventListener("click",function(e){
+  if(e.target.closest && e.target.closest(".ws-confirm")) return;            // 確認自体のクリックは無視
+  if(e.target.hasAttribute("data-wsclose") || e.target.classList.contains("ws-bd")) dismissConsult(e);
+});
+document.addEventListener("keydown",function(e){ if(e.key==="Escape" && !cm.hidden) dismissConsult(null); });
+document.addEventListener("click",function(e){
+  var a=e.target.closest ? e.target.closest(".ws-consult-open") : null; if(!a) return;
+  e.preventDefault();
+  var item=a.getAttribute("data-item")||"FDA全般", topic=a.getAttribute("data-topic")||"FDA規制", open=a.getAttribute("data-open")||"ai";
+  openConsult({
+    "品目":item, "論点名":topic, "モーダル":item,
+    "記事タイトル":document.title||"FDA代行サポート",
+    "パンくず":"FDA代行サポート LP",
+    "ソースURL":location.href
+  }, open);
+},true);
 </script>
 </body>
 </html>
