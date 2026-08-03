@@ -510,7 +510,8 @@ h1.hero-h{animation:heroFadeUp .9s ease both;animation-delay:.1s}
   /* ─── スマホ専用レイアウト（PC版のスタイルには影響しません） ─── */
   /* TOPの枠の縦サイズは、画像（hero-mobile.png：941×1672）の比率を最低ラインとして確保する。
      見出し・キャッチコピー・CTAは上側にまとめて配置し、下側は空けて画像を見せる。 */
-  .hero{aspect-ratio:auto;height:auto;max-height:none;min-height:177.7vw;overflow:hidden;}
+  .hero{aspect-ratio:auto;height:auto;max-height:none;min-height:0;overflow:visible;}
+  .hero-collage,.hero-collage-overlay,.hero-collage-grid{top:0;bottom:auto;height:177.7vw;}
   .hero-inner{flex:none;height:auto;min-height:0;justify-content:flex-start;padding:28px 0 4px;align-items:center;text-align:center;}
   .hero-left{align-items:center;text-align:center;justify-content:flex-start;flex:none;width:100%;padding:0 20px;}
   h1.hero-h{text-align:center;}
@@ -537,7 +538,7 @@ h1.hero-h{animation:heroFadeUp .9s ease both;animation-delay:.1s}
   /* CTAパネルを中央寄せ・横並び2列に（バナーとの距離を詰める） */
   .hero-cta-panel{
     margin-left:0;margin-right:0;margin-inline:auto;
-    margin-top:220px;
+    margin-top:170px;
     width:100%;max-width:400px;
     padding:16px 14px 18px;border-radius:20px;
   }
