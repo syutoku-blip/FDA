@@ -345,9 +345,62 @@ img{max-width:100%;display:block}
       <input type="email" class="hs-input" id="email">
     </div>
     <div class="hs-q">
-      <div class="hs-q-label">会社所在地<span class="req">*</span></div>
-      <div class="hs-q-hint">都道府県からご記載ください</div>
-      <input type="text" class="hs-input" id="address" placeholder="例：福岡県福岡市〇〇区…">
+      <div class="hs-q-label">会社所在地（都道府県）<span class="req">*</span></div>
+      <select class="hs-select" id="prefecture">
+        <option value="">選択してください</option>
+        <option value="北海道">北海道</option>
+        <option value="青森県">青森県</option>
+        <option value="岩手県">岩手県</option>
+        <option value="宮城県">宮城県</option>
+        <option value="秋田県">秋田県</option>
+        <option value="山形県">山形県</option>
+        <option value="福島県">福島県</option>
+        <option value="茨城県">茨城県</option>
+        <option value="栃木県">栃木県</option>
+        <option value="群馬県">群馬県</option>
+        <option value="埼玉県">埼玉県</option>
+        <option value="千葉県">千葉県</option>
+        <option value="東京都">東京都</option>
+        <option value="神奈川県">神奈川県</option>
+        <option value="新潟県">新潟県</option>
+        <option value="富山県">富山県</option>
+        <option value="石川県">石川県</option>
+        <option value="福井県">福井県</option>
+        <option value="山梨県">山梨県</option>
+        <option value="長野県">長野県</option>
+        <option value="岐阜県">岐阜県</option>
+        <option value="静岡県">静岡県</option>
+        <option value="愛知県">愛知県</option>
+        <option value="三重県">三重県</option>
+        <option value="滋賀県">滋賀県</option>
+        <option value="京都府">京都府</option>
+        <option value="大阪府">大阪府</option>
+        <option value="兵庫県">兵庫県</option>
+        <option value="奈良県">奈良県</option>
+        <option value="和歌山県">和歌山県</option>
+        <option value="鳥取県">鳥取県</option>
+        <option value="島根県">島根県</option>
+        <option value="岡山県">岡山県</option>
+        <option value="広島県">広島県</option>
+        <option value="山口県">山口県</option>
+        <option value="徳島県">徳島県</option>
+        <option value="香川県">香川県</option>
+        <option value="愛媛県">愛媛県</option>
+        <option value="高知県">高知県</option>
+        <option value="福岡県">福岡県</option>
+        <option value="佐賀県">佐賀県</option>
+        <option value="長崎県">長崎県</option>
+        <option value="熊本県">熊本県</option>
+        <option value="大分県">大分県</option>
+        <option value="宮崎県">宮崎県</option>
+        <option value="鹿児島県">鹿児島県</option>
+        <option value="沖縄県">沖縄県</option>
+        <option value="海外">海外</option>
+      </select>
+    </div>
+    <div class="hs-q">
+      <div class="hs-q-label">会社所在地（市区町村以降）</div>
+      <input type="text" class="hs-input" id="addressDetail" placeholder="例：福岡市〇〇区…">
     </div>
   </div>
 
@@ -454,17 +507,8 @@ img{max-width:100%;display:block}
     <div class="hs-card-head"><div class="hs-card-num">4</div><div class="hs-card-title">商品情報</div></div>
 
     <div class="hs-q">
-      <div class="hs-q-label">ご相談予定の商品数を選択してください<span class="req">*</span></div>
-      <select class="hs-select" id="productCount">
-        <option value="">選択してください</option>
-        <option value="1">1商品</option>
-        <option value="2">2商品</option>
-        <option value="3">3商品</option>
-        <option value="4">4商品</option>
-        <option value="5">5商品</option>
-        <option value="6+">6商品以上</option>
-      </select>
-      <input type="number" class="hs-input hs-cond" data-when="productCount=6+" id="productCountExact" min="6" placeholder="具体的な商品数をご記入ください">
+      <div class="hs-q-label">ご相談予定の商品数をご記入ください<span class="req">*</span></div>
+      <input type="number" class="hs-input" id="productCount" min="1" placeholder="例：3">
     </div>
 
     <div id="productsContainer"></div>
@@ -678,12 +722,8 @@ const productsContainer = document.getElementById('productsContainer');
 let currentProductCount = 0;
 
 function getProductCountValue(){
-  const sel = document.getElementById('productCount').value;
-  if(sel === '6+'){
-    const exact = parseInt(document.getElementById('productCountExact').value, 10);
-    return (exact && exact >= 6) ? Math.min(exact, MAX_PRODUCTS) : 6;
-  }
-  return parseInt(sel, 10) || 0;
+  const n = parseInt(document.getElementById('productCount').value, 10);
+  return (n && n > 0) ? Math.min(n, MAX_PRODUCTS) : 0;
 }
 
 function buildProductBlock(index){
@@ -841,8 +881,7 @@ function renderProducts(){
   }
   currentProductCount = count;
 }
-document.getElementById('productCount').addEventListener('change', renderProducts);
-document.getElementById('productCountExact').addEventListener('input', renderProducts);
+document.getElementById('productCount').addEventListener('input', renderProducts);
 
 /* ===== フォーム値の収集 ===== */
 function getCheckedValues(name, root){
@@ -890,7 +929,8 @@ function collectFormData(){
     contactName: val('contactName'),
     phone: val('phone'),
     email: val('email'),
-    address: val('address'),
+    prefecture: val('prefecture'),
+    addressDetail: val('addressDetail'),
     experience: getRadioValue('experience'),
     howHandled: getRadioValue('howHandled'),
     howHandledOther: val('howHandledOther'),
@@ -901,7 +941,6 @@ function collectFormData(){
     supportSpotOther: val('supportSpotOther'),
     supportAmzOther: val('supportAmzOther'),
     productCount: document.getElementById('productCount').value,
-    productCountExact: val('productCountExact'),
     products: products,
     channels: getCheckedValues('channels'),
     otherEcName: val('otherEcName'),
@@ -919,7 +958,7 @@ function validateForm(){
   if(!val('company')) errors.push('会社名');
   if(!val('contactName')) errors.push('担当者名');
   if(!val('email')) errors.push('メールアドレス');
-  if(!val('address')) errors.push('会社所在地');
+  if(!val('prefecture')) errors.push('会社所在地（都道府県）');
   if(!getRadioValue('experience')) errors.push('FDA対応・認証取得のご経験');
 
   const exp = getRadioValue('experience');
@@ -974,7 +1013,7 @@ function buildReview(data){
   html += reviewRow('担当者名', data.contactName);
   html += reviewRow('電話番号', data.phone);
   html += reviewRow('メールアドレス', data.email);
-  html += reviewRow('会社所在地', data.address);
+  html += reviewRow('会社所在地', [data.prefecture, data.addressDetail].filter(Boolean).join(' '));
 
   html += `<div class="hs-review-section-title">2. FDA対応・認証取得のご経験</div>`;
   html += reviewRow('これまでの対応', experienceLabelMap[data.experience] || '');
@@ -996,7 +1035,7 @@ function buildReview(data){
   html += reviewRow('サポート内容', supportText);
 
   html += `<div class="hs-review-section-title">4. 商品情報</div>`;
-  html += reviewRow('商品数', data.productCount === '6+' ? (data.productCountExact + '商品') : (data.productCount + '商品'));
+  html += reviewRow('商品数', data.productCount ? (data.productCount + '商品') : '');
   data.products.forEach((p, i) => {
     const facilitiesText = p.facilities.map(f => f.type + '：' + f.name).join(' / ');
     const filesText = p.ingredientsFiles.map(f => f.name).join(' / ');
@@ -1105,7 +1144,7 @@ function populateForm(data){
 
   setVal('company', data.company); setVal('websiteUrl', data.websiteUrl);
   setVal('contactName', data.contactName); setVal('phone', data.phone);
-  setVal('email', data.email); setVal('address', data.address);
+  setVal('email', data.email); setVal('prefecture', data.prefecture); setVal('addressDetail', data.addressDetail);
 
   if(data.experience) setRadio('experience', data.experience);
   if(data.howHandled) setRadio('howHandled', data.howHandled);
@@ -1122,7 +1161,6 @@ function populateForm(data){
 
   if(data.productCount){
     document.getElementById('productCount').value = data.productCount;
-    setVal('productCountExact', data.productCountExact);
     renderProducts();
     (data.products || []).forEach((p, i) => {
       const block = productsContainer.children[i];
