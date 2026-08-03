@@ -650,7 +650,7 @@ async function handleFileSelect(input, key){
       const res = await fetch(ENDPOINT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ formType: 'fileUpload', fileName: file.name, mimeType: file.type, base64: base64 })
+        body: JSON.stringify({ formType: 'fileUpload', fileName: file.name, mimeType: file.type, base64: base64, company: val('company') })
       });
       const json = await res.json();
       if(json && json.result === 'success'){
