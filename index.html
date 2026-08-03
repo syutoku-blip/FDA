@@ -508,10 +508,10 @@ h1.hero-h{animation:heroFadeUp .9s ease both;animation-delay:.1s}
   .float-cta-group.visible{transform:translate(-50%,0);}
 
   /* ─── スマホ専用レイアウト（PC版のスタイルには影響しません） ─── */
-  /* TOPの枠の縦サイズを、画像（hero-mobile.png：941×1672）の比率ぴったりに固定する。
-     これにより「枠の高さ＝画像の高さ」になり、画像より下に白い余白が生まれない。 */
-  .hero{aspect-ratio:941/1672;height:auto;max-height:none;}
-  .hero-inner{height:100%;min-height:0;justify-content:flex-start;padding:28px 0;align-items:center;text-align:center;}
+  /* TOPの枠の縦サイズは、画像（hero-mobile.png：941×1672）の比率を最低ラインとして確保する。
+     見出し・キャッチコピー・CTAは上側にまとめて配置し、下側は空けて画像を見せる。 */
+  .hero{aspect-ratio:auto;height:auto;max-height:none;min-height:177.7vw;overflow:hidden;}
+  .hero-inner{flex:1;height:auto;min-height:0;justify-content:flex-start;padding:28px 0 16px;align-items:center;text-align:center;}
   .hero-left{align-items:center;text-align:center;justify-content:space-between;flex:1;min-height:0;width:100%;padding:0 20px;}
   h1.hero-h{text-align:center;}
   .hero-h-sub-wrap{justify-content:center;}
@@ -526,18 +526,18 @@ h1.hero-h{animation:heroFadeUp .9s ease both;animation-delay:.1s}
       radial-gradient(ellipse 90% 60% at 50% 15%, rgba(255,255,255,.98), transparent 75%),
       linear-gradient(180deg,
         rgba(255,255,255,.97) 0%,
-        rgba(255,255,255,.88) 22%,
-        rgba(255,255,255,.5) 40%,
-        rgba(255,255,255,.15) 58%,
-        rgba(255,255,255,.05) 78%,
+        rgba(255,255,255,.9) 20%,
+        rgba(255,255,255,.6) 38%,
+        rgba(255,255,255,.15) 52%,
+        rgba(255,255,255,0) 62%,
         rgba(255,255,255,0) 100%
       );
   }
 
-  /* CTAパネルを中央寄せ・横並び2列に */
+  /* CTAパネルを中央寄せ・横並び2列に（バナーとの距離を詰める） */
   .hero-cta-panel{
     margin-left:0;margin-right:0;margin-inline:auto;
-    margin-top:0;
+    margin-top:20px;
     width:100%;max-width:400px;
     padding:16px 14px 18px;border-radius:20px;
   }
