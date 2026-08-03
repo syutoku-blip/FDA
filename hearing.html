@@ -179,6 +179,8 @@ img{max-width:100%;display:block}
   display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink2);
   background:var(--greenl);border:1px solid rgba(5,150,105,.2);border-radius:7px;padding:7px 10px;
 }
+.hs-file-item a{color:var(--green);text-decoration:underline;}
+.hs-file-item a:hover{color:#047857;}
 .hs-file-item.uploading{background:#f8fafc;border-color:var(--border2);color:var(--ink3);}
 .hs-file-item.error{background:#FEF2F2;border-color:rgba(220,38,38,.25);color:#991B1B;}
 .hs-file-item .sp{width:12px;height:12px;border:2px solid rgba(64,106,175,.3);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
@@ -603,7 +605,7 @@ img{max-width:100%;display:block}
 </div>
 
 <script>
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbwau_lwj4MkLXnOggRytybZakDdxMorJh_TYvT0owcW1waKuyxqMet7F1JjLXYsrmy6/exec";
+const ENDPOINT_URL = "https://script.google.com/macros/s/【ここにデプロイIDを貼り付け】/exec";
 const MAX_PRODUCTS = 20; // 「6商品以上」の実質的な上限（安全のための上限）
 
 const params = new URLSearchParams(location.search);
@@ -656,7 +658,7 @@ async function handleFileSelect(input, key){
       if(json && json.result === 'success'){
         uploadedFiles[key].push({ name: file.name, url: json.url });
         item.className = 'hs-file-item';
-        item.innerHTML = `<span>✓ ${escapeHtml(file.name)}</span><span class="rm" data-remove-file>×</span>`;
+        item.innerHTML = `<span>✓ <a href="${escapeHtml(json.url)}" target="_blank" rel="noopener">${escapeHtml(file.name)}</a></span><span class="rm" data-remove-file>×</span>`;
         item.querySelector('[data-remove-file]').addEventListener('click', () => {
           uploadedFiles[key] = uploadedFiles[key].filter(f => f.url !== json.url);
           item.remove();
@@ -1197,7 +1199,7 @@ function populateForm(data){
         p.ingredientsFiles.forEach(f => {
           const item = document.createElement('div');
           item.className = 'hs-file-item';
-          item.innerHTML = `<span>✓ ${escapeHtml(f.name)}</span><span class="rm" data-remove-file>×</span>`;
+          item.innerHTML = `<span>✓ <a href="${escapeHtml(f.url)}" target="_blank" rel="noopener">${escapeHtml(f.name)}</a></span><span class="rm" data-remove-file>×</span>`;
           item.querySelector('[data-remove-file]').addEventListener('click', () => {
             uploadedFiles[key] = uploadedFiles[key].filter(x => x.url !== f.url);
             item.remove();
@@ -1219,7 +1221,7 @@ function populateForm(data){
     data.otherFiles.forEach(f => {
       const item = document.createElement('div');
       item.className = 'hs-file-item';
-      item.innerHTML = `<span>✓ ${escapeHtml(f.name)}</span><span class="rm" data-remove-file>×</span>`;
+      item.innerHTML = `<span>✓ <a href="${escapeHtml(f.url)}" target="_blank" rel="noopener">${escapeHtml(f.name)}</a></span><span class="rm" data-remove-file>×</span>`;
       item.querySelector('[data-remove-file]').addEventListener('click', () => {
         uploadedFiles['otherFiles'] = uploadedFiles['otherFiles'].filter(x => x.url !== f.url);
         item.remove();
