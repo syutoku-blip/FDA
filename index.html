@@ -508,16 +508,19 @@ h1.hero-h{animation:heroFadeUp .9s ease both;animation-delay:.1s}
   .float-cta-group.visible{transform:translate(-50%,0);}
 
   /* ─── スマホ専用レイアウト（PC版のスタイルには影響しません） ─── */
-  .hero-inner{align-items:center;text-align:center;}
-  .hero-left{align-items:center;text-align:center;width:100%;padding:20px 20px 2px;}
+  /* TOPの枠の縦サイズを、画像（hero-mobile.png：941×1672）の比率ぴったりに固定する。
+     これにより「枠の高さ＝画像の高さ」になり、画像より下に白い余白が生まれない。 */
+  .hero{aspect-ratio:941/1672;height:auto;max-height:none;}
+  .hero-inner{height:100%;min-height:0;justify-content:flex-start;padding:28px 0;align-items:center;text-align:center;}
+  .hero-left{align-items:center;text-align:center;justify-content:space-between;flex:1;min-height:0;width:100%;padding:0 20px;}
   h1.hero-h{text-align:center;}
   .hero-h-sub-wrap{justify-content:center;}
-  .catch-row{margin-left:0;align-items:center;margin-bottom:20px;}
+  .catch-row{margin-left:0;align-items:center;margin-bottom:0;}
   .catch-area{justify-content:center;text-align:center;}
   .hero-bottom-row{justify-content:center;}
 
-  /* 背景画像を中央基準の均等なフェードにする（PC版の左→右フェードだと偏って見えるため） */
-  .hero-collage-img{background-position:top center;background-size:contain;background-image:url('hero-mobile.png');}
+  /* 画像はコンテナと同じ比率なので、切り取りも余白も発生しない */
+  .hero-collage-img{background-position:top center;background-size:cover;background-image:url('hero-mobile.png');}
   .hero-collage-overlay{
     background:
       radial-gradient(ellipse 90% 60% at 50% 15%, rgba(255,255,255,.98), transparent 75%),
@@ -534,7 +537,7 @@ h1.hero-h{animation:heroFadeUp .9s ease both;animation-delay:.1s}
   /* CTAパネルを中央寄せ・横並び2列に */
   .hero-cta-panel{
     margin-left:0;margin-right:0;margin-inline:auto;
-    margin-top:180px;
+    margin-top:0;
     width:100%;max-width:400px;
     padding:16px 14px 18px;border-radius:20px;
   }
